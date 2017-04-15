@@ -1,0 +1,103 @@
+// Mixins
+.transall(@delay: 350ms)
+{
+	.transition(~"all @{delay}");
+}
+
+.rounded(@radius: @border-radius-base)
+{
+	.border-radius(@radius);
+}
+
+.clearfix {
+	.clearfix();
+}
+
+// CSS
+@import url("http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic");
+@import url("http://fonts.googleapis.com/css?family=Montserrat:400,700");
+
+a {
+	color: @main-color;
+	text-decoration: none;
+	.transall;
+	
+	&:hover {
+		color: lighten(@main-color, 15%);
+		text-decoration: none;
+	}
+}
+
+
+p {
+	color: @text-color-sec;
+}
+
+.clear {
+	clear: both;
+}
+
+.vspace, .vspacer {
+	margin-top: @base-margin;
+	margin-bottom: @base-margin + @base-padding * 2;
+}
+
+.content-section {
+	padding-top: @large-margin - @base-padding;
+	padding-bottom: @large-margin - @base-padding;
+	
+	h1, h2, h3, h4 {
+		margin-top: 0;
+	}
+}
+
+.bg-gray {
+	background: @border-default;
+}
+
+
+.btn {
+	
+	&.btn-secondary {
+		background-color: @sec-color;
+		color: @bg-color;
+	}
+}
+
+.no-top-margin {
+	margin-top: 0 !important;
+}
+
+.no-bottom-margin {
+	margin-bottom: 0 !important;
+}
+
+
+.pagination > li > a, .pagination > li > span {
+	padding: 8px 16px;
+}
+
+
+.secondary {
+	color: @sec-color;
+	.transall;
+	
+	&:hover {
+		color: darken(@sec-color, 25%);
+	}
+}
+
+
+.form-control {
+	.box-shadow(none);
+	
+	&:focus {
+		.box-shadow(none);
+	}
+}
+
+
+
+body .carousel-inner > .active {
+	width: 100%;
+}

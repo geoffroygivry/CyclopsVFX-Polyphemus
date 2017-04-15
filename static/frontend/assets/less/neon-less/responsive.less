@@ -1,0 +1,281 @@
+@media screen and (max-width: @screen-xs-max)
+{
+
+	section.blog .blog-posts .blog-post .post-thumb {
+		width: 100%;
+		margin-bottom:@base-margin;
+	}
+
+	section.blog .blog-posts:after, section.blog .blog-post-single:after, .contact-container .sep:before {
+		display: none;
+	}
+
+	section.blog .sidebar {
+		margin-left: 0px;
+		display: none;
+	}
+
+	section.blog {
+		padding: 10px 0;
+	}
+
+	section.blog .blog-posts .blog-post .post-details {
+		margin: 0px;
+		padding: 0px;
+		width: 100%;
+	}
+
+
+	.breadcrumb .text-muted {
+		font-size: 14px;
+		text-align: left;
+	}
+
+	.site-header {
+		.clearfix;
+	}
+
+	.site-header .site-logo {
+		padding: @base-margin 0;
+		//text-align: center;
+		//display: block;
+		margin: 0 auto;
+		text-align: left;
+	}
+
+	.site-header .site-nav, .site-header .site-logo {
+		//display: block;
+		padding: @base-margin/2 0;
+	}
+
+	.site-header .site-logo {
+		padding-top: @base-margin - @base-padding/2;
+		padding-bottom: @base-margin - @base-padding/2;
+		//float: left;
+	}
+
+	.site-header .site-nav {
+		text-align: right;
+		//float: right;
+	}
+
+	.portfolio-item-details .item-description dl {
+		text-align: left;
+		margin-bottom: 0px;
+	}
+
+	.portfolio-item h4 a.like.liked i, .gallery-item h4 a.like.liked i, .portfolio-item h4 a.like:hover i, .gallery-item h4 a.like:hover i, .portfolio-item h4 a.like i, .gallery-item h4 a.like i {
+		font-size: 20px;
+	}
+
+	.portfolio-item-details h1 {
+		font-size: 18px;
+	}
+
+	.portfolio-item-details .item-title .text-right {
+		text-align: left;
+	}
+
+
+	.portfolio-item-details {
+		padding: @base-margin 0;
+	}
+
+
+	.portfolio-item-details .item-description dl:before {
+		width: 100%;
+		height: 1px;
+		left:0;
+		position: relative;
+		margin: 40px 0;
+	}
+
+
+	.portfolio-container .col-xs-6:nth-child(2n+1) {
+		clear: both;
+	}
+
+
+
+	.portfolio-container, .gallery-container {
+		margin-top: 0px;
+	}
+
+	.clients-logos-container {
+		margin: @base-margin 0;
+	}
+
+	.clients-logos-container .client-logos .client-logo {
+		width: 100%;
+		margin: @base-margin 0;
+	}
+
+	section.breadcrumb {
+		padding: @base-margin 0;
+	}
+
+	section.breadcrumb .alt-select-field {
+		width: 100%;
+		margin-top: @base-margin;
+	}
+
+	.alt-select-field .btn-label {
+		width: 90%;
+	}
+
+	.alt-select-field .btn.dropdown-toggle {
+		width: 10%;
+	}
+
+	.footer-widgets {
+		padding: 40px 0;
+	}
+
+	.footer-widgets .container .row h5 {
+		margin-top: 40px;
+	}
+
+	.staff-member {
+		margin: @base-margin 0;
+	}
+
+	.content-section {
+		padding: 20px 0;
+	}
+
+	.content-section img {
+		width: 100%;
+		margin: 20px 0;
+	}
+
+	.contact-container .contact-form button.btn {
+		width: 100%;
+	}
+
+	.contact-container {
+		margin: @base-margin 0;
+	}
+
+	.contact-map {
+		min-height: 200px;
+	}
+
+	.contact-container .contact-form {
+		margin-bottom: 40px;
+	}
+
+	.features-blocks .vspace {
+		margin: 0px;
+	}
+
+	.features-blocks .feature-block {
+		margin-bottom: 40px;
+	}
+
+	.portfolio-widget {
+		margin: 20px 0;
+	}
+
+	.portfolio-widget .portfolio-item {
+		margin-top: 40px;
+	}
+
+	.slider-container .slides-nextprev-nav a.next {
+		margin: 0px;
+	}
+
+	.callout-action h2 {
+		text-align: center;
+		width: 100%;
+	}
+
+	.callout-action h2, .callout-action .callout-button {
+		display: block;
+		margin: 0 auto;
+		width: 100%
+	}
+
+	.callout-action .btn {
+		width: 100%
+	}
+
+	.site-footer {
+		text-align: center;
+	}
+
+	.site-footer .social-networks {
+		text-align: center;
+		margin: 0 auto;
+		margin-top: 20px;
+	}
+
+
+	.slider-container .slides .slide {
+		display: none;
+
+		&.active {
+			display: block;
+		}
+	}
+
+	.slider-container .slides .slide .slide-content h2 {
+		.transform-origin(50% 50%);
+	}
+
+	.slider-container .slides .slide .slide-content,
+	.slider-container .slides .slide .slide-image {
+		width: 100%;
+		float: none;
+		display: block;
+		padding: @base-margin/2 0;
+		text-align: center;
+	}
+
+	.slider-container .slides .slide > div:first-child {
+		padding-top: @base-margin;
+	}
+
+	.slider-container .slides .slide > div:last-child {
+		padding-bottom: @base-margin;
+	}
+
+	.slider-container .slides-nextprev-nav {
+		top: @base-padding/2;
+		left: auto;
+		right: @base-padding;
+		margin-top: 10px;
+
+		a.next, a.prev {
+			@s: 24px;
+
+			background: @bg-color;
+			margin: 0;
+			line-height: @s;
+			margin-left: 6px;
+			color: @main-color;
+			border-color: 0;
+			font-size: @font-size-base;
+			.box-shadow(0);
+			.size(@s);
+			.opacity(.3);
+			.rounded(1px);
+		}
+	}
+
+	.slider-container:hover .slides-nextprev-nav a {
+		.opacity(1);
+	}
+}
+
+.menu-trigger {
+	@s: 36px;
+
+	display: block;
+	float: right;
+	color: #FFF;
+	background: @main-color;
+	text-align: center;
+	line-height: @s;
+	font-size: 20px;
+	.size(@s);
+}

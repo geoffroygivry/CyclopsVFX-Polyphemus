@@ -1,0 +1,595 @@
+​<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Neon Admin Panel" />
+    <meta name="author" content="" />
+
+    <link rel="icon" href="{{ url_for('static', filename='frontend/assets/images/favicon.ico') }}">
+
+    <title>Cyclops VFX | Welcome</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='frontend/assets/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='frontend/assets/css/font-icons/entypo/css/entypo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='frontend/assets/css/neon.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+
+    <script src="{{ url_for('static', filename='frontend/assets/js/jquery-1.11.3.min.js') }}"></script>
+
+    <!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+</head>
+<body>
+
+<div class="wrap">
+
+    <!-- Logo and Navigation -->
+<div class="site-header-container container">
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <header class="site-header">
+
+                <section class="site-logo">
+
+                    <a href="index.html">
+                        <h1 class="Cyclops-logo">Cyclops VFX</h1>
+                    </a>
+
+                </section>
+
+                <nav class="site-nav">
+
+                    <ul class="main-menu hidden-xs" id="main-menu">
+                        <li class="active">
+                            <a href="index.html">
+                                <span>Home</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="about.html">
+                                <span>Polyphemus</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="portfolio.html">
+                                <span>Downloads</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="blog.html">
+                                <span>Documentation</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="contact.html">
+                                <span>Contact</span>
+                            </a>
+                        </li>
+                        <li class="search">
+                            <a href="#">
+                                <i class="entypo-search"></i>
+                            </a>
+
+                            <form method="get" class="search-form" action="" enctype="application/x-www-form-urlencoded">
+                                <input type="text" class="form-control" name="q" placeholder="Type to search..." />
+                            </form>
+                        </li>
+                    </ul>
+
+
+                    <div class="visible-xs">
+
+                        <a href="#" class="menu-trigger">
+                            <i class="entypo-menu"></i>
+                        </a>
+
+                    </div>
+                </nav>
+
+            </header>
+
+        </div>
+
+    </div>
+
+</div>
+    <!-- Main Slider -->
+<section class="slider-container" style="background-image: url({{ url_for('static', filename='frontend/assets/images/slide-img-1-bg.png') }});">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <div class="slides">
+
+                    <!-- Slide 1 -->
+                    <div class="slide">
+
+                        <div class="slide-content">
+                            <h2>
+                                <small>Digital Illuminati's</small>
+                                  Cyclops VFX - Open Source platform and pipeline
+                            </h2>
+
+                            <p>
+                                Cyclops VFX &ndash; interacts with applications such as Maya, Mari Nuke and RV.
+                            </p>
+                        </div>
+
+                        <div class="slide-image">
+
+                            <a href="#">
+                                <img src="https://s3.amazonaws.com/cyclopsvfx/Cyclops-vfx-suits.jpg" class="img-responsive slide-image-publish" />
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="slide">
+
+                        <div class="slide-image">
+                            <div class="publish-img">
+                                <a href="#">
+                                    <img src="https://s3.amazonaws.com/cyclopsvfx/Sterope-publish.jpg" class="img-responsive slide-image-publish" />
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="slide-content text-right">
+                            <h2>
+                                <small>Cyclops VFX - Engines</small>
+                                Powerful Tools To make great images
+                            </h2>
+
+                            <p>
+                                Mostly written in python, it also uses along other packages PySide and PyQt4.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="slide">
+
+                        <div class="slide-content">
+                            <h2>
+                                <small>Strong API</small>
+                                A simple API for more flexibility
+                            </h2>
+
+                            <p>
+                                You will find in the documentation a detailed reference API, for a tailored need.
+                            </p>
+                        </div>
+
+                        <div class="slide-image">
+
+                            <a href="#">
+                                <img src="https://s3.amazonaws.com/cyclopsvfx/Cyclops-dailies.jpg" class="img-responsive slide-image-publish" />
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <!-- Slider navigation -->
+                    <div class="slides-nextprev-nav">
+                        <a href="#" class="prev">
+                            <i class="entypo-left-open-mini"></i>
+                        </a>
+                        <a href="#" class="next">
+                            <i class="entypo-right-open-mini"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- Features Blocks -->
+<section class="features-blocks">
+
+    <div class="container">
+
+        <div class="row vspace"><!-- "vspace" class is added to distinct this row -->
+
+            <div class="col-sm-4">
+
+                <div class="feature-block">
+                    <h3>
+                        <i class="entypo-cog"></i>
+                        Settings
+                    </h3>
+
+                    <p>
+                        Cyclops VFX is very easy to configure to make it work the way you want. Built for artists by artists.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="col-sm-4">
+
+                <div class="feature-block">
+                    <h3>
+                        <i class="entypo-gauge"></i>
+                        Polyphemus
+                    </h3>
+
+                    <p>
+                        Polyphemus is the web platform that connects people together. When collaboration becomes easy with no frontiers.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="col-sm-4">
+
+                <div class="feature-block">
+                    <h3>
+                        <i class="entypo-lifebuoy"></i>
+                        Open Source community
+                    </h3>
+
+                    <p>
+                        Want to be involved? Nothing more easy! Our Bitbucket page is open to everyone who wants to be involved at making Cyclops VFX more awesome!
+                        <br> Cyclops uses a Jira instance for tracking issues and tasks.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Separator -->
+        <div class="row">
+            <div class="col-md-12">
+                <hr />
+            </div>
+        </div>
+
+    </div>
+
+</section>
+<!-- Portfolio -->
+<section class="portfolio-widget">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-sm-3">
+                <div class="portfolio-info">
+                    <h3>
+                        <a href="#">Projects made with Cyclops VFX</a>
+                    </h3>
+                    <p>Cyclops VFX becomes a trusted platform for creative minds. Here are few projects that have been created with the help of Cyclops VFX.</p>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+
+                <!-- Portfolio Item in Widget -->
+                <div class="portfolio-item">
+                    <a href="portfolio-single.html" class="image">
+                        <img src="{{ url_for('static', filename='frontend/assets/images/NYC_comp_v01.0985.jpg') }}" class="img-rounded" />
+                        <span class="hover-zoom"></span>
+                    </a>
+
+                    <h4>
+                        <a href="portfolio-single.html" class="name">Pyramid in NYC</a>
+                    </h4>
+
+                    <div class="categories">
+                        <a href="portfolio-single.html">VFX - Short film</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-3">
+
+                <!-- Portfolio Item in Widget -->
+                <div class="portfolio-item">
+                    <a href="portfolio-single.html" class="image">
+                        <img src="{{ url_for('static', filename='frontend/assets/images/rubishboy.jpg') }}" class="img-rounded" />
+                        <span class="hover-zoom"></span>
+                    </a>
+
+                    <h4>
+                        <a href="portfolio-single.html" class="name">Rubish Boy</a>
+                    </h4>
+
+                    <div class="categories">
+                        <a href="portfolio-single.html">Animated - Short film</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-3">
+
+                <!-- Portfolio Item in Widget -->
+                <div class="portfolio-item">
+                    <a href="portfolio-single.html" class="image">
+                        <img src="{{ url_for('static', filename='frontend/assets/images/dmp.jpg') }}" class="img-rounded" />
+                        <span class="hover-zoom"></span>
+                    </a>
+
+                    <h4>
+                        <a href="portfolio-single.html" class="name">City Of Clarisse</a>
+                    </h4>
+
+                    <div class="categories">
+                        <a href="portfolio-single.html">VFX - Feature film</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- Call for Action Button -->
+<div class="container">
+    <div class="row vspace">
+        <div class="col-md-12">
+
+            <div class="callout-action">
+                <h2>Get your copy of Cyclops VFX now! <br/>It is free. Forever.</h2>
+
+                <div class="callout-button">
+                    <a href="https://github.com/geoffroygivry/Cyclops-VFX" class="btn btn-secondary">Download</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Testimonails -->
+<section class="testimonials-container">
+
+    <div class="container">
+
+        <div class="col-md-12">
+
+            <div class="testimonials carousel slide" data-interval="8000">
+
+                <div class="carousel-inner">
+
+                    <div class="item active">
+
+                        <blockquote>
+                            <p>
+                                Cyclops VFX is a great tool that can be used for small projects or large ones. <br/>
+                                it is lightweight and extremely powerful.
+                            </p>
+                            <small>
+                                <cite>Geoffroy Givry</cite> - creator of Cyclops VFX.
+                            </small>
+                        </blockquote>
+
+                    </div>
+
+                    <div class="item">
+
+                        <blockquote>
+                            <p>
+                                The community behind cyclops VFX is incredible! <br/>
+                                A lot of people are involved in this project, Cyclops VFX is growing stronger every day.
+                            </p>
+                            <small>
+                                <cite>Alan Teo</cite> - Pipeline Developer.
+                            </small>
+                        </blockquote>
+
+                    </div>
+
+                    <div class="item">
+
+                        <blockquote>
+                            <p>
+                                The tools and the UI are so easy to use.<br/>It is simple and the ergonomy has been designed to be very artist friendly. <br/>
+                                Not to forgot to mention that the UI design is great too!
+                            </p>
+                            <small>
+                                <cite>Helen Yaten</cite> - CG Artist.
+                            </small>
+                        </blockquote>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Client Logos -->
+<section class="clients-logos-container">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="client-logos carousel slide" data-ride="carousel" data-interval="5000">
+
+                <div class="carousel-inner">
+
+                    <div class="item active">
+
+                        <a href="#">
+                            <img src="{{ url_for('static', filename='frontend/assets/images/client-logo-1.png') }}" />
+                        </a>
+
+                        <a href="#">
+                            <img src="{{ url_for('static', filename='frontend/assets/images/client-logo-2.png') }}" />
+                        </a>
+
+                        <a href="#">
+                            <img src="{{ url_for('static', filename='frontend/assets/images/client-logo-3.png') }}" />
+                        </a>
+
+                        <a href="#">
+                            <img src="{{ url_for('static', filename='frontend/assets/images/client-logo-4.png') }}" />
+                        </a>
+
+                    </div>
+
+                    <div class="item">
+
+                        <a href="#">
+                            <img src="{{ url_for('static', filename='frontend/assets/images/client-logo-1.png') }}" />
+                        </a>
+
+                        <a href="#">
+                            <img src="{{ url_for('static', filename='frontend/assets/images/client-logo-2.png') }}" />
+                        </a>
+
+                        <a href="#">
+                            <img src="{{ url_for('static', filename='frontend/assets/images/client-logo-3.png') }}" />
+                        </a>
+
+                        <a href="#">
+                            <img src="{{ url_for('static', filename='frontend/assets/images/client-logo-4.png') }}" />
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+    <!-- Footer Widgets -->
+<section class="footer-widgets">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-sm-6">
+
+                <a href="#">
+                    <h1 class="Cyclops-logo">Cyclops VFX</h1>
+                </a>
+
+                <p>
+                    A suite of Open Source Visual Effects pipeline tools under the MIT licence. <br />
+                    Designed for Artists by Artists.
+                </p>
+
+            </div>
+
+            <div class="col-sm-3">
+
+                <h5>Address</h5>
+
+                <p>
+                    Digital Illuminati, Inc. <br />
+                    Everywhere in the world! <br />
+                </p>
+
+            </div>
+
+            <div class="col-sm-3">
+
+                <h5>Contact</h5>
+
+                <p>
+                    info@cyclops-vfx.io
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Site Footer -->
+<footer class="site-footer">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-sm-6">
+                Copyright &copy; Digital Illuminati - All Rights Reserved.
+            </div>
+
+            <div class="col-sm-6">
+
+                <ul class="social-networks text-right">
+                    <li>
+                        <a href="#">
+                            <i class="entypo-instagram"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="entypo-twitter"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="entypo-facebook"></i>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+</div>
+
+
+    <!-- Bottom scripts (common) -->
+    <script src="{{ url_for('static', filename='frontend/assets/js/gsap/TweenMax.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='frontend/assets/js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='frontend/assets/js/joinable.js') }}"></script>
+    <script src="{{ url_for('static', filename='frontend/assets/js/resizeable.js') }}"></script>
+    <script src="{{ url_for('static', filename='frontend/assets/js/neon-slider.js') }}"></script>
+
+
+    <!-- JavaScripts initializations and stuff -->
+    <script src="{{ url_for('static', filename='frontend/assets/js/neon-custom.js') }}"></script>
+
+</body>
+</html>
