@@ -8,7 +8,7 @@
     <meta name="description" content="Neon Admin Panel" />
     <meta name="author" content="" />
 
-    <link rel="icon" href="{{ url_for('static', filename='frontend/assets/images/favicon.ico') }}">
+    <link rel="icon" href="static/frontend/assets/images/favicon.ico">
 
     <title>Cyclops VFX | Welcome</title>
 
@@ -59,7 +59,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="about.html">
+                            <a href="{{url_for('.login')}}">
                                 <span>Polyphemus</span>
                             </a>
                         </li>
@@ -252,7 +252,7 @@
                     </h3>
 
                     <p>
-                        Want to be involved? Nothing more easy! Our Bitbucket page is open to everyone who wants to be involved at making Cyclops VFX more awesome!
+                        Want to be involved? Nothing more easy! Our Github page is open to everyone who wants to be involved at making Cyclops VFX more awesome!
                         <br> Cyclops uses a Jira instance for tracking issues and tasks.
                     </p>
                 </div>
@@ -312,7 +312,7 @@
                 <!-- Portfolio Item in Widget -->
                 <div class="portfolio-item">
                     <a href="portfolio-single.html" class="image">
-                        <img src="{{ url_for('static', filename='frontend/assets/images/rubishboy.jpg') }}" class="img-rounded" />
+                        <img src="https://s3.amazonaws.com/cyclopsvfx/rubishboy.jpg" class="img-rounded" />
                         <span class="hover-zoom"></span>
                     </a>
 

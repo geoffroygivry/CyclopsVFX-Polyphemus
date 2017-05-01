@@ -14,6 +14,11 @@ def index():
     return render_template("index.html")
 
 
+@app.route('/login')
+def login():
+    return render_template("login.html")
+
+
 @app.route('/polyphemus')
 def polyphemus():
     subs = [x for x in mongo.db.dailies_submissions.find()]
