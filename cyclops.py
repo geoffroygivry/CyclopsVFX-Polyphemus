@@ -1,5 +1,4 @@
 from flask import Flask, render_template
-import pymongo
 from flask_pymongo import PyMongo
 import cyc_config as cfg
 

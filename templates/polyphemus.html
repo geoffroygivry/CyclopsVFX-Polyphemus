@@ -298,35 +298,16 @@
                                 </thead>
                                 <tbody>
                                     {% for sub in subs %}
+                                    {% if not sub.shot %}
                                     <tr>
                                         <td><a href="rvlink:// /Dropbox/jobs/RUBISHBOY/MANOR_001/OUT/MANOR_001_comp_v01/rubishboy.jpg"><img src="https://s3.amazonaws.com/cyclopsvfx/rubishboy.jpg" class="thumb-sub" alt=""></a></td>
-                                        <td><strong><a href="">{{sub.shot}}</a></strong></td>
-                                        <td>{{sub.user}} </td>
-                                        <td><a href="javascript:;" id="add-sticky" class="btn btn-sm btn-primary">{{sub.task}}</a></td>
-                                        <td><div class="date-sub"><small>today at 09:45</small></div></td>
+                                        <td><strong><a href="">{{sub.Shot}}</a></strong></td>
+                                        <td>{{sub.Username}} </td>
+                                        <td><a href="javascript:;" id="add-sticky" class="btn btn-sm btn-primary">{{sub.Task}}</a></td>
+                                        <td><div class="date-sub"><small>{{sub.Date}}</small></div></td>
                                     </tr>
+                                    {% endif %}
                                     {% endfor %}
-                                    <tr>
-                                        <td><a href=""><img src="https://s3.amazonaws.com/cyclopsvfx/NYC_comp_v01.0985.jpg" alt="" class="thumb-sub"></a></td>
-                                        <td><strong><a href="">bc0940</a></strong></td>
-                                        <td>edmund</td>
-                                        <td><a href="javascript:;" id="add-sticky" class="btn btn-sm btn-warning">td</a></td>
-                                        <td><div class="date-sub"><small>today at 09:40</small></div></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href=""><img src="https://s3.amazonaws.com/cyclopsvfx/dmp.jpg" alt="" class="thumb-sub"></a></td>
-                                        <td><strong><a href="">kh4587</a></strong></td>
-                                        <td>harvinder</td>
-                                        <td><a href="javascript:;" id="add-sticky" class="btn btn-sm btn-success">fx</a></td>
-                                        <td><div class="date-sub"><small>today at 09:33</small></div></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href=""><img src="static/polyphemus/assets/img/NYC_comp_v01.0985.jpg" alt="" class="thumb-sub"></a></td>
-                                        <td><strong><a href="">bc0940</a></strong></td>
-                                        <td>terry</td>
-                                        <td><a href="javascript:;" id="add-sticky" class="btn btn-sm btn-danger">gen</a></td>
-                                        <td><div class="date-sub"><small>today at 08:14</small></div></td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
