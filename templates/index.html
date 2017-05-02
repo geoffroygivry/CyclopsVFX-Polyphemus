@@ -84,6 +84,12 @@
                                 <span>{{user_session}}</span>
                             </a>
                         </li>
+                        {% else %}
+                        <li>
+                            <a href="{{url_for('.login')}}">
+                                <span>Login</span>
+                            </a>
+                        </li>
                         {% endif %}
                         <li class="search">
                             <a href="#">

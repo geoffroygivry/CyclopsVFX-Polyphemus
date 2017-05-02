@@ -55,7 +55,7 @@ def register():
 def polyphemus():
     if 'username' in session:
         subs = [x for x in mongo.db.dailies_submissions.find()]
-        return render_template("polyphemus.html", subs=subs)
+        return render_template("polyphemus.html", subs=subs, user_session=session['username'])
     else:
         return render_template("login.html")
 
