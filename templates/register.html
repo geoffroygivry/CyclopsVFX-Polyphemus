@@ -10,7 +10,7 @@
 
 	<link rel="icon" href="static/login/assets/images/favicon.ico">
 
-	<title>CyclopsVFX | Login</title>
+	<title>CyclopsVFX | Register</title>
 
 	<link rel="stylesheet" href="static/login/assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
 	<link rel="stylesheet" href="static/login/assets/css/font-icons/entypo/css/entypo.css">
@@ -54,12 +54,12 @@ var baseurl = '';
 			</a>
 
 
-			<p class="description">Dear user, please log in !</p>
+			<p class="description">Welcome and register !</p>
 
 			<!-- progress bar indicator -->
 			<div class="login-progressbar-indicator">
 				<h3>43%</h3>
-				<span>logging in...</span>
+				<span>Registering in...</span>
 			</div>
 		</div>
 
@@ -74,11 +74,11 @@ var baseurl = '';
 		<div class="login-content">
 
 			<div class="form-login-error">
-				<h3>Invalid login</h3>
+				<h3>Invalid Registration</h3>
 				<p>Enter <strong>demo</strong>/<strong>demo</strong> as login and password.</p>
 			</div>
 
-			<form method=POST action="{{ url_for('login') }}">
+			<form method=POST action="{{ url_for('register') }}">
 
 				<div class="form-group">
 
@@ -91,6 +91,20 @@ var baseurl = '';
 					</div>
 
 				</div>
+
+
+				<div class="form-group">
+
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="entypo-user"></i>
+						</div>
+
+						<input type="text" class="form-control" name="email" id="email" data-mask="email" placeholder="E-mail" autocomplete="off" />
+					</div>
+
+				</div>
+
 
 				<div class="form-group">
 
@@ -107,7 +121,7 @@ var baseurl = '';
 				<div class="form-group">
 					<button type="submit" class="btn btn-primary btn-block btn-login">
 						<i class="entypo-login"></i>
-						Login In
+						Register
 					</button>
 				</div>
 

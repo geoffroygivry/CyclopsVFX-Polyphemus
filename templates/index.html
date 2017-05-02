@@ -59,7 +59,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{url_for('.login')}}">
+                            <a href="{{url_for('.polyphemus')}}">
                                 <span>Polyphemus</span>
                             </a>
                         </li>
@@ -78,6 +78,13 @@
                                 <span>Contact</span>
                             </a>
                         </li>
+                        {% if user_session %}
+                        <li>
+                            <a href="#">
+                                <span>{{user_session}}</span>
+                            </a>
+                        </li>
+                        {% endif %}
                         <li class="search">
                             <a href="#">
                                 <i class="entypo-search"></i>
