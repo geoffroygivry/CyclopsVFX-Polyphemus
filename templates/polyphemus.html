@@ -160,10 +160,8 @@
                         </a>
                         <ul class="dropdown-menu animated fadeInLeft">
                             <li class="arrow"></li>
-                            <li><a href="javascript:;">Edit Profile</a></li>
-                            <li><a href="javascript:;"><span class="badge badge-danger pull-right">2</span> Inbox</a></li>
-                            <li><a href="javascript:;">Calendar</a></li>
-                            <li><a href="javascript:;">Setting</a></li>
+                            <li><a href="#">Edit Profile</a></li>
+                            <li><a href="#"><span class="badge badge-danger pull-right">2</span> Inbox</a></li>
                             <li class="divider"></li>
                             <li><a href="javascript:;">Log Out</a></li>
                         </ul>
@@ -240,37 +238,9 @@
 
         <!-- begin #content -->
         <div id="content" class="content">
-            <!-- begin breadcrumb -->
-            <ol class="breadcrumb pull-right">
-                <li><a href="javascript:;">Home</a></li>
-                <li><a href="javascript:;">Page Options</a></li>
-                <li class="active">Page with Mega Menu</li>
-            </ol>
-            <!-- end breadcrumb -->
             <!-- begin page-header -->
-            <h1 class="page-header">RPO <small>Dashboard</small></h1>
+            <h1 class="page-header"><small>Dashboard</small></h1>
             <!-- end page-header -->
-            <div class="row">
-                <div class="panel panel-inverse" data-sortable-id="ui-widget-12">
-                    <div class="panel-heading">
-
-                        <div class="panel-heading-btn">
-                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
-                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
-                        </div>
-                        <h4 class="panel-title">Show infos</h4>
-                    </div>
-                    <div class="panel-body bg-black">
-                       <div class="alert alert-warning fade in">
-                            <span class="close" data-dismiss="alert">×</span>
-                            <i class="fa fa-exclamation-circle fa-2x pull-left"></i>
-                            <p>From <strong>Paolo Acri</strong><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ac posuere lacus, quis suscipit sem. Nulla sagittis aliquam erat non convallis.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="row">
 
@@ -285,13 +255,13 @@
                                 <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
                                 <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
                             </div>
-                            <h4 class="panel-title">Latest Submissions</h4>
+                            <h4 class="panel-title">Your Latest Submissions</h4>
                         </div>
                         <div class="panel-body">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th></th>
                                         <th>Shot</th>
                                         <th>Submitted By</th>
                                         <th>Task</th>
@@ -301,6 +271,7 @@
                                 <tbody>
                                     {% for sub in subs %}
                                     {% if not sub.shot %}
+                                    {% if sub.Username == user_session %}
                                     <tr>
                                         <td><a href="rvlink:// /Dropbox/jobs/RUBISHBOY/MANOR_001/OUT/MANOR_001_comp_v01/rubishboy.jpg"><img src="https://s3.amazonaws.com/cyclopsvfx/rubishboy.jpg" class="thumb-sub" alt=""></a></td>
                                         <td><strong><a href="">{{sub.Shot}}</a></strong></td>
@@ -308,6 +279,7 @@
                                         <td><a href="javascript:;" id="add-sticky" class="btn btn-sm btn-primary">{{sub.Task}}</a></td>
                                         <td><div class="date-sub"><small>{{sub.Date}}</small></div></td>
                                     </tr>
+                                    {% endif %}
                                     {% endif %}
                                     {% endfor %}
                                 </tbody>
@@ -339,64 +311,6 @@
                             </div>
                     </div>
                 </div>
-                    <div class="panel panel-inverse" data-sortable-id="index-17">
-                        <div class="panel-heading">
-                            <div class="panel-heading-btn">
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
-                            </div>
-                            <h4 class="panel-title">Todo List</h4>
-                        </div>
-                        <div class="panel-body p-0">
-                            <ul class="todolist">
-                                <li class="active">
-                                    <a href="javascript:;" class="todolist-container active" data-click="todolist">
-                                        <div class="todolist-input"><i class="fa fa-square-o"></i></div>
-                                        <div class="todolist-title">Donec vehicula pretium nisl, id lacinia nisl tincidunt id.</div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" class="todolist-container" data-click="todolist">
-                                        <div class="todolist-input"><i class="fa fa-square-o"></i></div>
-                                        <div class="todolist-title">Duis a ullamcorper massa.</div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" class="todolist-container" data-click="todolist">
-                                        <div class="todolist-input"><i class="fa fa-square-o"></i></div>
-                                        <div class="todolist-title">Phasellus bibendum, odio nec vestibulum ullamcorper.</div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" class="todolist-container" data-click="todolist">
-                                        <div class="todolist-input"><i class="fa fa-square-o"></i></div>
-                                        <div class="todolist-title">Duis pharetra mi sit amet dictum congue.</div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" class="todolist-container" data-click="todolist">
-                                        <div class="todolist-input"><i class="fa fa-square-o"></i></div>
-                                        <div class="todolist-title">Duis pharetra mi sit amet dictum congue.</div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" class="todolist-container" data-click="todolist">
-                                        <div class="todolist-input"><i class="fa fa-square-o"></i></div>
-                                        <div class="todolist-title">Phasellus bibendum, odio nec vestibulum ullamcorper.</div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" class="todolist-container active" data-click="todolist">
-                                        <div class="todolist-input"><i class="fa fa-square-o"></i></div>
-                                        <div class="todolist-title">Donec vehicula pretium nisl, id lacinia nisl tincidunt id.</div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
             <!-- end col -->
             </div>
 

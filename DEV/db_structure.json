@@ -1,0 +1,19 @@
+{
+    "RBY":
+    {
+        "MANOR":
+        {
+            "MANOR_010":
+                {
+                    "first_frame": 1001,
+                    "last_frame": 1048,
+                    "tasks":
+                        [
+                            {'comp': 'Geoffroy'},
+                            {'lght': 'user1'}
+                        ]
+                }
+        }
+
+    }
+}
