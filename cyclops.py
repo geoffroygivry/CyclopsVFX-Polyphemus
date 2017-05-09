@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, request, session, redirect
 from flask_pymongo import PyMongo
 import bcrypt
+
 from cyc_config import cyc_config as cfg
 
 app = Flask(__name__)
@@ -55,7 +56,13 @@ def register():
 def polyphemus():
     if 'username' in session:
         subs = [x for x in mongo.db.dailies_submissions.find()]
-        return render_template("polyphemus.html", subs=subs, user_session=session['username'])
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        if user_session.get('role') == 'admin':
+            shows = [x for x in mongo.db.shows.find()]
+        else:
+            shows = user_session.get("shows")
+
+        return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows)
     else:
         return render_template("login.html")
 

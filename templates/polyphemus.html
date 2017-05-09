@@ -156,7 +156,7 @@
                     <li class="dropdown navbar-user">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="static/polyphemus/assets/img/user-13.jpg" alt="" />
-                            <span class="hidden-xs">{{user_session}}</span> <b class="caret"></b>
+                            <span class="hidden-xs">{{user_session.name}}</span> <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu animated fadeInLeft">
                             <li class="arrow"></li>
@@ -185,50 +185,51 @@
                             <a href="javascript:;"><img src="static/polyphemus/assets/img/user-13.jpg" alt="" /></a>
                         </div>
                         <div class="info">
-                            {{user_session}}
-                            <small>Administrator</small>
+                            {{user_session.name}}
+                            <small>{{user_session.task}} {{user_session.role}}</small>
                         </div>
                     </li>
                 </ul>
                 <!-- end sidebar user -->
                 <!-- begin sidebar nav -->
-                <ul class="nav">
 
+                <ul class="nav">
                     <li class="has-sub">
                         <a href="javascript:;">
                             <b class="caret pull-right"></b>
                             <i class="fa fa-align-left"></i>
-                            <span>Menu Level</span>
+                            <span>Shows</span>
                         </a>
+                        {% for show in shows %}
                         <ul class="sub-menu">
                             <li class="has-sub">
                                 <a href="javascript:;">
                                     <b class="caret pull-right"></b>
-                                    Menu 1.1
+                                    {{show.name}}
                                 </a>
+                                {% for sequence in show.sequences %}
                                 <ul class="sub-menu">
                                     <li class="has-sub">
                                         <a href="javascript:;">
                                             <b class="caret pull-right"></b>
-                                            Menu 2.1
+                                            {{sequence.name}}
                                         </a>
                                         <ul class="sub-menu">
                                             <li><a href="javascript:;">Menu 3.1</a></li>
-                                            <li><a href="javascript:;">Menu 3.2</a></li>
                                         </ul>
                                     </li>
                                     <li><a href="javascript:;">Menu 2.2</a></li>
-                                    <li><a href="javascript:;">Menu 2.3</a></li>
                                 </ul>
+                                {% endfor %}
                             </li>
-                            <li><a href="javascript:;">Menu 1.2</a></li>
-                            <li><a href="javascript:;">Menu 1.3</a></li>
                         </ul>
+                        {% endfor %}
                     </li>
                     <!-- begin sidebar minify button -->
                     <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
                     <!-- end sidebar minify button -->
                 </ul>
+
                 <!-- end sidebar nav -->
             </div>
             <!-- end sidebar scrollbar -->
@@ -271,7 +272,7 @@
                                 <tbody>
                                     {% for sub in subs %}
                                     {% if not sub.shot %}
-                                    {% if sub.Username == user_session %}
+                                    {% if sub.Username == user_session.name %}
                                     <tr>
                                         <td><a href="rvlink:// /Dropbox/jobs/RUBISHBOY/MANOR_001/OUT/MANOR_001_comp_v01/rubishboy.jpg"><img src="https://s3.amazonaws.com/cyclopsvfx/rubishboy.jpg" class="thumb-sub" alt=""></a></td>
                                         <td><strong><a href="">{{sub.Shot}}</a></strong></td>
