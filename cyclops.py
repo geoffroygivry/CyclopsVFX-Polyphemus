@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, request, session, redirect
 from flask_pymongo import PyMongo
 import bcrypt
-import cyc_config as cfg
+from cyc_config import cyc_config as cfg
 
 app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'hydra'
