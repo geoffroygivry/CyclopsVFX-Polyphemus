@@ -57,10 +57,7 @@ def polyphemus():
     if 'username' in session:
         subs = [x for x in mongo.db.dailies_submissions.find()]
         user_session = mongo.db.users.find_one({"name": session['username']})
-        if user_session.get('role') == 'admin':
-            shows = [x for x in mongo.db.shows.find()]
-        else:
-            shows = user_session.get("shows")
+        shows = [x for x in mongo.db.shows.find()]
 
         return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows)
     else:

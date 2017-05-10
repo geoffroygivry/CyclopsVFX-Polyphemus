@@ -67,16 +67,12 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-database fa-fw"></i> New <b class="caret"></b>
+                                <i class="fa fa-database fa-fw"></i> Shows <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">One more separated link</a></li>
+                                {% for show in shows %}
+                                <li><a href="#">{{show.name}}</a></li>
+                                {% endfor %}
                             </ul>
                         </li>
                     </ul>
@@ -200,33 +196,34 @@
                             <i class="fa fa-align-left"></i>
                             <span>Shows</span>
                         </a>
-                        {% for show in shows %}
                         <ul class="sub-menu">
+                            {% for show in shows %}
                             <li class="has-sub">
                                 <a href="javascript:;">
                                     <b class="caret pull-right"></b>
                                     {{show.name}}
                                 </a>
-                                {% for sequence in show.sequences %}
                                 <ul class="sub-menu">
+                                    {% for sequence in show.sequences %}
                                     <li class="has-sub">
                                         <a href="javascript:;">
                                             <b class="caret pull-right"></b>
                                             {{sequence.name}}
                                         </a>
                                         <ul class="sub-menu">
-                                            <li><a href="javascript:;">Menu 3.1</a></li>
+                                            {% for shot in sequence.shots %}
+                                            <li><a href="javascript:;">{{shot.name}}</a></li>
+                                            {% endfor %}
                                         </ul>
                                     </li>
-                                    <li><a href="javascript:;">Menu 2.2</a></li>
+                                    {% endfor %}
                                 </ul>
-                                {% endfor %}
                             </li>
+                            {% endfor %}
                         </ul>
-                        {% endfor %}
                     </li>
                     <!-- begin sidebar minify button -->
-                    <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
+                    <li><a href="#" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
                     <!-- end sidebar minify button -->
                 </ul>
 
