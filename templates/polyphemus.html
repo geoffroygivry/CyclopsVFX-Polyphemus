@@ -29,6 +29,32 @@
     <script src="static/polyphemus/assets/plugins/pace/pace.min.js"></script>
     <!-- ================== END BASE JS ================== -->
 </head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <body>
     <!-- begin #page-loader -->
     <div id="page-loader" class="fade in"><span class="spinner"></span></div>
@@ -234,11 +260,66 @@
         <div class="sidebar-bg"></div>
         <!-- end #sidebar -->
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <!-- begin #content -->
         <div id="content" class="content">
             <!-- begin page-header -->
             <h1 class="page-header"><small>Dashboard</small></h1>
             <!-- end page-header -->
+            {% for info_active in show_infos %}
+            {% if info_active.active %}
+            <div class="row">
+                    <div class="panel panel-inverse" data-sortable-id="ui-widget-16">
+                        <div class="panel-heading">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h4 class="panel-title">Show infos</h4>
+                        </div>
+                        <div class="panel-body bg-black">
+                            {% for info in show_infos %}
+                            {% if info.show in ['RBY'] %}
+                            {% if info.active %}
+                            <div class="alert alert-{{info.info_type}} fade in">
+                                <span class="close" data-dismiss="alert">×</span>
+                                <i class="fa fa-check fa-2x pull-left"></i>
+                                <p>From <strong>{{info.author}}</strong></p><br/><p>{{info.message}}</p>
+                            </div>
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                    </div>
+                </div>
+            <!-- end col -->
+            </div>
+            {% endif %}
+            {% endfor %}
 
             <div class="row">
 
@@ -268,8 +349,6 @@
                                 </thead>
                                 <tbody>
                                     {% for sub in subs %}
-                                    {% if not sub.shot %}
-                                    {% if sub.Username == user_session.name %}
                                     <tr>
                                         <td><a href="rvlink:// /Dropbox/jobs/RUBISHBOY/MANOR_001/OUT/MANOR_001_comp_v01/rubishboy.jpg"><img src="https://s3.amazonaws.com/cyclopsvfx/rubishboy.jpg" class="thumb-sub" alt=""></a></td>
                                         <td><strong><a href="">{{sub.Shot}}</a></strong></td>
@@ -277,8 +356,6 @@
                                         <td><a href="javascript:;" id="add-sticky" class="btn btn-sm btn-primary">{{sub.Task}}</a></td>
                                         <td><div class="date-sub"><small>{{sub.Date}}</small></div></td>
                                     </tr>
-                                    {% endif %}
-                                    {% endif %}
                                     {% endfor %}
                                 </tbody>
                             </table>
@@ -286,32 +363,14 @@
                     </div>
                     <!-- end panel -->
                 </div>
+                {{user_session._id}}
 
+                {% for shot in shots %}
+                {{shot.name}}
+                {% endfor %}
             <!-- end col -->
 
             <!-- beging col -->
-                <div class="col-md-4 ui-sortable">
-                    <div class="panel panel-inverse" data-sortable-id="ui-widget-16">
-                        <div class="panel-heading">
-                            <div class="panel-heading-btn">
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
-                            </div>
-                            <h4 class="panel-title">Show infos</h4>
-                        </div>
-                        <div class="panel-body bg-black">
-                            <div class="alert alert-success fade in">
-                                <span class="close" data-dismiss="alert">×</span>
-                                <i class="fa fa-check fa-2x pull-left"></i>
-                                <p>From <strong>Jeff Capogreco</strong><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ac posuere lacus, quis suscipit sem. Nulla sagittis aliquam erat non convallis.</p>
-                            </div>
-                    </div>
-                </div>
-            <!-- end col -->
-            </div>
-
 
         </div>
         <!-- end #content -->
@@ -321,6 +380,27 @@
         <!-- end scroll to top btn -->
     </div>
     <!-- end page container -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- ================== BEGIN BASE JS ================== -->
     <script src="static/polyphemus/assets/plugins/jquery/jquery-1.9.1.min.js"></script>

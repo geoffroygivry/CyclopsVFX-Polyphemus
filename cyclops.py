@@ -28,7 +28,7 @@ def login():
         if login_user:
             if bcrypt.hashpw(request.form['password'].encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password'].encode('utf-8'):
                 session['username'] = request.form['username']
-                return redirect(url_for('index'))
+                return redirect(url_for('polyphemus'))
 
         return 'Invalid username/password combination'
 
@@ -57,13 +57,22 @@ def polyphemus():
     if 'username' in session:
         subs = [x for x in mongo.db.dailies_submissions.find()]
         user_session = mongo.db.users.find_one({"name": session['username']})
-        shows = [x for x in mongo.db.shows.find()]
+        show_infos = [x for x in mongo.db.show_infos.find()]
+        shots = [x for x in mongo.db.shots.find()]
+        if user_session['role'] == 'admin':
+            shows = [x for x in mongo.db.shows.find()]
+        else:
+            shows = []
+            shows_user_artist = user_session.get("shows")
+            for n in shows_user_artist:
+                new_show = mongo.db.shows.find_one(n)
+                shows.append(new_show)
 
-        return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows)
+        return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, shots=shots)
     else:
         return render_template("login.html")
 
 
 if __name__ == "__main__":
     app.secret_key = cfg.FLASK_APP_SECRET_KEY
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
