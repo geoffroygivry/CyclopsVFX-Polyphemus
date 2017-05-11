@@ -334,7 +334,7 @@
                                 <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
                                 <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
                             </div>
-                            <h4 class="panel-title">Your Latest Submissions</h4>
+                            <h4 class="panel-title">Latest submissions on your assigned shots</h4>
                         </div>
                         <div class="panel-body">
                             <table class="table table-striped">
@@ -349,13 +349,23 @@
                                 </thead>
                                 <tbody>
                                     {% for sub in subs %}
+                                    {% for shot in shots %}
+                                    {% if shot.name == sub.Shot %}
+                                    {% for task in shot.tasks %}
+                                    {% for x in task %}
+                                    {% if user_session.name in task[x] %}
                                     <tr>
-                                        <td><a href="rvlink:// /Dropbox/jobs/RUBISHBOY/MANOR_001/OUT/MANOR_001_comp_v01/rubishboy.jpg"><img src="https://s3.amazonaws.com/cyclopsvfx/rubishboy.jpg" class="thumb-sub" alt=""></a></td>
+                                        <td><a href="rvlink:// /Dropbox/jobs/RUBISHBOY/MANOR_001/OUT/MANOR_001_comp_v01/rubishboy.jpg"><img src={{sub.thumbnail_s3}} class="thumb-sub" alt=""></a></td>
                                         <td><strong><a href="">{{sub.Shot}}</a></strong></td>
                                         <td>{{sub.Username}} </td>
                                         <td><a href="javascript:;" id="add-sticky" class="btn btn-sm btn-primary">{{sub.Task}}</a></td>
                                         <td><div class="date-sub"><small>{{sub.Date}}</small></div></td>
                                     </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% endfor %}
+                                    {% endif %}
+                                    {% endfor %}
                                     {% endfor %}
                                 </tbody>
                             </table>
@@ -363,11 +373,6 @@
                     </div>
                     <!-- end panel -->
                 </div>
-                {{user_session._id}}
-
-                {% for shot in shots %}
-                {{shot.name}}
-                {% endfor %}
             <!-- end col -->
 
             <!-- beging col -->
