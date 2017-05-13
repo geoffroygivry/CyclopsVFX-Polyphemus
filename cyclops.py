@@ -1,5 +1,7 @@
 from flask import Flask, render_template, url_for, request, session, redirect
 from flask_pymongo import PyMongo
+from momentjs import momentjs
+from datetime import datetime
 import bcrypt
 
 from cyc_config import cyc_config as cfg
@@ -7,6 +9,7 @@ from cyc_config import cyc_config as cfg
 app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'hydra'
 app.config['MONGO_URI'] = cfg.MONGODB
+app.jinja_env.globals['momentjs'] = momentjs
 
 mongo = PyMongo(app)
 
@@ -54,11 +57,17 @@ def register():
 
 @app.route('/polyphemus')
 def polyphemus():
+    todolist = None
     if 'username' in session:
         subs = [x for x in mongo.db.dailies_submissions.find()]
         user_session = mongo.db.users.find_one({"name": session['username']})
         show_infos = [x for x in mongo.db.show_infos.find()]
         shots = [x for x in mongo.db.shots.find()]
+        todo_coll = [x for x in mongo.db.todolist.find()]
+        iso_time = datetime.utcnow()
+        for n in todo_coll:
+            if n['name'] == session['username']:
+                todolist = n['todo']
         if user_session['role'] == 'admin':
             shows = [x for x in mongo.db.shows.find()]
         else:
@@ -68,7 +77,9 @@ def polyphemus():
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
 
-        return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, shots=shots)
+        print todolist
+
+        return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, shots=shots, todolist=todolist, iso_time=iso_time)
     else:
         return render_template("login.html")
 

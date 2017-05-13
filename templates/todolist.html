@@ -1,0 +1,37 @@
+
+                    <div class="col-md-4 ui-sortable">
+                        <div class="panel panel-inverse" data-sortable-id="index-3">
+                            <div class="panel-heading">
+                                <div class="panel-heading-btn">
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                                </div>
+                                <h4 class="panel-title">Todo List</h4>
+                            </div>
+                            <div class="panel-body">
+                                <ul class="todolist">
+                                {% for todo in todolist %}
+                                    <li>
+                                        <a href="javascript:;" class="todolist-container active" data-click="todolist">
+                                            <div class="todolist-input"><i class="fa fa-square-o"></i></div>
+                                            <div class="todolist-title">{{todo}}</div>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="panel-footer">
+                                <form>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-silver" placeholder="To do..." />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" type="button"><i class="fa fa-pencil"></i></button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
