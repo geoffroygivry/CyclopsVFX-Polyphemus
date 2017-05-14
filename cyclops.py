@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, request, session, redirect
 from flask_pymongo import PyMongo
-from momentjs import momentjs
 from datetime import datetime
+from scripts import utils
 import bcrypt
 
 from cyc_config import cyc_config as cfg
@@ -9,7 +9,8 @@ from cyc_config import cyc_config as cfg
 app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'hydra'
 app.config['MONGO_URI'] = cfg.MONGODB
-app.jinja_env.globals['momentjs'] = momentjs
+app.jinja_env.globals['datetime'] = datetime
+app.jinja_env.globals['utils'] = utils
 
 mongo = PyMongo(app)
 
@@ -76,8 +77,6 @@ def polyphemus():
             for n in shows_user_artist:
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
-
-        print todolist
 
         return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, shots=shots, todolist=todolist, iso_time=iso_time)
     else:

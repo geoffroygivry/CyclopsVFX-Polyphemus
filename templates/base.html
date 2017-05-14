@@ -57,6 +57,11 @@
 
         <div id="content" class="content"> <!-- begin #content -->
 
+        {% set format = "%a %d %b %Y at %H:%M:%S" %}
+        {% set iso_date = datetime.utcnow().isoformat() %}
+        {% set datetime_date = utils.convert_isotime_to_datetime(iso_date) %}
+        {% set pretty_date = datetime_date.strftime(format) %}
+
 
             {% block content %}{% endblock %}
 
@@ -64,6 +69,7 @@
         <!-- begin scroll to top btn -->
         <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
         <!-- end scroll to top btn -->
+
     </div> <!-- end content div -->
 </div> <!-- end page container -->
 
@@ -98,8 +104,9 @@
     <!-- ================== END BASE JS ================== -->
 
     <!-- ================== BEGIN PAGE LEVEL JS ================== -->
-    <script src="static/polyphemus/assets/js/apps.min.js"></script>
+    <script src="static/polyphemus/assets/js/apps.js"></script>
     <script src="static/polyphemus/assets/js/dashboard.min.js"></script>
+    <script src="static/polyphemus/assets/js/polyphemus.js"></script>
     <!-- ================== END PAGE LEVEL JS ================== -->
 
     <script>

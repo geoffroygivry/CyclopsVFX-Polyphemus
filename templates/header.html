@@ -17,28 +17,6 @@
         </div>
         <!-- end mobile sidebar expand / collapse button -->
 
-        <!-- begin navbar-collapse -->
-        <div class="collapse navbar-collapse pull-left" id="top-navbar">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="#">
-                        <i class="fa fa-diamond fa-fw"></i> Client
-                    </a>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-database fa-fw"></i> Shows <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu" role="menu">
-                        {% for show in shows %}
-                        <li><a href="#">{{show.name}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <!-- end navbar-collapse -->
-
         <!-- begin header navigation right -->
         <ul class="nav navbar-nav navbar-right">
             <li>

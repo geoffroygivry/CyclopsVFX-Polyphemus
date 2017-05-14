@@ -31,8 +31,8 @@
                             <td><a href="rvlink:// {{sub.Path}}"><img src={{sub.thumbnail_s3}} class="thumb-sub" alt=""></a></td>
                             <td><strong><a href="">{{sub.Shot}}</a></strong></td>
                             <td>{{sub.Username}} </td>
-                            <td><a href="javascript:;" id="add-sticky" class="btn btn-sm btn-primary">{{sub.Task}}</a></td>
-                            <td><div class="date-sub"><small>{{sub.Date}}</small></div></td>
+                            <td><a href="javascript:;" id="add-sticky" class="label label-primary">{{sub.Task}}</a></td>
+                            <td><div class="date-sub"><small><time class="pubdate" datetime="{{sub.Date}}" pubdate></time></small></div></td>
                         </tr>
                         {% endif %}
                         {% endfor %}

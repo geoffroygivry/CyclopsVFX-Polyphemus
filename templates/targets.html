@@ -29,30 +29,26 @@
                                     <thead>
                                         <tr>
                                             <th></th>
-                                            <th>Shot</th>
-                                            <th>Submitted By</th>
-                                            <th>Task</th>
-                                            <th>Date</th>
+                                            <th>Shot</rth>
+                                            <th>Frame Range</th>
+                                            <th>Status</th>
+                                            <th>Target Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for sub in subs %}
                                         {% for shot in shots %}
-                                        {% if shot.name == sub.Shot %}
                                         {% for task in shot.tasks %}
                                         {% for x in task %}
                                         {% if user_session.name in task[x] %}
                                         <tr>
-                                            <td><a href="rvlink:// {{sub.Path}}"><img src={{sub.thumbnail_s3}} class="thumb-sub" alt=""></a></td>
-                                            <td><strong><a href="">{{sub.Shot}}</a></strong></td>
-                                            <td>{{sub.Username}} </td>
-                                            <td><a href="javascript:;" id="add-sticky" class="btn btn-sm btn-primary">{{sub.Task}}</a></td>
-                                            <td><div class="date-sub"><small>{{sub.Date}}</small></div></td>
+                                            <td><a href="#"><img src={{shot.thumbnail}} class="thumb-sub" alt=""></a></td>
+                                            <td><strong><a href="">{{shot.name}}</a></strong></td>
+                                            <td>{{shot.frame_in}}-{{shot.frame_out}} </td>
+                                            <td><a href="javascript:;" id="add-sticky" class="label label-warning">{{shot.status}}</a></td>
+                                            <td><div class="date-sub"><small><time class="pubdate" datetime="{{shot.target_date}}" pubdate></time></small></div></td>
                                         </tr>
                                         {% endif %}
                                         {% endfor %}
-                                        {% endfor %}
-                                        {% endif %}
                                         {% endfor %}
                                         {% endfor %}
                                     </tbody>

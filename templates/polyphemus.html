@@ -4,8 +4,8 @@
 
 {% block content %}
 
-<h1 class="page-header"><small>Dashboard</small></h1> <!-- begin page-header -->
-<!-- end page-header -->
+<h1 class="page-header">Dashboard<small> {{pretty_date}}</small></h1> <!-- begin page-header -->
+
 
 {% for info_active in show_infos %} <!-- beginning of info conditional panel  -->
 {% if info_active.active %}
