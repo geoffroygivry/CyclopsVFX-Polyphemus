@@ -69,6 +69,8 @@ def polyphemus():
         for n in todo_coll:
             if n['name'] == session['username']:
                 todolist = n['todo']
+            else:
+                todolist = []
         if user_session['role'] == 'admin':
             shows = [x for x in mongo.db.shows.find()]
         else:
