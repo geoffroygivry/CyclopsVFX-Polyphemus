@@ -8,7 +8,4 @@ $('time').each(function(i, e) {
     console.log("now.diff: ");
     console.log(now.diff(time, 'days'));
     $(e).html('<span>' + time.from(now) + '</span>');
-    // if(now.diff(time, 'days') <= 1) {
-    //     $(e).html('<span>' + time.from(now) + '</span>');
-    // }
 });

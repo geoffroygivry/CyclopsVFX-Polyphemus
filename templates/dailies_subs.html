@@ -1,5 +1,5 @@
-    <div class="col-md-8 ui-sortable"> <!-- begin panel -->
-        <div class="panel panel-inverse" data-sortable-id="table-basic-4">
+    <div class="col-md-6 ui-sortable"> <!-- begin panel -->
+        <div class="panel panel-inverse" data-sortable-id="index-4">
             <div class="panel-heading">
                 <div class="panel-heading-btn">
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
@@ -27,12 +27,14 @@
                         {% for task in shot.tasks %}
                         {% for x in task %}
                         {% if user_session.name in task[x] %}
+                        {% set datetime_sub_date = utils.convert_isotime_to_datetime(sub.Date) %}
+                        {% set pretty_sub_date = datetime_sub_date.strftime(format) %}
                         <tr>
                             <td><a href="rvlink:// {{sub.Path}}"><img src={{sub.thumbnail_s3}} class="thumb-sub" alt=""></a></td>
                             <td><strong><a href="">{{sub.Shot}}</a></strong></td>
                             <td>{{sub.Username}} </td>
                             <td><a href="javascript:;" id="add-sticky" class="label label-primary">{{sub.Task}}</a></td>
-                            <td><div class="date-sub"><small><time class="pubdate" datetime="{{sub.Date}}" pubdate></time></small></div></td>
+                            <td><div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{sub.Date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_sub_date}}"></time></small></a></div></td>
                         </tr>
                         {% endif %}
                         {% endfor %}

@@ -58,12 +58,18 @@ def register():
 
 @app.route('/polyphemus')
 def polyphemus():
-    todolist = None
     if 'username' in session:
         subs = [x for x in mongo.db.dailies_submissions.find()]
         user_session = mongo.db.users.find_one({"name": session['username']})
         show_infos = [x for x in mongo.db.show_infos.find()]
         shots = [x for x in mongo.db.shots.find()]
+        username_shotList = []
+        for n in shots:
+            for task in n['tasks']:
+                for assignee in task:
+                    if session['username'] in task[assignee]:
+                        username_shotList.append(n)
+        target_shots = utils.sort_by_date(username_shotList)
         todo_coll = [x for x in mongo.db.todolist.find()]
         iso_time = datetime.utcnow()
         for n in todo_coll:
@@ -80,7 +86,7 @@ def polyphemus():
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
 
-        return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, shots=shots, todolist=todolist, iso_time=iso_time)
+        return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, shots=username_shotList, target_shots=target_shots, todolist=todolist, iso_time=iso_time)
     else:
         return render_template("login.html")
 
