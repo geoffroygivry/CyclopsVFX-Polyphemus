@@ -34,28 +34,29 @@ def sort_by_date(shots):
     nextWeekList = []
     laterList = []
     for shot in shots:
-        datetime_target_date = convert_isotime_to_datetime(shot.get("target_date"))
-        now = datetime.datetime.utcnow()
-        now_week = now.date().isocalendar()[1]
-        datetime_target_date_week = datetime_target_date.date().isocalendar()[1]
+        if shot.get("target_date") is not None:
+            datetime_target_date = convert_isotime_to_datetime(shot.get("target_date"))
+            now = datetime.datetime.utcnow()
+            now_week = now.date().isocalendar()[1]
+            datetime_target_date_week = datetime_target_date.date().isocalendar()[1]
 
-        time_diff = datetime_target_date - now
-        time_diff_days = time_diff.days
-        if time_diff_days < 0:
-            overdueList.append(shot)
-        elif time_diff_days == 0:
-            todayList.append(shot)
-        elif time_diff_days == 1:
-            tomorrowList.append(shot)
-        elif 2 <= time_diff_days <= 6:
-            if now_week == datetime_target_date_week:
-                thisWeekList.append(shot)
-            else:
-                nextWeekList.append(shot)
-        elif 7 <= time_diff_days:
-            if now_week + 1 == datetime_target_date_week:
-                nextWeekList.append(shot)
-            if now_week + 2 <= datetime_target_date_week:
-                laterList.append(shot)
+            time_diff = datetime_target_date - now
+            time_diff_days = time_diff.days
+            if time_diff_days < 0:
+                overdueList.append(shot)
+            elif time_diff_days == 0:
+                todayList.append(shot)
+            elif time_diff_days == 1:
+                tomorrowList.append(shot)
+            elif 2 <= time_diff_days <= 6:
+                if now_week == datetime_target_date_week:
+                    thisWeekList.append(shot)
+                else:
+                    nextWeekList.append(shot)
+            elif 7 <= time_diff_days:
+                if now_week + 1 == datetime_target_date_week:
+                    nextWeekList.append(shot)
+                if now_week + 2 <= datetime_target_date_week:
+                    laterList.append(shot)
 
     return {"today": todayList, "tomorrow": tomorrowList, "thisWeek": thisWeekList, "nextWeek": nextWeekList, "later": laterList, "overdue": overdueList}

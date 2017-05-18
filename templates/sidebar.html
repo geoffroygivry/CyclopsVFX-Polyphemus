@@ -5,7 +5,7 @@
                 <ul class="nav">
                     <li class="nav-profile">
                         <div class="image">
-                            <a href="javascript:;"><img src="static/polyphemus/assets/img/user-13.jpg" alt="" /></a>
+                            <a href="javascript:;"><img src="{{ user_session.email | gravatar }}" alt="" /></a>
                         </div>
                         <div class="info">
                             {{user_session.name}}

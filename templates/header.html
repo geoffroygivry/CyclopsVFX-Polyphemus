@@ -89,11 +89,15 @@
             {% if user_session %}
             <li class="dropdown navbar-user">
                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-                    <img src="static/polyphemus/assets/img/user-13.jpg" alt="" />
+                    <img src="{{ user_session.email | gravatar }}" alt="" />
                     <span class="hidden-xs">{{user_session.name}}</span> <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu animated fadeInLeft">
                     <li class="arrow"></li>
+                    {% if user_session.role == "admin" %}
+                    <li><a href="#">Admin Dashboard</a></li>
+                    <li class="divider"></li>
+                    {% endif %}
                     <li><a href="#">Edit Profile</a></li>
                     <li><a href="#"><span class="badge badge-danger pull-right">2</span> Inbox</a></li>
                     <li class="divider"></li>

@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, request, session, redirect
 from flask_pymongo import PyMongo
+from flask_gravatar import Gravatar
 from datetime import datetime
 from scripts import utils
 import bcrypt
@@ -13,6 +14,14 @@ app.jinja_env.globals['datetime'] = datetime
 app.jinja_env.globals['utils'] = utils
 
 mongo = PyMongo(app)
+gravatar = Gravatar(app,
+                    size=100,
+                    rating='g',
+                    default='retro',
+                    force_default=False,
+                    force_lower=False,
+                    use_ssl=False,
+                    base_url=None)
 
 
 @app.route('/')

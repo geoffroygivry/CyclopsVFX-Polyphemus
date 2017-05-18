@@ -14,10 +14,64 @@
 
             <div class="panel-body">
                 <div class="panel-group" id="accordion">
+                    
+                    {% if target_shots.overdue != [] %}
+                    <div class="panel panel-inverse overflow-hidden">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseZero">
+                                    <i class="fa fa-plus-circle pull-right"></i>
+                                    Overdue
+                                    {% if target_shots.overdue | length > 0 %}
+                                    <span class="badge badge-danger">{{target_shots.overdue | length}}</span>
+                                    {% endif %}
+                                </a>
+                            </h3>
+                        </div>
+                        <div id="collapseZero" class="panel-collapse collapse in">
+                            <div class="panel-body">
+
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Shot</rth>
+                                            <th>Frame Range</th>
+                                            <th>Status</th>
+                                            <th>Target Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for shot in target_shots.overdue %}
+                                        {% set datetime_target_date = utils.convert_isotime_to_datetime(shot.target_date) %}
+                                        {% set pretty_target_date = datetime_target_date.strftime(format) %}
+                                        <tr>
+                                            {% if shot.thumbnail %}
+                                            <td><a href="#"><img src="{{shot.thumbnail}}" class="thumb-sub" alt=""></a></td>
+                                            {% else %}
+                                            <td><a href="#"><img src="static/polyphemus/assets/img/cyc_placeholder.png" class="thumb-sub" alt=""></a></td>
+                                            {% endif %}
+                                            <td><strong><a href="">{{shot.name}}</a></strong></td>
+                                            <td>{{shot.frame_in}}-{{shot.frame_out}} </td>
+                                            <td><a href="javascript:;" id="add-sticky" class="label label-warning">{{shot.status}}</a></td>
+                                            <td><div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{shot.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
                     <div class="panel panel-danger overflow-hidden">
                         <div class="panel-heading">
                             <h3 class="panel-title">
+                                {% if target_shots.overdue != [] %}
+                                <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                {% else %}
                                 <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                {% endif %}
                                     <i class="fa fa-plus-circle pull-right"></i>
                                     Today
                                     {% if target_shots.today | length > 0 %}
@@ -26,7 +80,7 @@
                                 </a>
                             </h3>
                         </div>
-                        <div id="collapseOne" class="panel-collapse collapse in">
+                        <div id="collapseOne" class="panel-collapse collapse">
                             <div class="panel-body">
                             {% if target_shots.today != [] %}
                                 <table class="table table-striped">
@@ -44,7 +98,11 @@
                                         {% set datetime_target_date = utils.convert_isotime_to_datetime(shot.target_date) %}
                                         {% set pretty_target_date = datetime_target_date.strftime(format) %}
                                         <tr>
-                                            <td><a href="#"><img src={{shot.thumbnail}} class="thumb-sub" alt=""></a></td>
+                                            {% if shot.thumbnail %}
+                                            <td><a href="#"><img src="{{shot.thumbnail}}" class="thumb-sub" alt=""></a></td>
+                                            {% else %}
+                                            <td><a href="#"><img src="static/polyphemus/assets/img/cyc_placeholder.png" class="thumb-sub" alt=""></a></td>
+                                            {% endif %}
                                             <td><strong><a href="">{{shot.name}}</a></strong></td>
                                             <td>{{shot.frame_in}}-{{shot.frame_out}} </td>
                                             <td><a href="javascript:;" id="add-sticky" class="label label-warning">{{shot.status}}</a></td>
@@ -89,7 +147,11 @@
                                         {% set datetime_target_date = utils.convert_isotime_to_datetime(shot.target_date) %}
                                         {% set pretty_target_date = datetime_target_date.strftime(format) %}
                                         <tr>
-                                            <td><a href="#"><img src={{shot.thumbnail}} class="thumb-sub" alt=""></a></td>
+                                            {% if shot.thumbnail %}
+                                            <td><a href="#"><img src="{{shot.thumbnail}}" class="thumb-sub" alt=""></a></td>
+                                            {% else %}
+                                            <td><a href="#"><img src="static/polyphemus/assets/img/cyc_placeholder.png" class="thumb-sub" alt=""></a></td>
+                                            {% endif %}
                                             <td><strong><a href="">{{shot.name}}</a></strong></td>
                                             <td>{{shot.frame_in}}-{{shot.frame_out}} </td>
                                             <td><a href="javascript:;" id="add-sticky" class="label label-warning">{{shot.status}}</a></td>
@@ -134,7 +196,11 @@
                                         {% set datetime_target_date = utils.convert_isotime_to_datetime(shot.target_date) %}
                                         {% set pretty_target_date = datetime_target_date.strftime(format) %}
                                         <tr>
-                                            <td><a href="#"><img src={{shot.thumbnail}} class="thumb-sub" alt=""></a></td>
+                                            {% if shot.thumbnail %}
+                                            <td><a href="#"><img src="{{shot.thumbnail}}" class="thumb-sub" alt=""></a></td>
+                                            {% else %}
+                                            <td><a href="#"><img src="static/polyphemus/assets/img/cyc_placeholder.png" class="thumb-sub" alt=""></a></td>
+                                            {% endif %}
                                             <td><strong><a href="">{{shot.name}}</a></strong></td>
                                             <td>{{shot.frame_in}}-{{shot.frame_out}} </td>
                                             <td><a href="javascript:;" id="add-sticky" class="label label-warning">{{shot.status}}</a></td>
@@ -179,7 +245,11 @@
                                         {% set datetime_target_date = utils.convert_isotime_to_datetime(shot.target_date) %}
                                         {% set pretty_target_date = datetime_target_date.strftime(format) %}
                                         <tr>
-                                            <td><a href="#"><img src={{shot.thumbnail}} class="thumb-sub" alt=""></a></td>
+                                            {% if shot.thumbnail %}
+                                            <td><a href="#"><img src="{{shot.thumbnail}}" class="thumb-sub" alt=""></a></td>
+                                            {% else %}
+                                            <td><a href="#"><img src="static/polyphemus/assets/img/cyc_placeholder.png" class="thumb-sub" alt=""></a></td>
+                                            {% endif %}
                                             <td><strong><a href="">{{shot.name}}</a></strong></td>
                                             <td>{{shot.frame_in}}-{{shot.frame_out}} </td>
                                             <td><a href="javascript:;" id="add-sticky" class="label label-warning">{{shot.status}}</a></td>
@@ -224,7 +294,11 @@
                                         {% set datetime_target_date = utils.convert_isotime_to_datetime(shot.target_date) %}
                                         {% set pretty_target_date = datetime_target_date.strftime(format) %}
                                         <tr>
-                                            <td><a href="#"><img src={{shot.thumbnail}} class="thumb-sub" alt=""></a></td>
+                                            {% if shot.thumbnail %}
+                                            <td><a href="#"><img src="{{shot.thumbnail}}" class="thumb-sub" alt=""></a></td>
+                                            {% else %}
+                                            <td><a href="#"><img src="static/polyphemus/assets/img/cyc_placeholder.png" class="thumb-sub" alt=""></a></td>
+                                            {% endif %}
                                             <td><strong><a href="">{{shot.name}}</a></strong></td>
                                             <td>{{shot.frame_in}}-{{shot.frame_out}} </td>
                                             <td><a href="javascript:;" id="add-sticky" class="label label-warning">{{shot.status}}</a></td>
