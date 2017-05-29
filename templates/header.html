@@ -28,23 +28,36 @@
                 </form>
             </li>
             <li class="dropdown">
-                <a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle f-s-14">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle f-s-14">
                     <i class="fa fa-bell-o"></i>
-                    <span class="label">{{user_session.notifications}}</span>
+                    {% if user_session.notifications > 0 %}
+                    {% set str_notifications = user_session.notifications|int %}
+                    <span class="label remove">{{str_notifications}}</span>
+                    {% endif %}
                 </a>
                 <ul class="dropdown-menu media-list pull-right animated fadeInDown">
-                    <li class="dropdown-header">Notifications ({{user_session.notifications}})</li>
+                    <li class="dropdown-header">Notifications ({{str_notifications}})</li>
                     {% for notification in user_session.notifications_msg %}
+                    {% for noti in notifications %}
+                    {% if noti._id == notification %}
                     <li class="media">
                         <a href="javascript:;">
-                            <div class="media-left"><img src="static/polyphemus/assets/img/user-1.jpg" class="media-object" alt="" /></div>
+                            <div class="media-left"><img src="{{ noti.publisher[1] | gravatar }}" class="media-object" alt="" /></div>
                             <div class="media-body">
-                                <h6 class="media-heading">John Smith</h6>
-                                <p>{{notification}}</p>
-                                <div class="text-muted f-s-11">25 minutes ago</div>
+                                <h6 class="media-heading">{{noti.publisher[0]}}</h6>
+                                {% if noti.type == "dailies" %}
+                                <p>New Dailies Submission<br><strong>{{noti.shot}}</strong></p>
+                                {% elif noti.type == "publish" %}
+                                <p>New item Published<br><strong>{{noti.shot}}</strong></p>
+                                {% else %}
+                                <p>You've got a new message!</p>
+                                {% endif %}
+                                <div class="text-muted f-s-11"><time class="pubdate" datetime="{{noti.date}}"></time></div>
                             </div>
                         </a>
                     </li>
+                    {% endif %}
+                    {% endfor %}
                     {% endfor %}
                     <li class="dropdown-footer text-center">
                         <a href="javascript:;">View more</a>

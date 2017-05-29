@@ -73,6 +73,7 @@ def polyphemus():
         show_infos = [x for x in mongo.db.show_infos.find()]
         shots = [x for x in mongo.db.shots.find()]
         username_shotList = []
+        notifications = [x for x in mongo.db.notifications.find()]
         for n in shots:
             for task in n['tasks']:
                 for assignee in task:
@@ -95,9 +96,16 @@ def polyphemus():
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
 
-        return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, shots=username_shotList, target_shots=target_shots, todolist=todolist, iso_time=iso_time)
+        return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, shots=username_shotList, target_shots=target_shots, todolist=todolist, iso_time=iso_time, notifications=notifications)
     else:
         return render_template("login.html")
+
+
+@app.route('/dev')
+def dev():
+    users = [x for x in mongo.db.users.find()]
+    notifications = [x for x in mongo.db.notifications.find()]
+    return render_template("dev.html", users=users, notifications=notifications)
 
 
 if __name__ == "__main__":

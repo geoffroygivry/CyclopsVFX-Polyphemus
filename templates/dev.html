@@ -1,0 +1,14 @@
+{% for notification in notifications %}
+{% for user in users %}
+{% if notification.publisher == user.name %}
+{{user.email}}
+{% endif %}
+{% endfor %}
+{% endfor %}
+
+<br>
+
+{% for user in users %}
+{{user.shows[0]}}
+<br>
+{% endfor %}
