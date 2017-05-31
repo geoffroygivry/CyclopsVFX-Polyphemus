@@ -1,14 +1,38 @@
-{% for notification in notifications %}
-{% for user in users %}
-{% if notification.publisher == user.name %}
-{{user.email}}
-{% endif %}
-{% endfor %}
-{% endfor %}
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
 
-<br>
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <link href="static/polyphemus/assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="static/polyphemus/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="static/polyphemus/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="static/polyphemus/assets/css/animate.min.css" rel="stylesheet" />
+    <link href="static/polyphemus/assets/css/style.min.css" rel="stylesheet" />
+    <link href="static/polyphemus/assets/css/custom.css" rel="stylesheet" />
+    <link href="static/polyphemus/assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="static/polyphemus/assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <link href="static/polyphemus/assets/css/theme/black.css" rel="stylesheet" id="theme" />
+    <link href="static/polyphemus/assets/plugins/bootstrap-calendar/css/bootstrap_calendar.css" rel="stylesheet" />
 
-{% for user in users %}
-{{user.shows[0]}}
-<br>
-{% endfor %}
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="static/polyphemus/assets/plugins/pace/pace.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+</head>
+
+<a href="{{url_for('process', current_route=current_route, username=user_session)}}">GO!</a>
+    
+    
+    
+    

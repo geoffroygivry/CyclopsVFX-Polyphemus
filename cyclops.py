@@ -3,6 +3,7 @@ from flask_pymongo import PyMongo
 from flask_gravatar import Gravatar
 from datetime import datetime
 from scripts import utils
+from scripts.flask_celery import make_celery
 import bcrypt
 
 from cyc_config import cyc_config as cfg
@@ -14,6 +15,7 @@ app.jinja_env.globals['datetime'] = datetime
 app.jinja_env.globals['utils'] = utils
 
 mongo = PyMongo(app)
+celery = make_celery(app)
 gravatar = Gravatar(app,
                     size=100,
                     rating='g',
@@ -23,6 +25,24 @@ gravatar = Gravatar(app,
                     use_ssl=False,
                     base_url=None)
 
+
+@celery.task(name="cyclops.reset_notification")
+def reset_notification(name):
+    notification = None
+    user_list = [x for x in mongo.db.users.find()]
+    for user in user_list:
+        if user['name'] == name:
+            mongo.db.users.update({"name": name},
+                {"$set": {"notifications": 0}}
+            )
+
+    return "Notification reset to 0 for {}!".format(name)
+
+
+def get_current_route():
+    rule = request.url_rule
+    current_route = rule.rule.split('/')[-1]
+    return current_route
 
 @app.route('/')
 def index():
@@ -82,6 +102,7 @@ def polyphemus():
         target_shots = utils.sort_by_date(username_shotList)
         todo_coll = [x for x in mongo.db.todolist.find()]
         iso_time = datetime.utcnow()
+        current_route = get_current_route()
         for n in todo_coll:
             if n['name'] == session['username']:
                 todolist = n['todo']
@@ -96,16 +117,28 @@ def polyphemus():
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
 
-        return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, shots=username_shotList, target_shots=target_shots, todolist=todolist, iso_time=iso_time, notifications=notifications)
+        return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, shots=username_shotList, target_shots=target_shots, todolist=todolist, iso_time=iso_time, notifications=notifications, current_route=current_route)
     else:
         return render_template("login.html")
 
 
+def has_no_empty_params(rule):
+    defaults = rule.defaults if rule.defaults is not None else ()
+    arguments = rule.arguments if rule.arguments is not None else ()
+    return len(defaults) >= len(arguments)
+    
 @app.route('/dev')
 def dev():
-    users = [x for x in mongo.db.users.find()]
-    notifications = [x for x in mongo.db.notifications.find()]
-    return render_template("dev.html", users=users, notifications=notifications)
+    current_route = get_current_route()
+    user_session = session['username']
+    return render_template("dev.html", current_route=current_route, user_session=user_session)
+
+        
+@app.route("/process/<current_route>/<username>")
+def process(current_route, username):
+    reset_notification.delay(username)
+    return redirect(url_for(current_route))
+
 
 
 if __name__ == "__main__":
