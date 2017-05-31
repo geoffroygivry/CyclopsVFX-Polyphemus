@@ -28,13 +28,12 @@ gravatar = Gravatar(app,
 
 @celery.task(name="cyclops.reset_notification")
 def reset_notification(name):
-    notification = None
     user_list = [x for x in mongo.db.users.find()]
     for user in user_list:
         if user['name'] == name:
             mongo.db.users.update({"name": name},
-                {"$set": {"notifications": 0}}
-            )
+                                  {"$set": {"notifications": 0}}
+                                  )
 
     return "Notification reset to 0 for {}!".format(name)
 
@@ -43,6 +42,7 @@ def get_current_route():
     rule = request.url_rule
     current_route = rule.rule.split('/')[-1]
     return current_route
+
 
 @app.route('/')
 def index():
@@ -126,19 +126,18 @@ def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()
     arguments = rule.arguments if rule.arguments is not None else ()
     return len(defaults) >= len(arguments)
-    
+
+
 @app.route('/dev')
 def dev():
-    current_route = get_current_route()
-    user_session = session['username']
-    return render_template("dev.html", current_route=current_route, user_session=user_session)
+    publisher = {"publisher": {"name": "Geoffroy", "email": "geoff.givry@gmail.com"}}
+    return render_template("dev.html", publisher=publisher)
 
-        
+
 @app.route("/process/<current_route>/<username>")
 def process(current_route, username):
     reset_notification.delay(username)
     return redirect(url_for(current_route))
-
 
 
 if __name__ == "__main__":
