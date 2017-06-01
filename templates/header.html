@@ -31,12 +31,12 @@
                 
                 {% if user_session.notifications > 0 %}
                 <a href="#"  data-toggle="dropdown" class="dropdown-toggle f-s-14">
-                    <i class="fa fa-bell-o"></i>
+                    <i class="fa fa-bell-o notifications" id="mark_read"></i>
                     {% set str_notifications = user_session.notifications|int %}
                     <span class="label remove">{{str_notifications}}</span>
                 </a>
                 <ul class="dropdown-menu media-list pull-right animated fadeInDown">
-                    <li class="dropdown-header">Notifications ({{str_notifications}})</li>
+                    <li class="dropdown-header notification-string">Notifications ({{str_notifications}})</li>
                 {% else %}
 
                 <a href="#"  data-toggle="dropdown" class="dropdown-toggle f-s-14">
@@ -52,9 +52,9 @@
                     {% if noti._id == notification %}
                     <li class="media">
                         <a href="javascript:;">
-                            <div class="media-left"><img src="{{ noti.publisher[1] | gravatar }}" class="media-object" alt="" /></div>
+                            <div class="media-left"><img src="{{ noti.publisher.email | gravatar }}" class="media-object" alt="" /></div>
                             <div class="media-body">
-                                <h6 class="media-heading">{{noti.publisher[0]}}</h6>
+                                <h6 class="media-heading">{{noti.publisher.name}}</h6>
                                 {% if noti.type == "dailies" %}
                                 <p>New Dailies Submission<br><strong>{{noti.shot}}</strong></p>
                                 {% elif noti.type == "publish" %}
@@ -70,7 +70,7 @@
                     {% endfor %}
                     {% endfor %}
                     <li class="dropdown-footer text-center">
-                        <a href="{{url_for('process', current_route=current_route, username=user_session.name)}}"><small>Mark all as Read</small></a>
+                        <a href="#"><small>View more</small></a>
                     </li>
                 </ul>
             </li>
