@@ -122,6 +122,32 @@ def polyphemus():
         return render_template("login.html")
 
 
+@app.route('/polyphemus/<show>/<seq>/<shot>')
+def shot(show, seq, shot):
+    if 'username' in session:
+        shot = mongo.db.shots.find_one({"name": shot})
+        users = [x for x in mongo.db.users.find()]
+        subs = [x for x in mongo.db.dailies_submissions.find()]
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        show_infos = [x for x in mongo.db.show_infos.find()]
+        notifications = [x for x in mongo.db.notifications.find()]
+        iso_time = datetime.utcnow()
+        collaborators = [x for x in shot.get('tasks')]
+        current_route = get_current_route()
+        if user_session['role'] == 'admin':
+            shows = [x for x in mongo.db.shows.find()]
+        else:
+            shows = []
+            shows_user_artist = user_session.get("shows")
+            for n in shows_user_artist:
+                new_show = mongo.db.shows.find_one(n)
+                shows.append(new_show)
+
+        return render_template("shot.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, iso_time=iso_time, notifications=notifications, current_route=current_route, shot=shot, collaborators=collaborators, users=users)
+    else:
+        return render_template("login.html")
+
+
 def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()
     arguments = rule.arguments if rule.arguments is not None else ()

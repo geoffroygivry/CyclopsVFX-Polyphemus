@@ -8,3 +8,83 @@
 .overdue-title {
 	color: #670060;
 }
+
+.label-task-status{
+    padding: 0.2em 0.6em 0.2em;
+    border: 1px solid #999999;
+    border-radius: 3px;
+    color: #999999;
+    background-color: #FFFFFF;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+.label-task-status-primary{
+    border-color: #3472F7;
+    color: #3472F7;
+}
+.label-task-status-info{
+    border-color: #2CA8FF;
+    color: #2CA8FF;
+}
+.label-task-status-success{
+    border-color: #05AE0E;
+    color: #05AE0E;
+}
+.label-task-status-warning{
+    border-color: #FF9500;
+    color: #FF9500;
+}
+.label-task-status-danger{
+    border-color: #FF3B30;
+    color: #FF3B30;
+}
+.label.label-fill{
+    color: #FFFFFF;
+}
+.label-primary.label-fill, .progress-bar, .progress-bar-primary{
+   background-color: #3472F7;
+}
+.label-info.label-fill, .progress-bar-info{
+    background-color: #2CA8FF;
+}
+.label-success.label-fill, .progress-bar-success{
+   background-color: #05AE0E;
+}
+.label-warning.label-fill, .progress-bar-warning{
+   background-color: #FF9500;
+}
+.label-danger.label-fill, .progress-bar-danger{
+   background-color: #FF3B30;
+}
+.label-default.label-fill{
+   background-color: #999999;
+}
+
+.progress {
+    background-color: #E5E5E5;
+    border-radius: 3px;
+    box-shadow: none;
+    height: 4px;
+}
+.progress-thin{
+    height: 2px;
+}
+.not-started {
+    color: red;
+
+}
+
+.in-progress {
+    color: orange;
+
+}
+
+.completed {
+    color: green;
+}
+
+.collaborator {
+    width: 20px;
+    height: auto;
+}

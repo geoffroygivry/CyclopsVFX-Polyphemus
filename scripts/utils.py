@@ -60,3 +60,10 @@ def sort_by_date(shots):
                     laterList.append(shot)
 
     return {"today": todayList, "tomorrow": tomorrowList, "thisWeek": thisWeekList, "nextWeek": nextWeekList, "later": laterList, "overdue": overdueList}
+
+
+def get_users_from_shot(db, shot_name):
+    shot = db.shots.find_one({"name": shot_name})
+    tasks = shot.get('tasks')
+    users = [x['assignee'] for x in tasks]
+    return users

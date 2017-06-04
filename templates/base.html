@@ -13,21 +13,22 @@
 
     <!-- ================== BEGIN BASE CSS STYLE ================== -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
-    <link href="static/polyphemus/assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
-    <link href="static/polyphemus/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="static/polyphemus/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="static/polyphemus/assets/css/animate.min.css" rel="stylesheet" />
-    <link href="static/polyphemus/assets/css/style.min.css" rel="stylesheet" />
-    <link href="static/polyphemus/assets/css/custom.css" rel="stylesheet" />
-    <link href="static/polyphemus/assets/css/style-responsive.min.css" rel="stylesheet" />
-    <link href="static/polyphemus/assets/css/theme/default.css" rel="stylesheet" id="theme" />
-    <link href="static/polyphemus/assets/css/theme/black.css" rel="stylesheet" id="theme" />
-    <link href="static/polyphemus/assets/plugins/bootstrap-calendar/css/bootstrap_calendar.css" rel="stylesheet" />
+    <link href="{{url_for('static', filename='polyphemus/assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static', filename='polyphemus/assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static', filename='polyphemus/assets/plugins/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static', filename='polyphemus/assets/css/animate.min.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static', filename='polyphemus/assets/css/style.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static', filename='polyphemus/assets/css/timeline.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static', filename='polyphemus/assets/css/custom.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static', filename='polyphemus/assets/css/style-responsive.min.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static', filename='polyphemus/assets/css/theme/default.css')}}" rel="stylesheet" id="theme" />
+    <link href="{{url_for('static', filename='polyphemus/assets/css/theme/black.css')}}" rel="stylesheet" id="theme" />
+    <link href="{{url_for('static', filename='polyphemus/assets/plugins/bootstrap-calendar/css/bootstrap_calendar.css')}}" rel="stylesheet" />
 
     <!-- ================== END BASE CSS STYLE ================== -->
 
     <!-- ================== BEGIN BASE JS ================== -->
-    <script src="static/polyphemus/assets/plugins/pace/pace.min.js"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/plugins/pace/pace.min.js')}}"></script>
     <!-- ================== END BASE JS ================== -->
 </head>
 
@@ -87,27 +88,27 @@
 
 
     <!-- ================== BEGIN BASE JS ================== -->
-    <script src="static/polyphemus/assets/plugins/jquery/jquery-1.9.1.min.js"></script>
-    <script src="static/polyphemus/assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
-    <script src="static/polyphemus/assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-    <script src="static/polyphemus/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="static/polyphemus/assets/plugins/bootstrap-calendar/js/bootstrap_calendar.min.js"></script>
-    <script src="static/polyphemus/assets/plugins/sparkline/jquery.sparkline.js"></script>
-    <script src="static/polyphemus/assets/js/moment.js"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/plugins/jquery/jquery-1.9.1.min.js')}}"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/plugins/jquery/jquery-migrate-1.1.0.min.js')}}"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js')}}"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/plugins/bootstrap-calendar/js/bootstrap_calendar.min.js')}}"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/plugins/sparkline/jquery.sparkline.js')}}"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/js/moment.js')}}"></script>
 
     <!--[if lt IE 9]>
         <script src="static/polyphemus/assets/crossbrowserjs/html5shiv.js"></script>
         <script src="static/polyphemus/assets/crossbrowserjs/respond.min.js"></script>
         <script src="static/polyphemus/assets/crossbrowserjs/excanvas.min.js"></script>
     <![endif]-->
-    <script src="static/polyphemus/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="static/polyphemus/assets/plugins/jquery-cookie/jquery.cookie.js"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/plugins/jquery-cookie/jquery.cookie.js')}}"></script>
     <!-- ================== END BASE JS ================== -->
 
     <!-- ================== BEGIN PAGE LEVEL JS ================== -->
-    <script src="static/polyphemus/assets/js/apps.js"></script>
-    <script src="static/polyphemus/assets/js/dashboard.min.js"></script>
-    <script src="static/polyphemus/assets/js/polyphemus.js"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/js/apps.js')}}"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/js/dashboard.min.js')}}"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/js/polyphemus.js')}}"></script>
     <!-- ================== END PAGE LEVEL JS ================== -->
 
     <script>
