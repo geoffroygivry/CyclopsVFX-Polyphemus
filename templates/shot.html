@@ -61,7 +61,23 @@
                         {% endfor %}
                         </ul>
                     </li>
-                    <!-- <li><a href="#"></i>Collaborators</a></li> -->
+
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">
+                        <i class="fa fa-user"></i> Assets <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                        {% for asset in assets %}
+                        <li class="media">
+                            <a href="javascript:;">
+                                <div class="media-body">
+                                    <h6 class="media-heading">{{asset.name}}</h6>
+                                </div>
+                            </a>
+                        </li>
+                        {% endfor %}
+                        </ul>
+                    </li>
+
                   </ul>
                 </div>
               </div>
@@ -90,7 +106,6 @@
 
               <div class="well">
                  <form class="form-horizontal" role="form">
-                  <h4>Have something to say?</h4>
                    <div class="form-group" style="padding:14px;">
                     <textarea class="form-control" placeholder="Put your comment here..."></textarea>
                   </div>
@@ -100,26 +115,41 @@
             </div>
 
             <div class="col-md-12"> <!-- post -->
-
-              <div class="panel panel-white post panel-shadow" id="dailies">
+              {% for sub in subs %}
+              {% for user in users %}
+              {% if user.name == sub.Username %}
+              {% if sub.Shot == shot.name %}
+              <div class="panel panel-white post panel-shadow" id="{{sub.type}}">
                   <div class="post-heading">
                       <div class="pull-left image">
-                          <img src="img/Profile/profile.jpg" class="img-rounded avatar" alt="user profile image">
+                          <img src="{{user.email | gravatar}}" class="img-rounded avatar" alt="user profile image">
                       </div>
                       <div class="pull-left meta">
+                          {% if sub.type == "dailies" %}
                           <div class="title h5" >
-                              <a href="#" class="post-user-name">Geoffroy</a>
-                              Submitted <strong><a href="#">CMP-098567</a></strong> for dailies. <a href="#"><span class="task-status label-task-status label-task-status-warning ">Work In Progress</span></a>
+                              <a href="#" class="post-user-name">{{user.name}}</a>
+                              Submitted <strong><a href="#">CMP-098567</a></strong> for dailies. <a href="#"><span class="task-status label-task-status label-task-status-warning ">{{sub.status}}</span></a>
                           </div>
-                          <h6 class="text-muted time">5 seconds ago</h6>
+                          {% elif sub.type == "publish" %}
+                          <div class="title h5" >
+                              <a href="#" class="post-user-name">{{user.name}}</a>
+                              New item published for <strong><a href="#">{{sub.AssetName}}</a></strong> <a href="#"><span class="task-status label-task-status label-task-status-warning ">{{sub.status}}</span></a>
+                          </div>
+                          {% else %}
+                          <div class="title h5" >
+                              <a href="#" class="post-user-name">{{user.name}}</a>
+                              Posted a new note.
+                          </div>
+                          {% endif %}
+                          <h6 class="text-muted time"><div class="date-sub"><a href=""><time class="pubdate" datetime="{{sub.Date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_sub_date}}"></time></a></div></h6>
                       </div>
                   </div>
 
                   <div class="post-image">
-                      <img src="img/Post/place1-full.jpg" class="image show-in-modal" alt="image post">
+                      <img src="{{sub.thumbnail_s3}}" class="image show-in-modal" alt="image post">
                   </div>
                   <div class="post-description">
-                      <p>Latest anim version</p>
+                      <p>{{sub.comment}}</p>
                   </div>
                   <div class="post-footer">
                       <div class="input-group">
@@ -144,6 +174,10 @@
                       </ul>
                   </div>
               </div>
+              {% endif %}
+              {% endif %}
+              {% endfor %}
+              {% endfor %}
             </div><!-- end post -->
 
           </div>

@@ -88,7 +88,7 @@ def register():
 @app.route('/polyphemus')
 def polyphemus():
     if 'username' in session:
-        subs = [x for x in mongo.db.dailies_submissions.find()]
+        subs = [x for x in mongo.db.submissions.find()]
         user_session = mongo.db.users.find_one({"name": session['username']})
         show_infos = [x for x in mongo.db.show_infos.find()]
         shots = [x for x in mongo.db.shots.find()]
@@ -127,13 +127,14 @@ def shot(show, seq, shot):
     if 'username' in session:
         shot = mongo.db.shots.find_one({"name": shot})
         users = [x for x in mongo.db.users.find()]
-        subs = [x for x in mongo.db.dailies_submissions.find()]
+        subs = [x for x in mongo.db.submissions.find()]
         user_session = mongo.db.users.find_one({"name": session['username']})
         show_infos = [x for x in mongo.db.show_infos.find()]
         notifications = [x for x in mongo.db.notifications.find()]
         iso_time = datetime.utcnow()
         collaborators = [x for x in shot.get('tasks')]
         current_route = get_current_route()
+        assets = [x for x in shot.get('assets')]
         if user_session['role'] == 'admin':
             shows = [x for x in mongo.db.shows.find()]
         else:
@@ -143,7 +144,7 @@ def shot(show, seq, shot):
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
 
-        return render_template("shot.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, iso_time=iso_time, notifications=notifications, current_route=current_route, shot=shot, collaborators=collaborators, users=users)
+        return render_template("shot.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, iso_time=iso_time, notifications=notifications, current_route=current_route, shot=shot, collaborators=collaborators, users=users, assets=assets)
     else:
         return render_template("login.html")
 
