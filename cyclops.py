@@ -122,12 +122,12 @@ def polyphemus():
         return render_template("login.html")
 
 
-@app.route('/polyphemus/<show>/<seq>/<shot>')
-def shot(show, seq, shot):
+@app.route('/polyphemus/<show>/<seq>/<shot_name>')
+def shot(show, seq, shot_name):
     if 'username' in session:
-        shot = mongo.db.shots.find_one({"name": shot})
+        shot = mongo.db.shots.find_one({"name": shot_name})
         users = [x for x in mongo.db.users.find()]
-        subs = [x for x in mongo.db.submissions.find()]
+        subs = [x for x in mongo.db.submissions.find() if x.get('Shot') == shot_name]
         user_session = mongo.db.users.find_one({"name": session['username']})
         show_infos = [x for x in mongo.db.show_infos.find()]
         notifications = [x for x in mongo.db.notifications.find()]

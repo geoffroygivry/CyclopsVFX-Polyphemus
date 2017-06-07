@@ -115,11 +115,13 @@
             </div>
 
             <div class="col-md-12"> <!-- post -->
-              {% for sub in subs %}
-              {% for user in users %}
-              {% if user.name == sub.Username %}
-              {% if sub.Shot == shot.name %}
-              <div class="panel panel-white post panel-shadow" id="{{sub.type}}">
+                {% for sub in subs %}
+                {% set datetime_sub_date = utils.convert_isotime_to_datetime(sub.Date) %}
+                {% set pretty_sub_date = datetime_sub_date.strftime(format) %}
+                {% for user in users %}
+                {% if user.name == sub.Username %}
+                {% if sub.Shot == shot.name %}
+              <div class="panel panel-white post panel-shadow {{sub._id}}" id="{{sub.type}}">
                   <div class="post-heading">
                       <div class="pull-left image">
                           <img src="{{user.email | gravatar}}" class="img-rounded avatar" alt="user profile image">
@@ -159,18 +161,22 @@
                           </span>
                       </div>
                       <ul class="comments-list">
+                          {% for comment in sub.comments %}
+                          {% set datetime_sub_date = utils.convert_isotime_to_datetime(comment.date) %}
+                          {% set pretty_comment_date = datetime_sub_date.strftime(format) %}
                           <li class="comment">
                               <a class="pull-left" href="#">
-                                  <img class="avatar" src="img/Friends/guy-3.jpg" alt="avatar">
+                                  <img class="avatar" src="{{comment.publisher.email | gravatar}}" alt="avatar">
                               </a>
                               <div class="comment-body">
                                   <div class="comment-heading">
-                                      <h4 class="comment-user-name"><a href="#">user1</a></h4>
-                                      <h5 class="time">7 minutes ago</h5>
+                                      <h4 class="comment-user-name"><a href="#">{{comment.publisher.name}}</a></h4>
+                                      <h5 class="time"><div class="date-sub"><a href=""><time class="pubdate" datetime="{{comment.date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_comment_date}}"></time></a></div></h5>
                                   </div>
-                                  <p>This is looking great! please submit to LGHT</p>
+                                  <p>{{comment.comment}}</p>
                               </div>
                           </li>
+                          {% endfor %}
                       </ul>
                   </div>
               </div>
