@@ -1,7 +1,8 @@
 from celery import Celery
+from cyc_config import cyc_config as cfg
 
 def make_celery(app):
-    celery = Celery(app.import_name, broker='amqp://localhost//')
+    celery = Celery(app.import_name, broker=cfg.RABBITMQ_URI)
     celery.conf.update(app.config)
     TaskBase = celery.Task
     class ContextTask(TaskBase):
