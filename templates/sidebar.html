@@ -39,7 +39,7 @@
                                         </a>
                                         <ul class="sub-menu">
                                             {% for shot in sequence.shots %}
-                                            <li><a href="javascript:;">{{shot.name}}</a></li>
+                                            <li><a href="{{url_for('shot',show=show.name, seq=sequence.name, shot_name=shot.name)}}">{{shot.name}}</a></li>
                                             {% endfor %}
                                         </ul>
                                     </li>

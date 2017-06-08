@@ -134,7 +134,7 @@ def shot(show, seq, shot_name):
         iso_time = datetime.utcnow()
         collaborators = [x for x in shot.get('tasks')]
         current_route = get_current_route()
-        assets = [x for x in shot.get('assets')]
+        assets = [x for x in shot.get('assets', [])]
         if user_session['role'] == 'admin':
             shows = [x for x in mongo.db.shows.find()]
         else:
@@ -144,7 +144,7 @@ def shot(show, seq, shot_name):
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
 
-        return render_template("shot.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, iso_time=iso_time, notifications=notifications, current_route=current_route, shot=shot, collaborators=collaborators, users=users, assets=assets)
+        return render_template("shot.html", show=show, seq=seq, subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, iso_time=iso_time, notifications=notifications, current_route=current_route, shot=shot, collaborators=collaborators, users=users, assets=assets)
     else:
         return render_template("login.html")
 

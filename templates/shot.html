@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}RBY | MANOR_010{% endblock %}
+{% block title %}RBY | {{shot.name}}{% endblock %}
 
 {% block content %}
     <!-- Timeline content -->
@@ -89,10 +89,9 @@
       <div class="row">
           <div class="col-md-12">
               <ol class="breadcrumb pull-left user-detail">
-                  <li><a href="#">RBY</a></li>
-                  <li><a href="#">MANOR</a></li>
-                  <li><a href="#">MANOR_010</a></li>
-
+                  <li><a href="#">{{show}}</a></li>
+                  <li><a href="#">{{seq}}</a></li>
+                  <li><a href="#">{{shot.name}}</a></li>
               </ol>
           </div>
       </div>
@@ -102,7 +101,7 @@
 
           <!-- update status -->
           <div class="col-md-12 col-sm-12 col-xs-12 col-posts">
-            <div class="col-md-12">
+            <div class="col-md-8">
 
               <div class="well">
                  <form class="form-horizontal" role="form">
@@ -112,9 +111,7 @@
                   <button class="btn btn-primary pull-right" type="button">Post</button><ul class="list-inline"><li><a href=""><i class="glyphicon glyphicon-upload"></i></a></li><li><a href=""><i class="glyphicon glyphicon-camera"></i></a></li><li><a href=""><i class="glyphicon glyphicon-map-marker"></i></a></li></ul>
                 </form>
               </div>
-            </div>
 
-            <div class="col-md-12"> <!-- post -->
                 {% for sub in subs %}
                 {% set datetime_sub_date = utils.convert_isotime_to_datetime(sub.Date) %}
                 {% set pretty_sub_date = datetime_sub_date.strftime(format) %}
@@ -186,6 +183,43 @@
               {% endfor %}
             </div><!-- end post -->
 
+            <div class="col-md-4">
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Username</th>
+                                <th>Email Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Nicky Almera</td>
+                                <td>nicky@hotmail.com</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Edmund Wong</td>
+                                <td>edmund@yahoo.com</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Harvinder Singh</td>
+                                <td>harvinder@gmail.com</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Terry Khoo</td>
+                                <td>terry@gmail.com</td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+            </div>
+              
+              
           </div>
         </div>
       </div><!-- end user details -->
