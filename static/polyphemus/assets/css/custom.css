@@ -121,3 +121,16 @@ blockquote {
 	font-size: 12.5px;
 	background-color: rgb(247, 247, 247);
 }
+
+.shot {
+    padding-top: 15px;
+}
+.NOT-STARTED {
+    background-color: red;
+}
+.IN-PROGRESS {
+    background-color: #348fe2;
+}
+.COMPLETED {
+    background-color: green;
+}

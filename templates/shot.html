@@ -154,13 +154,7 @@
                             <tr>
                                 <td><img src="{{user.email | gravatar}}" class="collaborator" alt=""></td>
                                 <td><a href="">{{user.name}}</a></td>
-                                {% if collaborator.status == 'NOT_STARTED' %}
-                                <td><a href=""><span class="label label-danger" data-toggle="tooltip" data-placement="right" title="" data-original-title="Not Started">{{user.task}}</span></a></td>
-                                {% elif collaborator.status == 'IN_PROGRESS' %}
-                                <td><a href=""><span class="label label-primary" data-toggle="tooltip" data-placement="right" title="" data-original-title="In Progress">{{user.task}}</span></a></td>
-                                {% else %}
-                                <td><a href=""><span class="label label-success" data-toggle="tooltip" data-placement="right" title="" data-original-title="Completed">{{user.task}}</span></a></td>
-                                {% endif %}
+                                <td><a href=""><span class="label {{collaborator.status}}" data-toggle="tooltip" data-placement="right" title="" data-original-title="{{collaborator.status}}">{{user.task}}</span></a></td>
                             </tr>
                         {% endif %}
                         {% endfor %}
@@ -169,7 +163,7 @@
                     </table>
             </div>
             </div>
-              
+
             <div class="col-md-4">
                 <div class="panel-bodys">
                     <table class="table">
@@ -188,7 +182,7 @@
                     </table>
             </div>
               </div>
-              
+
           </div>
         </div>
       </div><!-- end user details -->

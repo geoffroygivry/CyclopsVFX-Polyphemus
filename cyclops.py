@@ -146,7 +146,8 @@ def shot(show, seq, shot_name):
         return render_template("shot.html", show=show, seq=seq, subs=subs, user_session=user_session, shows=shows, iso_time=iso_time, notifications=notifications, current_route=current_route, shot=shot, collaborators=collaborators, users=users, assets=assets)
     else:
         return render_template("login.html")
-    
+
+
 @app.route('/polyphemus/<show>/<seq>')
 def seq(show, seq):
     if 'username' in session:
@@ -160,12 +161,12 @@ def seq(show, seq):
             for n in shows_user_artist:
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
-                
+
         seq = mongo.db.seqs.find_one({"name": seq})
         shots = [x for x in mongo.db.shots.find() if x.get('seq') == seq.get('_id')]
         subs = [x for x in mongo.db.submissions.find()]
-        
-        return render_template("sequence.html", seq=seq, user_session=user_session, shows=shows, notifications=notifications, shots=shots, subs=subs)
+
+        return render_template("sequence.html", show=show, seq=seq, user_session=user_session, shows=shows, notifications=notifications, shots=shots, subs=subs)
     else:
         return render_template("login.html")
 

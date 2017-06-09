@@ -1,47 +1,49 @@
 {% extends 'base.html' %}
-{% block title %}RBY | {{seq.name}}{% endblock %}
+{% block title %}{{show}} | {{seq.name}}{% endblock %}
 {% block content %}
 
 
 
-<div class="container">
-<div class="row">
-        {% for shot in shots %}
-        {% for sub in subs %}
-        {% if sub.Shot == shot.name %}
-        {% set latest_submission = sub.ptuid %}
-<div class="col-md-3">
+<div class="col-md-12">
+    <div class="row">
+            {% for shot in shots %}
+    <div class="col-md-4">
 
-        <div class="shot">
-            <div class="cover-photo-seq">
-            </div>
-            <div class="image-info">
-                <h5 class="title"><a href="#"><strong>{{shot.name}}</strong></a></h5>
-                    <div class="pull-right">
-                        Latest submission:   <small><a href="#"><strong>{{latest_submission}}</strong></a></small>
+            <div class="shot">
+                <div class="cover-photo-seq">
+                </div>
+                <div class="image-info">
+                    <h5 class="title"><a href="{{url_for('shot',show=show, seq=seq.name, shot_name=shot.name)}}"><strong>{{shot.name}}</strong></a></h5>
+                        <div class="pull-right">
+                            Latest submission:   <small><a href="#"><strong>{{shot.latest_ptuid}}</strong></a></small>
+                        </div>
+                    <br/>
+                    <br/>
+                    <div>
+                    {% for task in shot.tasks %}
+                     <span class="label {{task.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{task.status}}">{{task.task}}</span>&nbsp;
+                    {% endfor %}
                     </div>
-                <br/>
-                <br/>
-                {% for task in shot.tasks %}
-                <div><span class="label label-warning">{{task.task}}</span></div>
-                {% endfor %}
-                <br/>
-                <div class="desc">
-                    <p><small>Latest comment:</small></p>
-                <blockquote>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                    <small><a href="">Someone famous</a></small>
-                </blockquote>
+                    <br/>
+                    <div class="desc">
+                        <p><small>Latest comment:</small></p>
+                    <blockquote>
+                    {% for sub in subs %}
+                    {% if sub.ptuid == shot.latest_ptuid %}
+                    {% set latest_comment = sub.comments[-1].comment %}
+                        <p>{{latest_comment}}</p>
+                        <small><a href="">{{sub.comments[-1].publisher.name}}</a></small>
+                    {% endif %}
+                    {% endfor %}
+                    </blockquote>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-        {% endif %}
-        {% endfor %}
-        {% endfor %}
-    </div>
-    
+            {% endfor %}
+        </div>
 </div>
+
 
 
 
