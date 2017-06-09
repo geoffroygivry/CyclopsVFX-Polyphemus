@@ -32,52 +32,6 @@
                     <li><a href="#"><i class="fa fa-pencil"></i> Notes</a></li>
                     <li><a href="#"><i class="fa fa-film"></i> Dailies</a></li>
                     <li><a href="#"><i class="fa fa-send-o"></i> Publishes</a></li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">
-                        <i class="fa fa-user"></i> Collaborators <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                        {% for collaborator in collaborators %}
-                        {% for user in users %}
-                        {% if user.name == collaborator.assignee %}
-                        <li class="media">
-                            <a href="javascript:;">
-                                <div class="media-left"><img src="{{user.email | gravatar}}" class="collaborator" alt="" /></div>
-                                <div class="media-body">
-                                    <h6 class="media-heading">{{user.name}} - <small><strong>{{user.task}}</strong></small></h6>
-                                </div>
-                                <div class="media-right">
-                                {% if collaborator.status == 'NOT_STARTED' %}
-                                <i class="fa fa-circle not-started"></i>
-                                {% elif collaborator.status == 'IN_PROGRESS' %}
-                                <i class="fa fa-circle in-progress"></i>
-                                {% else %}
-                                <i class="fa fa-circle completed"></i>
-                                {% endif %}
-                                </div>
-                            </a>
-                        </li>
-                        {% endif %}
-                        {% endfor %}
-                        {% endfor %}
-                        </ul>
-                    </li>
-
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">
-                        <i class="fa fa-user"></i> Assets <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                        {% for asset in assets %}
-                        <li class="media">
-                            <a href="javascript:;">
-                                <div class="media-body">
-                                    <h6 class="media-heading">{{asset.name}}</h6>
-                                </div>
-                            </a>
-                        </li>
-                        {% endfor %}
-                        </ul>
-                    </li>
-
                   </ul>
                 </div>
               </div>
@@ -184,41 +138,56 @@
             </div><!-- end post -->
 
             <div class="col-md-4">
-                <div class="panel-body">
+                <div class="panel-bodys">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Username</th>
-                                <th>Email Address</th>
+                                <th></th>
+                                <th>Collaborators</th>
+                                <th>Task Status</th>
                             </tr>
                         </thead>
                         <tbody>
+                        {% for collaborator in collaborators %}
+                        {% for user in users %}
+                        {% if user.name == collaborator.assignee %}
                             <tr>
-                                <td>1</td>
-                                <td>Nicky Almera</td>
-                                <td>nicky@hotmail.com</td>
+                                <td><img src="{{user.email | gravatar}}" class="collaborator" alt=""></td>
+                                <td><a href="">{{user.name}}</a></td>
+                                {% if collaborator.status == 'NOT_STARTED' %}
+                                <td><a href=""><span class="label label-danger" data-toggle="tooltip" data-placement="right" title="" data-original-title="Not Started">{{user.task}}</span></a></td>
+                                {% elif collaborator.status == 'IN_PROGRESS' %}
+                                <td><a href=""><span class="label label-primary" data-toggle="tooltip" data-placement="right" title="" data-original-title="In Progress">{{user.task}}</span></a></td>
+                                {% else %}
+                                <td><a href=""><span class="label label-success" data-toggle="tooltip" data-placement="right" title="" data-original-title="Completed">{{user.task}}</span></a></td>
+                                {% endif %}
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Edmund Wong</td>
-                                <td>edmund@yahoo.com</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Harvinder Singh</td>
-                                <td>harvinder@gmail.com</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Terry Khoo</td>
-                                <td>terry@gmail.com</td>
-                            </tr>
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %}
                         </tbody>
                     </table>
             </div>
             </div>
               
+            <div class="col-md-4">
+                <div class="panel-bodys">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Assets used in shot:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for asset in assets %}
+                            <tr>
+                                <td><a href="">{{asset.name}}</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+              </div>
               
           </div>
         </div>

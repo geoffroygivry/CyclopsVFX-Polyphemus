@@ -88,3 +88,36 @@
     width: 20px;
     height: auto;
 }
+
+.seq_thumb {
+	width: 250px;
+	height: auto;
+}
+
+.image-inner {
+	background-image : url('/static/polyphemus/assets/img/small_NYC.jpg');
+	background-size : 100% 100%;
+	background-repeat: no-repeat;
+}
+
+.image-info {
+    background: #fff;
+    padding: 15px;
+    -webkit-border-radius: 0 0 3px 3px;
+    -moz-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px
+}
+
+.cover-photo-seq {
+	background:url('https://s3.amazonaws.com/cyclopsvfx/rubishboy.jpg');
+	background-color: #435e9c;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	color:white;
+	height:150px;
+}
+blockquote {
+	font-size: 12.5px;
+	background-color: rgb(247, 247, 247);
+}
