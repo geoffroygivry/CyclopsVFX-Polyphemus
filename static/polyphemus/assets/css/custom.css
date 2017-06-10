@@ -94,12 +94,6 @@
 	height: auto;
 }
 
-.image-inner {
-	background-image : url('/static/polyphemus/assets/img/small_NYC.jpg');
-	background-size : 100% 100%;
-	background-repeat: no-repeat;
-}
-
 .image-info {
     background: #fff;
     padding: 15px;
@@ -108,15 +102,7 @@
     border-radius: 0 0 3px 3px
 }
 
-.cover-photo-seq {
-	background:url('https://s3.amazonaws.com/cyclopsvfx/rubishboy.jpg');
-	background-color: #435e9c;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: cover;
-	color:white;
-	height:150px;
-}
+
 blockquote {
 	font-size: 12.5px;
 	background-color: rgb(247, 247, 247);
@@ -133,4 +119,11 @@ blockquote {
 }
 .COMPLETED {
     background-color: green;
+}
+.btn.btn-default {
+    color: #fff;
+    background: rgba(182, 194, 201, 0.21);
+    border-color: #b6c2c9;
+    margin-top: 10px;
+    margin-left: 5px;
 }

@@ -251,7 +251,7 @@
     left: 13px !important;
   }
   .cover-name {
-    top: 289px !important;
+    top: 400px !important;
     left: 148px !important;
     font-size: 12px !important;
   }
@@ -262,8 +262,8 @@
   text-rendering: optimizelegibility;
   text-shadow: 0 0 3px rgba(0,0,0,.8);
   width: 100%;
-  position: relative;
-  top: 280px;
+  position: absolute;
+  top: 250px;
   left: 10px;
   font-size: 25px;
   font-weight: bold;

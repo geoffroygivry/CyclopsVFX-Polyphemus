@@ -4,6 +4,7 @@ from flask_gravatar import Gravatar
 from datetime import datetime
 from scripts import utils
 from scripts.flask_celery import make_celery
+from scripts import aws_s3
 import bcrypt
 
 from cyc_config import cyc_config as cfg
@@ -13,6 +14,7 @@ app.config['MONGO_DBNAME'] = 'hydra'
 app.config['MONGO_URI'] = cfg.MONGODB
 app.jinja_env.globals['datetime'] = datetime
 app.jinja_env.globals['utils'] = utils
+app.jinja_env.globals['aws_s3'] = aws_s3
 
 mongo = PyMongo(app)
 celery = make_celery(app)
@@ -163,12 +165,17 @@ def seq(show, seq):
                 shows.append(new_show)
 
         seq = mongo.db.seqs.find_one({"name": seq})
-        shots = [x for x in mongo.db.shots.find() if x.get('seq') == seq.get('_id')]
+        shots = [x for x in mongo.db.shots.find() if x.get('seq') == seq.get('name')]
         subs = [x for x in mongo.db.submissions.find()]
 
         return render_template("sequence.html", show=show, seq=seq, user_session=user_session, shows=shows, notifications=notifications, shots=shots, subs=subs)
     else:
         return render_template("login.html")
+
+
+@app.route('/polyphemus/<show>')
+def show(show):
+    return render_template("show.html", show=show)
 
 
 def has_no_empty_params(rule):

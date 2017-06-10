@@ -8,7 +8,22 @@
       <!-- Cover content -->
       <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
-          <div class="cover-photo">
+          <div class="cover-photozz">
+
+            {% set s3_obj = shot.name + "_thumb.jpg" %}
+            {% set check_s3_obj = aws_s3.check_s3(s3_obj) %}
+            {% if check_s3_obj %}
+                <div class="cover-photo-shot" style="background:url('https://s3.amazonaws.com/cyclopsvfx/{{shot.name}}_banner.jpg'); background-color: #435e9c; background-repeat: no-repeat; background-position: center; background-size: cover; color:white; height:280px;">
+                {% if user_session.role == 'admin' %}
+                <button type="button" style="display: none;" class="btn btn-default label-task-status">Change cover image</button>
+                {% endif %}
+                </div>
+            {% else %}
+                <div class="cover-photo-shot" style="background:url('https://s3.amazonaws.com/cyclopsvfx/cyc_placeholder.png'); background-color: #435e9c; background-repeat: no-repeat; background-position: center; background-size: cover; color:white; height:280px;">
+                <button type="button" style="display: none;" class="btn btn-default label-task-status">Change cover image</button>
+                </div>
+            {% endif %}
+
 
             <div class="cover-name">{{shot.name}}</div>
           </div>
@@ -43,9 +58,9 @@
       <div class="row">
           <div class="col-md-12">
               <ol class="breadcrumb pull-left user-detail">
-                  <li><a href="#">{{show}}</a></li>
-                  <li><a href="#">{{seq}}</a></li>
-                  <li><a href="#">{{shot.name}}</a></li>
+                  <li><a href="{{url_for('show', show=show)}}">{{show}}</a></li>
+                  <li><a href="{{url_for('seq', show=show, seq=seq)}}">{{seq}}</a></li>
+                  <li><a href=""{{url_for('seq', show=show, seq=seq, shot_name=shot.name)}}"">{{shot.name}}</a></li>
               </ol>
           </div>
       </div>
@@ -81,12 +96,12 @@
                           {% if sub.type == "dailies" %}
                           <div class="title h5" >
                               <a href="#" class="post-user-name">{{user.name}}</a>
-                              Submitted <strong><a href="#">CMP-098567</a></strong> for dailies. <a href="#"><span class="task-status label-task-status label-task-status-warning ">{{sub.status}}</span></a>
+                              Submitted <strong><a href="#">{{sub.ptuid}}</a></strong> for dailies. <a href="#"><span class="task-status label-task-status label-task-status-warning ">{{sub.status}}</span></a>
                           </div>
                           {% elif sub.type == "publish" %}
                           <div class="title h5" >
                               <a href="#" class="post-user-name">{{user.name}}</a>
-                              New item published for <strong><a href="#">{{sub.AssetName}}</a></strong> <a href="#"><span class="task-status label-task-status label-task-status-warning ">{{sub.status}}</span></a>
+                              New item published for <strong><a href="#">{{sub.AssetName}}</a></strong> - <strong><a href="#">{{sub.ptuid}}</a></strong> <a href="#"><span class="task-status label-task-status label-task-status-warning ">{{sub.status}}</span></a>
                           </div>
                           {% else %}
                           <div class="title h5" >

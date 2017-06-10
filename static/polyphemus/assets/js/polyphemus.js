@@ -22,3 +22,11 @@ $("#mark_read").on('click', function() {
     $('.notifications').attr('id', 'read');
     $('.notification-string').text('No New Notifications')
 });
+
+$(document).ready(function () {
+                $(document).on('mouseenter', '.cover-photo-shot', function () {
+                    $(this).find(":button").show();
+                }).on('mouseleave', '.cover-photo-shot', function () {
+                    $(this).find(":button").hide();
+                });
+            });
