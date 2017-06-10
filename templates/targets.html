@@ -14,7 +14,7 @@
 
             <div class="panel-body">
                 <div class="panel-group" id="accordion">
-                    
+
                     {% if target_shots.overdue != [] %}
                     <div class="panel panel-inverse overflow-hidden">
                         <div class="panel-heading">
@@ -47,11 +47,11 @@
                                         {% set pretty_target_date = datetime_target_date.strftime(format) %}
                                         <tr>
                                             {% if shot.thumbnail %}
-                                            <td><a href="#"><img src="{{shot.thumbnail}}" class="thumb-sub" alt=""></a></td>
+                                            <td><a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}"><img src="{{shot.thumbnail}}" class="thumb-sub" alt=""></a></td>
                                             {% else %}
-                                            <td><a href="#"><img src="static/polyphemus/assets/img/cyc_placeholder.png" class="thumb-sub" alt=""></a></td>
+                                            <td><a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}"><img src="static/polyphemus/assets/img/cyc_placeholder.png" class="thumb-sub" alt=""></a></td>
                                             {% endif %}
-                                            <td><strong><a href="">{{shot.name}}</a></strong></td>
+                                            <td><strong><a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}">{{shot.name}}</a></strong></td>
                                             <td>{{shot.frame_in}}-{{shot.frame_out}} </td>
                                             <td><a href="javascript:;" id="add-sticky" class="label label-warning">{{shot.status}}</a></td>
                                             <td><div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{shot.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div></td>
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     {% endif %}
-                    
+
                     <div class="panel panel-danger overflow-hidden">
                         <div class="panel-heading">
                             <h3 class="panel-title">
