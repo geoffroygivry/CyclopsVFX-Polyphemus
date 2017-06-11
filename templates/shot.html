@@ -15,12 +15,20 @@
             {% if check_s3_obj %}
                 <div class="cover-photo-shot" style="background:url('https://s3.amazonaws.com/cyclopsvfx/{{shot.name}}_banner.jpg'); background-color: #435e9c; background-repeat: no-repeat; background-position: center; background-size: cover; color:white; height:280px;">
                 {% if user_session.role == 'admin' %}
-                <button type="button" style="display: none;" class="btn btn-default label-task-status">Change cover image</button>
+                    <form method=post enctype=multipart/form-data>
+                        <p><input type=file onchange="this.form.submit()" name=file id="file"style="display: none;" class="btn btn-default label-task-status"></p>
+                <button type="button" style="display: none;" onclick="document.getElementById('file').click();" class="btn btn-default label-task-status">Change cover image</button>
+                    </form>
                 {% endif %}
                 </div>
             {% else %}
                 <div class="cover-photo-shot" style="background:url('https://s3.amazonaws.com/cyclopsvfx/cyc_placeholder.png'); background-color: #435e9c; background-repeat: no-repeat; background-position: center; background-size: cover; color:white; height:280px;">
-                <button type="button" style="display: none;" class="btn btn-default label-task-status">Change cover image</button>
+                {% if user_session.role == 'admin' %}
+                    <form method=post enctype=multipart/form-data>
+                        <p><input type=file onchange="this.form.submit()" name=file id="file"style="display: none;" class="btn btn-default label-task-status"></p>
+                <button type="button" style="display: none;" onclick="document.getElementById('file').click();" class="btn btn-default label-task-status">Change cover image</button>
+                    </form>
+                {% endif %}
                 </div>
             {% endif %}
 

@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, url_for, request, session, redirect
 from flask_pymongo import PyMongo
 from flask_gravatar import Gravatar
@@ -9,7 +10,14 @@ import bcrypt
 
 from cyc_config import cyc_config as cfg
 
+from werkzeug.utils import secure_filename
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+UPLOAD_FOLDER = os.path.join(dir_path, 'tmp')
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MONGO_DBNAME'] = 'hydra'
 app.config['MONGO_URI'] = cfg.MONGODB
 app.jinja_env.globals['datetime'] = datetime
@@ -26,6 +34,11 @@ gravatar = Gravatar(app,
                     force_lower=False,
                     use_ssl=False,
                     base_url=None)
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @celery.task(name="cyclops.reset_notification")
@@ -124,7 +137,7 @@ def polyphemus():
         return render_template("login.html")
 
 
-@app.route('/polyphemus/<show>/<seq>/<shot_name>')
+@app.route('/polyphemus/<show>/<seq>/<shot_name>', methods=['GET', 'POST'])
 def shot(show, seq, shot_name):
     if 'username' in session:
         shot = mongo.db.shots.find_one({"name": shot_name})
@@ -144,6 +157,23 @@ def shot(show, seq, shot_name):
             for n in shows_user_artist:
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
+
+        if request.method == 'POST':
+                # check if the post request has the file part
+                if 'file' not in request.files:
+                    flash('No file part')
+                    return redirect(request.url)
+                file = request.files['file']
+                # if user does not select file, browser also
+                # submit a empty part without filename
+                if file.filename == '':
+                    flash('No selected file')
+                    return redirect(request.url)
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    print("filename is: ", filename)
+
 
         return render_template("shot.html", show=show, seq=seq, subs=subs, user_session=user_session, shows=shows, iso_time=iso_time, notifications=notifications, current_route=current_route, shot=shot, collaborators=collaborators, users=users, assets=assets)
     else:
