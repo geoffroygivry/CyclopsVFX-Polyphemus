@@ -6,7 +6,9 @@ from datetime import datetime
 from scripts import utils
 from scripts.flask_celery import make_celery
 from scripts import aws_s3
+from scripts import generate_images
 import bcrypt
+import time
 
 from cyc_config import cyc_config as cfg
 
@@ -172,7 +174,7 @@ def shot(show, seq, shot_name):
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    print("filename is: ", filename)
+                    generate_images.banner_and_thumb(filename, shot)
 
 
         return render_template("shot.html", show=show, seq=seq, subs=subs, user_session=user_session, shows=shows, iso_time=iso_time, notifications=notifications, current_route=current_route, shot=shot, collaborators=collaborators, users=users, assets=assets)
