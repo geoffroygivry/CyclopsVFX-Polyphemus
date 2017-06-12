@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
+import os
 import botocore
 from boto3.session import Session
 
@@ -45,3 +45,8 @@ def check_s3(name):
         exists = True
 
     return exists
+
+
+def check_local(name):
+    banner_folder = "/home/cabox/workspace/CyclopsVFX-Polyphemus/static/polyphemus/assets/img/banners"
+    return os.path.isfile(os.path.join(banner_folder, name))

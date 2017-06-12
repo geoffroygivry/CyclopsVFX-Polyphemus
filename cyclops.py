@@ -25,6 +25,7 @@ app.config['MONGO_URI'] = cfg.MONGODB
 app.jinja_env.globals['datetime'] = datetime
 app.jinja_env.globals['utils'] = utils
 app.jinja_env.globals['aws_s3'] = aws_s3
+app.jinja_env.globals['os'] = os
 
 mongo = PyMongo(app)
 celery = make_celery(app)
@@ -209,6 +210,24 @@ def seq(show, seq):
 def show(show):
     return render_template("show.html", show=show)
 
+
+@app.route('/polyphemus/users/<user_name>')
+def user(user_name):
+    if 'username' in session:
+        user_name = mongo.db.users.find_one({"name": user_name})
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        notifications = [x for x in mongo.db.notifications.find()]
+        shots = [x for x in mongo.db.shots.find()]
+        if user_session['role'] == 'admin':
+            shows = [x for x in mongo.db.shows.find()]
+        else:
+            shows = []
+            shows_user_artist = user_session.get("shows")
+            for n in shows_user_artist:
+                new_show = mongo.db.shows.find_one(n)
+                shows.append(new_show)
+                
+    return render_template("user.html", user_name=user_name, user_session=user_session, notifications=notifications, shows=shows, shots=shots)
 
 def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()

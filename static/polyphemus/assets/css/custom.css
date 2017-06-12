@@ -94,6 +94,11 @@
 	height: auto;
 }
 
+.shot_thumb {
+	width: 50px;
+	height: auto;
+}
+
 .image-info {
     background: #fff;
     padding: 15px;

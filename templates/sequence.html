@@ -11,12 +11,13 @@
 
             <div class="shot">
             {% set s3_obj = shot.name + "_thumb.jpg" %}
-            {% set check_s3_obj = aws_s3.check_s3(s3_obj) %}
-            {% if check_s3_obj %}
-                <div class="cover-photo-seq" style="background:url('https://s3.amazonaws.com/cyclopsvfx/{{shot.name}}_thumb.jpg'); background-color: #435e9c; background-repeat: no-repeat; background-position: center; background-size: cover; color:white; height:150px;">
+            {% set full_path_img = url_for('static', filename="polyphemus/assets/img/banners/%s" % s3_obj) %}
+            {% set check_local = aws_s3.check_local(s3_obj) %}
+            {% if check_local %}
+                <div class="cover-photo-seq" style="background:url('{{full_path_img}}'); background-color: #435e9c; background-repeat: no-repeat; background-position: center; background-size: cover; color:white; height:150px;">
                 </div>
             {% else %}
-                <div class="cover-photo-seq" style="background:url('https://s3.amazonaws.com/cyclopsvfx/cyc_placeholder.png'); background-color: #435e9c; background-repeat: no-repeat; background-position: center; background-size: cover; color:white; height:150px;">
+                <div class="cover-photo-seq" style="background:url('{{url_for('static', filename='polyphemus/assets/img/cyc_placeholder.png')}}'); background-color: #435e9c; background-repeat: no-repeat; background-position: center; background-size: cover; color:white; height:150px;">
                 </div>
             {% endif %}
                 <div class="image-info">
@@ -43,7 +44,7 @@
                     {% if sub.ptuid == shot.latest_ptuid %}
                     {% set latest_comment = sub.comments[-1].comment %}
                         <p>{{latest_comment}}</p>
-                        <small><a href="">{{sub.comments[-1].publisher.name}}</a></small>
+                        <small><a href="{{url_for('user', user_name=sub.comments[-1].publisher.name)}}">{{sub.comments[-1].publisher.name}}</a></small>
                     {% endif %}
                     {% endfor %}
                     </blockquote>

@@ -6390,11 +6390,11 @@ body.flat-black {
     clear: both;
 }
 .profile-left {
-    width: 200px;
+    width: 10px;
     float: left;
 }
 .profile-right {
-    margin-left: 240px;
+    margin-left: 120px;
     padding-right: 20px;
 }
 .profile-image {
