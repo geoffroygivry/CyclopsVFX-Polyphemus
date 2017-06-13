@@ -42,9 +42,11 @@
                     <blockquote>
                     {% for sub in subs %}
                     {% if sub.ptuid == shot.latest_ptuid %}
+                    {% if sub.comments != [] %}
                     {% set latest_comment = sub.comments[-1].comment %}
                         <p>{{latest_comment}}</p>
                         <small><a href="{{url_for('user', user_name=sub.comments[-1].publisher.name)}}">{{sub.comments[-1].publisher.name}}</a></small>
+                    {% endif %}
                     {% endif %}
                     {% endfor %}
                     </blockquote>
