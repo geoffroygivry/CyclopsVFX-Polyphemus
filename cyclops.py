@@ -7,6 +7,7 @@ from scripts import utils
 from scripts.flask_celery import make_celery
 from scripts import aws_s3
 from scripts import generate_images
+from scripts import check_img as ci
 import bcrypt
 import time
 
@@ -26,6 +27,7 @@ app.jinja_env.globals['datetime'] = datetime
 app.jinja_env.globals['utils'] = utils
 app.jinja_env.globals['aws_s3'] = aws_s3
 app.jinja_env.globals['os'] = os
+app.jinja_env.globals['ci'] = ci
 
 mongo = PyMongo(app)
 celery = make_celery(app)
@@ -145,7 +147,8 @@ def shot(show, seq, shot_name):
     if 'username' in session:
         shot = mongo.db.shots.find_one({"name": shot_name})
         users = [x for x in mongo.db.users.find()]
-        subs = [x for x in mongo.db.submissions.find() if x.get('Shot') == shot_name]
+#         subs = [x for x in mongo.db.submissions.find() if x.get('Shot') == shot_name]
+        subs = [x for x in mongo.db.submissions.find()]
         user_session = mongo.db.users.find_one({"name": session['username']})
         notifications = [x for x in mongo.db.notifications.find()]
         iso_time = datetime.utcnow()
@@ -216,6 +219,7 @@ def user(user_name):
     if 'username' in session:
         user_name = mongo.db.users.find_one({"name": user_name})
         user_session = mongo.db.users.find_one({"name": session['username']})
+        subs = [x for x in mongo.db.submissions.find()]
         notifications = [x for x in mongo.db.notifications.find()]
         shots = [x for x in mongo.db.shots.find()]
         if user_session['role'] == 'admin':
@@ -227,7 +231,7 @@ def user(user_name):
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
                 
-    return render_template("user.html", user_name=user_name, user_session=user_session, notifications=notifications, shows=shows, shots=shots)
+    return render_template("user.html", user_name=user_name, subs=subs, user_session=user_session, notifications=notifications, shows=shows, shots=shots)
 
 def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()

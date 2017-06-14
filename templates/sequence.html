@@ -8,18 +8,10 @@
     <div class="row">
             {% for shot in shots %}
     <div class="col-md-4">
-
             <div class="shot">
-            {% set s3_obj = shot.name + "_thumb.jpg" %}
-            {% set full_path_img = url_for('static', filename="polyphemus/assets/img/banners/%s" % s3_obj) %}
-            {% set check_local = aws_s3.check_local(s3_obj) %}
-            {% if check_local %}
-                <div class="cover-photo-seq" style="background:url('{{full_path_img}}'); background-color: #435e9c; background-repeat: no-repeat; background-position: center; background-size: cover; color:white; height:150px;">
+                <div class="cover-photo-seq" style="background:url('{{ci.thumb(shot.name)}}'); background-color: #435e9c; background-repeat: no-repeat; background-position: center; background-size: cover; color:white; height:150px;">
                 </div>
-            {% else %}
-                <div class="cover-photo-seq" style="background:url('{{url_for('static', filename='polyphemus/assets/img/cyc_placeholder.png')}}'); background-color: #435e9c; background-repeat: no-repeat; background-position: center; background-size: cover; color:white; height:150px;">
-                </div>
-            {% endif %}
+
                 <div class="image-info">
                     <h5 class="title"><a href="{{url_for('shot',show=show, seq=seq.name, shot_name=shot.name)}}"><strong>{{shot.name}}</strong></a></h5>
                         <div class="pull-right">
@@ -40,15 +32,10 @@
                     <div class="desc">
                         <p><small>Latest comment:</small></p>
                     <blockquote>
-                    {% for sub in subs %}
-                    {% if sub.ptuid == shot.latest_ptuid %}
-                    {% if sub.comments != [] %}
-                    {% set latest_comment = sub.comments[-1].comment %}
-                        <p>{{latest_comment}}</p>
-                        <small><a href="{{url_for('user', user_name=sub.comments[-1].publisher.name)}}">{{sub.comments[-1].publisher.name}}</a></small>
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
+                        {% if shot.latest_ptuid_comment != None %}
+                        <p>{{shot.latest_ptuid_comment.comment}}</p>
+                        <small><a href="{{url_for('user', user_name=shot.latest_ptuid_comment.publisher)}}">{{shot.latest_ptuid_comment.publisher}}</a> on <a href="{{url_for('shot', show=show, seq=seq.name, shot_name=shot.name, _anchor=shot.latest_ptuid_comment.ptuid)}}">{{shot.latest_ptuid_comment.ptuid}}</a></small>
+                        {% endif %}
                     </blockquote>
                     </div>
                 </div>

@@ -74,7 +74,7 @@
                                     {% for task in shot.tasks %}
                                     {% if task.assignee == user_name.name %}
                                     <tr>
-                                        <td style="width : 10px;"><img src="{{url_for('static', filename='polyphemus/assets/img/banners/%s_thumb.jpg' % shot.name)}}" class="shot_thumb"></td>
+                                        <td style="width : 10px;"><img src="{{ci.thumb(shot.name)}}" class="shot_thumb"></td>
                                         <td><a href="{{url_for('show', show=shot.show)}}">{{shot.show}}</a></td>
                                         <td><a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}">{{shot.name}}</a></td>
                                         <td><span class="label {{task.status}}" data-toggle="tooltip" data-placement="right" title="" data-original-title="{{task.status}}">{{task.task}}</span>&nbsp;</td>

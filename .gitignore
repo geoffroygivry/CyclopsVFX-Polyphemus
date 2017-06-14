@@ -2,3 +2,4 @@
 *.pyo
 *~
 cyc_config.py
+.idea/

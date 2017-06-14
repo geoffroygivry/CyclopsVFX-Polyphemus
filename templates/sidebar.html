@@ -33,10 +33,10 @@
                                 <ul class="sub-menu">
                                     {% for sequence in show.sequences %}
                                     <li class="has-sub">
-                                        <a href="javascript:;">
+                                        <a href="#">
                                             <b class="caret pull-right"></b>
-                                            {{sequence.name}}
-                                        </a>
+                                                {{sequence.name}}
+                                            </a>
                                         <ul class="sub-menu">
                                             {% for shot in sequence.shots %}
                                             <li><a href="{{url_for('shot',show=show.name, seq=sequence.name, shot_name=shot.name)}}">{{shot.name}}</a></li>

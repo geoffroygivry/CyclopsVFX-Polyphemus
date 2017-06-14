@@ -9,12 +9,7 @@
       <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="cover-photozz">
-
-            {% set s3_obj = shot.name + "_banner.jpg" %}
-            {% set full_path_img = url_for('static', filename="polyphemus/assets/img/banners/%s" % s3_obj) %}
-            {% set check_local = aws_s3.check_local(s3_obj) %}
-            {% if check_local %}
-                <div class="cover-photo-shot" style="background:url('{{full_path_img}}'); background-color: #435e9c; background-repeat: no-repeat; background-position: center; background-size: cover; color:white; height:280px;">
+                <div class="cover-photo-shot" style="background:url('{{ci.banner(shot.name)}}'); background-color: #435e9c; background-repeat: no-repeat; background-position: center; background-size: cover; color:white; height:280px;">
                 {% if user_session.role == 'admin' %}
                     <form method=post enctype=multipart/form-data>
                         <p><input type=file onchange="this.form.submit()" name=file id="file"style="display: none;" class="btn btn-default label-task-status"></p>
@@ -22,18 +17,6 @@
                     </form>
                 {% endif %}
                 </div>
-            {% else %}
-                <div class="cover-photo-shot" style="background:url('{{url_for('static', filename='polyphemus/assets/img/cyc_placeholder.png')}}'); background-color: #435e9c; background-repeat: no-repeat; background-position: center; background-size: cover; color:white; height:280px;">
-                {% if user_session.role == 'admin' %}
-                    <form method=post enctype=multipart/form-data>
-                        <p><input type=file onchange="this.form.submit()" name=file id="file"style="display: none;" class="btn btn-default label-task-status"></p>
-                <button type="button" style="display: none;" onclick="document.getElementById('file').click();" class="btn btn-default label-task-status">Change cover image</button>
-                    </form>
-                {% endif %}
-                </div>
-            {% endif %}
-
-
             <div class="cover-name">{{shot.name}}</div>
           </div>
         </div>

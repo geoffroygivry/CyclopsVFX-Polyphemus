@@ -32,7 +32,7 @@
                         <tr>
                             <td><a href="rvlink:// {{sub.Path}}"><img src={{sub.thumbnail_s3}} class="thumb-sub" alt=""></a></td>
                             <td><strong><a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}">{{sub.Shot}}</a></strong></td>
-                            <td>{{sub.Username}} </td>
+                            <td><a href="{{url_for('user', user_name=sub.Username)}}">{{sub.Username}}</a></td>
                             <td><a href="javascript:;" id="add-sticky" class="label label-primary">{{sub.Task}}</a></td>
                             <td><div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{sub.Date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_sub_date}}"></time></small></a></div></td>
                         </tr>

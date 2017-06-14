@@ -45,8 +45,3 @@ def check_s3(name):
         exists = True
 
     return exists
-
-
-def check_local(name):
-    banner_folder = "/home/cabox/workspace/CyclopsVFX-Polyphemus/static/polyphemus/assets/img/banners"
-    return os.path.isfile(os.path.join(banner_folder, name))
