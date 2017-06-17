@@ -9,7 +9,6 @@ from scripts import aws_s3
 from scripts import generate_images
 from scripts import check_img as ci
 import bcrypt
-import time
 
 from cyc_config import cyc_config as cfg
 
@@ -72,6 +71,12 @@ def index():
         return render_template("index.html")
 
 
+def redirect_url(default='index'):
+    return request.args.get('next') or \
+        request.referrer or \
+        url_for(default)
+
+
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
@@ -81,7 +86,8 @@ def login():
         if login_user:
             if bcrypt.hashpw(request.form['password'].encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password'].encode('utf-8'):
                 session['username'] = request.form['username']
-                return redirect(url_for('polyphemus'))
+                # return redirect(url_for('polyphemus'))
+                return redirect(redirect_url())
 
         return 'Invalid username/password combination'
 
@@ -166,20 +172,19 @@ def shot(show, seq, shot_name):
 
         if request.method == 'POST':
                 # check if the post request has the file part
-                if 'file' not in request.files:
-                    flash('No file part')
-                    return redirect(request.url)
-                file = request.files['file']
-                # if user does not select file, browser also
-                # submit a empty part without filename
-                if file.filename == '':
-                    flash('No selected file')
-                    return redirect(request.url)
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    generate_images.banner_and_thumb(filename, shot)
-
+            if 'file' not in request.files:
+                flash('No file part')
+                return redirect(request.url)
+            file = request.files['file']
+            # if user does not select file, browser also
+            # submit a empty part without filename
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                generate_images.banner_and_thumb(filename, shot)
 
         return render_template("shot.html", show=show, seq=seq, subs=subs, user_session=user_session, shows=shows, iso_time=iso_time, notifications=notifications, current_route=current_route, shot=shot, collaborators=collaborators, users=users, assets=assets)
     else:
@@ -230,8 +235,27 @@ def user(user_name):
             for n in shows_user_artist:
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
-                
+
     return render_template("user.html", user_name=user_name, subs=subs, user_session=user_session, notifications=notifications, shows=shows, shots=shots)
+
+
+@app.route('/admin')
+def admin():
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        if user_session.get('role') == 'admin':
+            subs = [x for x in mongo.db.submissions.find()]
+            shows = [x for x in mongo.db.shows.find()]
+            users = [x for x in mongo.db.users.find()]
+            seqs = [x for x in mongo.db.seqs.find()]
+            shots = [x for x in mongo.db.shots.find()]
+
+            return render_template("admin.html", user_session=user_session, shows=shows, subs=subs, users=users, seqs=seqs, shots=shots)
+        else:
+            return render_template("oops.html")
+    else:
+        return render_template('login.html')
+
 
 def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()

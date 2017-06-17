@@ -16,7 +16,35 @@
             </button>
         </div>
         <!-- end mobile sidebar expand / collapse button -->
+            {% if user_session.role == "admin" %}
+                {% if adminMode %}
+                <!-- begin navbar-collapse -->
+                <div class="collapse navbar-collapse pull-left" id="top-navbar">
+                    <a href="#modal-dialog" class="btn btn-primary m-r-5" style="margin-top: 9px;" data-toggle="modal">Create</a>
+                </div>
+                <!-- end navbar-collapse -->
 
+                <div class="modal fade" id="modal-dialog" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                            <h4 class="modal-title">Modal Dialog</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Modal body content here...
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+                                                            <a href="javascript:;" class="btn btn-sm btn-success">Action</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                {% endif %}
+                {% endif %}
         <!-- begin header navigation right -->
         <ul class="nav navbar-nav navbar-right">
             <li>
@@ -28,7 +56,7 @@
                 </form>
             </li>
             <li class="dropdown">
-                
+
                 {% if user_session.notifications > 0 %}
                 <a href="#"  data-toggle="dropdown" class="dropdown-toggle f-s-14">
                     <i class="fa fa-bell-o notifications" id="mark_read"></i>
@@ -44,9 +72,9 @@
                 </a>
                 <ul class="dropdown-menu media-list pull-right animated fadeInDown">
                     <li class="dropdown-header">No New Notifications</li>
-                    
+
                 {% endif %}
-                    
+
                     {% for notification in user_session.notifications_msg %}
                     {% for noti in notifications %}
                     {% if noti._id == notification %}
@@ -87,7 +115,7 @@
                 <ul class="dropdown-menu animated fadeInLeft">
                     <li class="arrow"></li>
                     {% if user_session.role == "admin" %}
-                    <li><a href="#">Admin Dashboard</a></li>
+                    <li><a href="{{url_for('admin')}}">Admin Dashboard</a></li>
                     <li class="divider"></li>
                     {% endif %}
                     <li><a href="#">Edit Profile</a></li>

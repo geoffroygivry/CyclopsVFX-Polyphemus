@@ -1,0 +1,34 @@
+{% extends 'err-base.html' %}
+
+{% block title %}Oops...{% endblock %}
+
+{% block content %}
+<body class="pace-top">
+	<!-- begin #page-loader -->
+	<div id="page-loader" class="fade in"><span class="spinner"></span></div>
+	<!-- end #page-loader -->
+
+	<!-- begin #page-container -->
+	<div id="page-container" class="fade">
+	    <!-- begin error -->
+        <div class="error">
+            <div class="error-code m-b-10">oops! <i class="fa fa-warning"></i></div>
+            <div class="error-content">
+                <div class="error-message">This is a restricted area.</div>
+                <div class="error-desc m-b-20">
+                    Really sorry but this page is for administrators only. <br />
+                    Hope you will find the page you were for!
+                </div>
+                <div>
+                    <a href="{{url_for('polyphemus')}}" class="btn btn-success">Go Back to the Dashboard Page</a>
+                </div>
+            </div>
+        </div>
+        <!-- end error -->
+
+		<!-- begin scroll to top btn -->
+		<a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+		<!-- end scroll to top btn -->
+	</div>
+	<!-- end page container -->
+{% endblock %}
