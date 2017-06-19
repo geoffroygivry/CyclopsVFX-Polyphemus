@@ -42,7 +42,11 @@
                                     <tr>
                                         <td><a href="{{url_for('show', show=show.name)}}">{{show.name}}</a></td>
                                         <td>{{show.long_name}}</td>
-                                        <td>{{show.active}}</td>
+                                        {% if show.active %}
+                                        <td><span class="label label-success">Active</span></td>
+                                        {% else %}
+                                        <td><span class="label label-default">Non Active</span></td>
+                                        {% endif %}
                                     </tr>
 								{% endfor %}
                                 </tbody>
@@ -84,6 +88,8 @@
                                 </thead>
                                 <tbody>
 									{% for shot in shots %}
+                                    {% set shot_target_date = utils.convert_isotime_to_datetime(shot.target_date) %}
+                                    {% set pretty_target_date = shot_target_date.strftime(format) %}
                                     <tr>
                                         <td><a href="#">{{shot.name}}</a></td>
                                         <td><a href="#">{{shot.seq}}</a></td>
@@ -99,7 +105,7 @@
 										 <span class="label label-default">{{asset.name}}</span>&nbsp;
 										{% endfor %}
 										</td>
-										<td>{{shot.target_date}}</td>
+										<td><div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{shot.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div></td>
 										<td><span class="label {{shot.status}}">{{shot.status}}</span></td>
                                     </tr>
 									{% endfor %}
@@ -114,20 +120,20 @@
                                         <th>Name</th>
                                         <th>Show</th>
                                         <th>Collaborators</th>
+                                        <th>Target date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                {% for asset in assets %}
+                                {% set asset_target_date = utils.convert_isotime_to_datetime(asset.target_date) %}
+                                {% set pretty_target_date = asset_target_date.strftime(format) %}
                                     <tr class="odd gradeX">
-                                        <td><a href="#">MANOR</a></td>
-                                        <td><a href="#">RBY</a></td>
-                                        <td><a href="#">RBY</a></td>
+                                        <td><a href="#">{{asset.name}}</a></td>
+                                        <td><a href="#">{{asset.show}}</a></td>
+                                        <td>{% for task in asset.tasks %}<a href="{{url_for('user', user_name=task.assignee)}}">{{task.assignee}}</a>{% endfor %}</td>
+                                        <td><div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{asset.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div></td>
                                     </tr>
-                                    <tr class="even gradeC">
-                                        <td><a href="#">HRM</a></td>
-                                        <td><a href="#">RBY</a></td>
-                                        <td><a href="#">RBY</a></td>
-                                    </tr>
-
+                                {% endfor %}
                                 </tbody>
                             </table>
 						</div>
@@ -145,23 +151,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                {% for user in users %}
                                     <tr class="odd gradeX">
-                                        <td><a href="#">Geoffroy</a></td>
-                                        <td><a href="#">geoff.givry@gmail.com</a></td>
-                                        <td><a href="#">admin</a></td>
-                                        <td><a href="#">RBY</a> <a href="#">NYC</a></td>
-                                        <td><a href="#">MANOR_010</a></td>
-                                        <td><a href="#">CMP</a></td>
+                                        <td><a href="#">{{user.name}}</a></td>
+                                        <td><a href="#">{{user.email}}</a></td>
+                                        <td>{{user.role}}</a></td>
+                                        <td>{% for show in user.shows %}<a href="{{url_for('show', show=show)}}">{{show}}</a>&nbsp;|&nbsp;{% endfor %}</td>
+                                        <td>{% for shot in shots %}
+                                        {% for task in shot.tasks %}
+                                        {% if task.assignee == user.name %}
+                                        <a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}">{{shot.name}}</a>&nbsp;|&nbsp;
+                                        {% endif %}
+                                        {% endfor %}
+                                        {% endfor %}
+                                        </td>
+                                        <td><a href="#">{{user.task}}</a></td>
                                     </tr>
-                                    <tr class="odd gradeX">
-                                        <td><a href="#">user1</a></td>
-                                        <td><a href="#">user1@example.com</a></td>
-                                        <td><a href="#">artist</a></td>
-                                        <td><a href="#">RBY</a></td>
-                                        <td><a href="#">MANOR_010</a></td>
-                                        <td><a href="#">LGT</a></td>
-                                    </tr>
-
+                                {% endfor %}
                                 </tbody>
                             </table>
 						</div>
@@ -174,25 +180,30 @@
                                         <th>Shot or Asset</th>
                                         <th>task</th>
                                         <th>show</th>
+                                        <th>type</th>
                                         <th>ptuid</th>
                                         <th>status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                {% for sub in subs %}
                                     <tr class="odd gradeX">
-                                        <td><a href="#">Geoffroy</a></td>
-                                        <td><a href="#">MANOR_010</a></td>
-                                        <td><a href="#">CMP</a></td>
-                                        <td><a href="#">RBY-CMP-000005</a></td>
-                                        <td><a href="#">WORK IN PROGRESS</a></td>
+                                        <td><a href="#">{{sub.Username}}</a></td>
+                                        <td><a href="#">{{sub.Shot}}</a></td>
+                                        <td><a href="#">{{sub.Task}}</a></td>
+                                        <td><a href="#">{{sub.Show}}</a></td>
+                                        <td><a href="#">{{sub.type}}</a></td>
+                                        <td><a href="#">{{sub.ptuid}}</a></td>
+                                        <td><a href="#">{{sub.status}}</a></td>
                                     </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
 						</div>
 					</div>
 				</div>
 			    <!-- end col-6 -->
-                        
+
                         </div>
                     <!-- end panel -->
                 </div>

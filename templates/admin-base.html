@@ -50,6 +50,8 @@
 
     <div id="content" class="contentb"> <!-- begin #content -->
 
+        {% set format = "%a %d %b %Y at %H:%M:%S" %}
+        {% set iso_date = datetime.utcnow().isoformat() %}
 
             {% block content %}{% endblock %}
 

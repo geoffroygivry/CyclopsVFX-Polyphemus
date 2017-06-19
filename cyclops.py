@@ -249,8 +249,9 @@ def admin():
             users = [x for x in mongo.db.users.find()]
             seqs = [x for x in mongo.db.seqs.find()]
             shots = [x for x in mongo.db.shots.find()]
+            assets = [x for x in mongo.db.assets.find()]
 
-            return render_template("admin.html", user_session=user_session, shows=shows, subs=subs, users=users, seqs=seqs, shots=shots)
+            return render_template("admin.html", user_session=user_session, shows=shows, subs=subs, users=users, seqs=seqs, shots=shots, assets=assets)
         else:
             return render_template("oops.html")
     else:
