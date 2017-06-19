@@ -38,17 +38,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="odd gradeX">
-                                        <td><a href="#">RBY</a></td>
-                                        <td>RUBBISHBOY</td>
-                                        <td>True</td>
+									{% for show in shows %}
+                                    <tr>
+                                        <td><a href="{{url_for('show', show=show.name)}}">{{show.name}}</a></td>
+                                        <td>{{show.long_name}}</td>
+                                        <td>{{show.active}}</td>
                                     </tr>
-                                    <tr class="even gradeC">
-                                        <td><a href="#">NYC</a></td>
-                                        <td>NEW_YORK_CITY</td>
-                                        <td>False</td>
-                                    </tr>
-
+								{% endfor %}
                                 </tbody>
                             </table>
 						</div>
@@ -62,15 +58,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+									{% for seq in seqs %}
                                     <tr class="odd gradeX">
-                                        <td><a href="#">MANOR</a></td>
-                                        <td><a href="#">RBY</a></td>
+                                        <td><a href="#">{{seq.name}}</a></td>
+                                        <td><a href="#">{{seq.show}}</a></td>
                                     </tr>
-                                    <tr class="even gradeC">
-                                        <td><a href="#">HRM</a></td>
-                                        <td><a href="#">RBY</a></td>
-                                    </tr>
-
+									{% endfor %}
                                 </tbody>
                             </table>
 						</div>
@@ -83,73 +76,118 @@
                                         <th>Sequence</th>
                                         <th>Show</th>
                                         <th>Frame Range</th>
-                                        <th>Tasks</th>
+                                        <th>Collaborators</th>
                                         <th>Assets</th>
                                         <th>Target date</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+									{% for shot in shots %}
                                     <tr>
-                                        <td><a href="#">MANOR_010</a></td>
-                                        <td><a href="#">MANOR</a></td>
-                                        <td><a href="#">RBY</a></td>
-                                        <td>1001 - 1022</td>
-                                        <td><span class="label label-default" data-toggle="tooltip" data-placement="top" title="" data-original-title="">INSER TASK</span>&nbsp;</td>
-										<td><a href="#">RUBBISHBOY</a> <a href="#">MANOR LIVING ROOM</a></td>
-										<td> 11-22-2017</td>
-										<th><span class="label label-primary">WORK IN PROGRESS</span></th>
+                                        <td><a href="#">{{shot.name}}</a></td>
+                                        <td><a href="#">{{shot.seq}}</a></td>
+                                        <td><a href="#">{{shot.show}}</a></td>
+                                        <td>{{shot.frame_in}} - {{shot.frame_out}}</td>
+										<td>
+										{% for task in shot.tasks %}
+										<span class="label {{task.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{task.status}}">{{task.task}}</span>&nbsp;
+										{% endfor %}
+										</td>
+										<td>
+										{% for asset in shot.assets %}
+										 <span class="label label-default">{{asset.name}}</span>&nbsp;
+										{% endfor %}
+										</td>
+										<td>{{shot.target_date}}</td>
+										<td><span class="label {{shot.status}}">{{shot.status}}</span></td>
                                     </tr>
-                                    <tr>
-                                        <td><a href="#">MANOR_020</a></td>
-                                        <td><a href="#">MANOR</a></td>
-                                        <td><a href="#">RBY</a></td>
-                                        <td>1001 - 1032</td>
-                                        <td><span class="label label-default" data-toggle="tooltip" data-placement="top" title="" data-original-title="">INSER TASK</span>&nbsp;</td>
-										<td><a href="#">RUBBISHBOY</a> <a href="#">MANOR LIVING ROOM</a></td>
-										<td> 13-22-2017</td>
-										<th><span class="label label-warning">NOT STARTED</span></th>
-                                    </tr>
-
-
+									{% endfor %}
                                 </tbody>
                             </table>
 						</div>
 						<div class="tab-pane fade" id="nav-pills-tab-4">
 						    <h3 class="m-t-10">Assets</h3>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-								Integer ac dui eu felis hendrerit lobortis. Phasellus elementum, nibh eget adipiscing porttitor, 
-								est diam sagittis orci, a ornare nisi quam elementum tortor. 
-								Proin interdum ante porta est convallis dapibus dictum in nibh. 
-								Aenean quis massa congue metus mollis fermentum eget et tellus. 
-								Aenean tincidunt, mauris ut dignissim lacinia, nisi urna consectetur sapien, 
-								nec eleifend orci eros id lectus.
-							</p>
+                            <table id="" class="table display table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Show</th>
+                                        <th>Collaborators</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="odd gradeX">
+                                        <td><a href="#">MANOR</a></td>
+                                        <td><a href="#">RBY</a></td>
+                                        <td><a href="#">RBY</a></td>
+                                    </tr>
+                                    <tr class="even gradeC">
+                                        <td><a href="#">HRM</a></td>
+                                        <td><a href="#">RBY</a></td>
+                                        <td><a href="#">RBY</a></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
 						</div>
 						<div class="tab-pane fade" id="nav-pills-tab-5">
 						    <h3 class="m-t-10">Users</h3>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-								Integer ac dui eu felis hendrerit lobortis. Phasellus elementum, nibh eget adipiscing porttitor, 
-								est diam sagittis orci, a ornare nisi quam elementum tortor. 
-								Proin interdum ante porta est convallis dapibus dictum in nibh. 
-								Aenean quis massa congue metus mollis fermentum eget et tellus. 
-								Aenean tincidunt, mauris ut dignissim lacinia, nisi urna consectetur sapien, 
-								nec eleifend orci eros id lectus.
-							</p>
+                            <table id="" class="table display table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>email</th>
+                                        <th>role</th>
+                                        <th>shows</th>
+                                        <th>shots or assets</th>
+                                        <th>task</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="odd gradeX">
+                                        <td><a href="#">Geoffroy</a></td>
+                                        <td><a href="#">geoff.givry@gmail.com</a></td>
+                                        <td><a href="#">admin</a></td>
+                                        <td><a href="#">RBY</a> <a href="#">NYC</a></td>
+                                        <td><a href="#">MANOR_010</a></td>
+                                        <td><a href="#">CMP</a></td>
+                                    </tr>
+                                    <tr class="odd gradeX">
+                                        <td><a href="#">user1</a></td>
+                                        <td><a href="#">user1@example.com</a></td>
+                                        <td><a href="#">artist</a></td>
+                                        <td><a href="#">RBY</a></td>
+                                        <td><a href="#">MANOR_010</a></td>
+                                        <td><a href="#">LGT</a></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
 						</div>
 						<div class="tab-pane fade" id="nav-pills-tab-6">
 						    <h3 class="m-t-10">Submissions</h3>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-								Integer ac dui eu felis hendrerit lobortis. Phasellus elementum, nibh eget adipiscing porttitor, 
-								est diam sagittis orci, a ornare nisi quam elementum tortor. 
-								Proin interdum ante porta est convallis dapibus dictum in nibh. 
-								Aenean quis massa congue metus mollis fermentum eget et tellus. 
-								Aenean tincidunt, mauris ut dignissim lacinia, nisi urna consectetur sapien, 
-								nec eleifend orci eros id lectus.
-							</p>
+                            <table id="" class="table display table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Shot or Asset</th>
+                                        <th>task</th>
+                                        <th>show</th>
+                                        <th>ptuid</th>
+                                        <th>status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="odd gradeX">
+                                        <td><a href="#">Geoffroy</a></td>
+                                        <td><a href="#">MANOR_010</a></td>
+                                        <td><a href="#">CMP</a></td>
+                                        <td><a href="#">RBY-CMP-000005</a></td>
+                                        <td><a href="#">WORK IN PROGRESS</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
 						</div>
 					</div>
 				</div>
