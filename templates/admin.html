@@ -64,8 +64,8 @@
                                 <tbody>
 									{% for seq in seqs %}
                                     <tr class="odd gradeX">
-                                        <td><a href="#">{{seq.name}}</a></td>
-                                        <td><a href="#">{{seq.show}}</a></td>
+                                        <td><a href="{{url_for('seq', show=seq.show, seq=seq.name)}}">{{seq.name}}</a></td>
+                                        <td><a href="{{url_for('show', show=seq.show)}}">{{seq.show}}</a></td>
                                     </tr>
 									{% endfor %}
                                 </tbody>
@@ -80,10 +80,11 @@
                                         <th>Sequence</th>
                                         <th>Show</th>
                                         <th>Frame Range</th>
-                                        <th>Collaborators</th>
+                                        <th>tasks</th>
                                         <th>Assets</th>
                                         <th>Target date</th>
                                         <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -91,9 +92,9 @@
                                     {% set shot_target_date = utils.convert_isotime_to_datetime(shot.target_date) %}
                                     {% set pretty_target_date = shot_target_date.strftime(format) %}
                                     <tr>
-                                        <td><a href="#">{{shot.name}}</a></td>
-                                        <td><a href="#">{{shot.seq}}</a></td>
-                                        <td><a href="#">{{shot.show}}</a></td>
+                                        <td><a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}">{{shot.name}}</a></td>
+                                        <td><a href="{{url_for('seq', show=shot.show, seq=shot.seq)}}">{{shot.seq}}</a></td>
+                                        <td><a href="{{url_for('show', show=shot.show)}}">{{shot.show}}</a></td>
                                         <td>{{shot.frame_in}} - {{shot.frame_out}}</td>
 										<td>
 										{% for task in shot.tasks %}
@@ -107,6 +108,7 @@
 										</td>
 										<td><div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{shot.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div></td>
 										<td><span class="label {{shot.status}}">{{shot.status}}</span></td>
+										<td><div style="text-align: right;"><a href="javascript:;" class="btn btn-warning btn-xs m-r-5">Modify</a> <a href="javascript:;" class="btn btn-danger btn-xs m-r-5">Delete</a></div></td>
                                     </tr>
 									{% endfor %}
                                 </tbody>
@@ -129,7 +131,7 @@
                                 {% set pretty_target_date = asset_target_date.strftime(format) %}
                                     <tr class="odd gradeX">
                                         <td><a href="#">{{asset.name}}</a></td>
-                                        <td><a href="#">{{asset.show}}</a></td>
+                                        <td><a href="{{url_for('show', show=asset.show)}}">{{asset.show}}</a></td>
                                         <td>{% for task in asset.tasks %}<a href="{{url_for('user', user_name=task.assignee)}}">{{task.assignee}}</a>{% endfor %}</td>
                                         <td><div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{asset.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div></td>
                                     </tr>
@@ -182,19 +184,23 @@
                                         <th>show</th>
                                         <th>type</th>
                                         <th>ptuid</th>
+                                        <th>date</th>
                                         <th>status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 {% for sub in subs %}
+								{% set sub_target_date = utils.convert_isotime_to_datetime(sub.Date) %}
+                                {% set pretty_target_date = sub_target_date.strftime(format) %}
                                     <tr class="odd gradeX">
-                                        <td><a href="#">{{sub.Username}}</a></td>
-                                        <td><a href="#">{{sub.Shot}}</a></td>
-                                        <td><a href="#">{{sub.Task}}</a></td>
-                                        <td><a href="#">{{sub.Show}}</a></td>
-                                        <td><a href="#">{{sub.type}}</a></td>
-                                        <td><a href="#">{{sub.ptuid}}</a></td>
-                                        <td><a href="#">{{sub.status}}</a></td>
+                                        <td><a href="{{url_for('user', user_name=sub.Username)}}">{{sub.Username}}</a></td>
+                                        <td><a href="{{url_for('shot', show=sub.Show, seq=sub.seq, shot_name=sub.Shot)}}">{{sub.Shot}}</a></td>
+                                        <td>{{sub.Task}}</td>
+                                        <td><a href="{{url_for('show', show=sub.Show)}}">{{sub.Show}}</a></td>
+                                        <td>{{sub.type}}</td>
+                                        <td><a href="{{url_for('shot', show=sub.Show, seq=sub.seq, shot_name=sub.Shot, _anchor=sub.ptuid)}}">{{sub.ptuid}}</a></td>
+										<td><div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{sub.Date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div></td>
+                                        <td><span class="label {{sub.status}}">{{sub.status}}</span></td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
