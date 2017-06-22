@@ -245,13 +245,14 @@ def admin():
         user_session = mongo.db.users.find_one({"name": session['username']})
         if user_session.get('role') == 'admin':
             subs = [x for x in mongo.db.submissions.find()]
+            notifications = [x for x in mongo.db.notifications.find()]
             shows = [x for x in mongo.db.shows.find()]
             users = [x for x in mongo.db.users.find()]
             seqs = [x for x in mongo.db.seqs.find()]
             shots = [x for x in mongo.db.shots.find()]
             assets = [x for x in mongo.db.assets.find()]
 
-            return render_template("admin.html", user_session=user_session, shows=shows, subs=subs, users=users, seqs=seqs, shots=shots, assets=assets)
+            return render_template("admin.html", user_session=user_session, shows=shows, subs=subs, users=users, seqs=seqs, shots=shots, assets=assets, notifications=notifications)
         else:
             return render_template("oops.html")
     else:
