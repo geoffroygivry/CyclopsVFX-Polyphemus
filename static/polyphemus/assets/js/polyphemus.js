@@ -28,7 +28,16 @@ $(document).ready(function () {
 
 $(document).on("click", ".delete-shot", function () {
      var shotName = $(this).data('id');
-     console.log("test:");
-     console.log(shotName);
      $("#cyc-entity").html("<strong>" + shotName + "</strong>");
+    $(".modal-footer #shotNameDelete").val( shotName );
+});
+
+$(document).on("click", ".modify-shot", function () {
+     var shotName = $(this).data('id');
+     $("#modify-cyc-entity").html("<strong>" + shotName + "</strong>");
+});
+
+
+$("#deleteModalBtn").on("click", function() {
+   $("#modal-alert").modal("hide"); 
 });

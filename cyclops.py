@@ -251,8 +251,9 @@ def admin():
             seqs = [x for x in mongo.db.seqs.find()]
             shots = [x for x in mongo.db.shots.find()]
             assets = [x for x in mongo.db.assets.find()]
+            utilz = [x for x in mongo.db.utils.find()]
 
-            return render_template("admin.html", user_session=user_session, shows=shows, subs=subs, users=users, seqs=seqs, shots=shots, assets=assets, notifications=notifications)
+            return render_template("admin.html", user_session=user_session, shows=shows, subs=subs, users=users, seqs=seqs, shots=shots, assets=assets, notifications=notifications, utilz=utilz)
         else:
             return render_template("oops.html")
     else:
@@ -269,6 +270,13 @@ def has_no_empty_params(rule):
 def dev():
     publisher = {"publisher": {"name": "Geoffroy", "email": "geoff.givry@gmail.com"}}
     return render_template("dev.html", publisher=publisher)
+
+
+@app.route('/delete-shot', methods=['POST'])
+def delete_shot():
+    shot_to_delete = request.form['shotName']
+    print("You are about to delete {}".format(shot_to_delete))
+    return redirect(redirect_url())
 
 
 @app.route("/process/<current_route>/<username>")
