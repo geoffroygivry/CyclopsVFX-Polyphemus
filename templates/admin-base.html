@@ -109,5 +109,47 @@
         });
         $("#data-table").treeFy();
     </script>
+    
+<script charset="utf-8" type="text/javascript">
+
+$(function() {
+
+    // jQuery selection for the 2 select boxes
+    var dropdown_asset = {
+        task: $('#asset-task'),
+        assignee: $('#user-dropdown-asset')
+    };
+
+    // call to update on load
+    updateCounties();
+
+    // function to call XHR and update county dropdown
+    function updateCounties() {
+        var send = {
+            task: dropdown.task.val()
+        };
+        dropdown.assignee.attr('disabled', 'disabled');
+        dropdown.assignee.empty();
+        $.getJSON("/" + send, function(data) {
+            data.forEach(function(item) {
+                dropdown.assignee.append(
+                    $('<option>', {
+                        value: item[0],
+                        text: item[1]
+                    })
+                );
+            });
+            dropdown.assignee.removeAttr('disabled');
+        });
+    }
+
+    // event listener to state dropdown change
+    dropdown.task.on('change', function() {
+        updateCounties();
+    });
+
+});
+
+</script>
 </body>
 </html>

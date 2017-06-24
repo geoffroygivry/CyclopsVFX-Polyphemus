@@ -160,8 +160,8 @@
                         {% if user.name == collaborator.assignee %}
                             <tr>
                                 <td><img src="{{user.email | gravatar}}" class="collaborator" alt=""></td>
-                                <td><a href="{{url_for('user', user_name=user.name)}}">{{user.name}}</a></td>
-                                <td><a href=""><span class="label {{collaborator.status}}" data-toggle="tooltip" data-placement="right" title="" data-original-title="{{collaborator.status}}">{{user.task}}</span></a></td>
+                                <td><a href="{{url_for('user', user_name=user.name)}}">{{collaborator.assignee}}</a></td>
+                                <td><a href=""><span class="label {{collaborator.status}}" data-toggle="tooltip" data-placement="right" title="" data-original-title="{{collaborator.status}}">{{collaborator.task}}</span></a></td>
                             </tr>
                         {% endif %}
                         {% endfor %}

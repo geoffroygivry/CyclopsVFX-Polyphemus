@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, url_for, request, session, redirect
+from flask import Flask, render_template, url_for, request, session, redirect, Response
 from flask_pymongo import PyMongo
 from flask_gravatar import Gravatar
 from datetime import datetime
@@ -9,6 +9,7 @@ from scripts import aws_s3
 from scripts import generate_images
 from scripts import check_img as ci
 import bcrypt
+import json
 
 from cyc_config import cyc_config as cfg
 
@@ -266,10 +267,17 @@ def has_no_empty_params(rule):
     return len(defaults) >= len(arguments)
 
 
-@app.route('/dev')
-def dev():
-    publisher = {"publisher": {"name": "Geoffroy", "email": "geoff.givry@gmail.com"}}
-    return render_template("dev.html", publisher=publisher)
+@app.route("/get-users/<task>")
+def get_user_by_task(task):
+    assignee = []
+    users = [x for x in mongo.db.users.find()]
+    for user in users:
+        for task_user in user.get('tasks'):
+            print( user.get('tasks'))
+            if task_user == task:
+                assignee.append(user.get('name'))
+
+    return Response(json.dumps(assignee),  mimetype='application/json')
 
 
 @app.route('/delete-shot', methods=['POST'])
