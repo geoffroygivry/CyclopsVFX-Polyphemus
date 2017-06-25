@@ -20,32 +20,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Add Asset task</label>
+                        <label class="col-md-3 control-label">Add Task</label>
                         <div class="col-md-3">
-                            <select class="form-control">
-                                <option>Choose...</option>
-                                {% for statuses in utilz %}
-                                {% for asset_task in statuses.asset_tasks %}
-                                <option>{{asset_task}}</option>
-                                {% endfor %}
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <label class="col-md-3 control-label">Add Assignee</label>
-                        <div class="col-md-3">
-                            <select class="form-control" id="user-dropdown-asset">
-                                <option>Choose...</option>
-                                {% for user in users %}
-                                <option>{{user.name}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Add Shot task</label>
-                        <div class="col-md-3">
-                            <select class="form-control">
+                            <select class="form-control" id="shot-task">
                                 <option>Choose...</option>
                                 {% for statuses in utilz %}
                                 {% for shot_task in statuses.shot_tasks %}
@@ -65,7 +42,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Submit</label>
+                        <label class="col-md-3 control-label"> </label>
                         <div class="col-md-9">
                             <button type="submit" class="btn btn-sm btn-success">Submit Button</button>
                         </div>
@@ -74,7 +51,6 @@
             </div>
             <div class="modal-footer">
                 <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
-                <a href="javascript:;" class="btn btn-sm btn-success">Action</a>
             </div>
         </div>
     </div>

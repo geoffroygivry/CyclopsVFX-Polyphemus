@@ -8,6 +8,7 @@ from scripts.flask_celery import make_celery
 from scripts import aws_s3
 from scripts import generate_images
 from scripts import check_img as ci
+from scripts.forms import ShotForm
 import bcrypt
 import json
 
