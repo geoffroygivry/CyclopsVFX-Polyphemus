@@ -271,6 +271,11 @@ def modify_shot(shot_name):
     print("The shot you want to modify is: {} and the task is {} and the assignee is {}".format(shot_name, shot_to_modify, shot_assignee))
     return redirect(redirect_url())
 
+@app.route('/modify-show/<show_name>', methods=['POST'])
+def modify_show(show_name):
+    show_is_active = request.form['show-active']
+    print(show_is_active, show_name)
+    return redirect(redirect_url())
 
 def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()

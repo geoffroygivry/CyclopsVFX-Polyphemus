@@ -33,6 +33,7 @@
                                         <th>Name</th>
                                         <th>Long name</th>
                                         <th>Show active</th>
+										<th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -45,6 +46,7 @@
                                         {% else %}
                                         <td><span class="label label-default">Non Active</span></td>
                                         {% endif %}
+										<td><div style="text-align: right;"><a href="#modal-show-modify-{{show.name}}" class="btn btn-warning btn-xs m-r-5 modify-show" data-id="{{show.name}}" data-toggle="modal">Modify</a> <a href="#modal-alert" class="btn btn-danger btn-xs m-r-5 delete-show" data-toggle="modal" data-id="{{show.name}}">Delete</a></div></td>
                                     </tr>
 								{% endfor %}
                                 </tbody>
@@ -246,6 +248,10 @@
 					</div>
 				</div>
 			</div>
+
+							{% for show in shows %}		
+							{% include 'show-form.html' %}
+							{% endfor %}
 
 							{% for shot in shots %}		
 							{% include 'shot-form.html' %}
