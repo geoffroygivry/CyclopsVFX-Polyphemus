@@ -238,7 +238,8 @@ def user(user_name):
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
 
-    return render_template("user.html", user_name=user_name, subs=subs, user_session=user_session, notifications=notifications, shows=shows, shots=shots)
+    return render_template("user.html", user_name=user_name, subs=subs, user_session=user_session,
+                           notifications=notifications, shows=shows, shots=shots)
 
 
 @app.route('/admin')
@@ -255,11 +256,20 @@ def admin():
             assets = [x for x in mongo.db.assets.find()]
             utilz = [x for x in mongo.db.utils.find()]
 
-            return render_template("admin.html", user_session=user_session, shows=shows, subs=subs, users=users, seqs=seqs, shots=shots, assets=assets, notifications=notifications, utilz=utilz)
+            return render_template("admin.html", user_session=user_session, shows=shows, subs=subs,
+                                   users=users, seqs=seqs, shots=shots, assets=assets, notifications=notifications, utilz=utilz)
         else:
             return render_template("oops.html")
     else:
         return render_template('login.html')
+
+
+@app.route('/modify-shot/<shot_name>', methods=['POST'])
+def modify_shot(shot_name):
+    shot_to_modify = request.form['task-select']
+    shot_assignee = request.form['task-assignee']
+    print("The shot you want to modify is: {} and the task is {} and the assignee is {}".format(shot_name, shot_to_modify, shot_assignee))
+    return redirect(redirect_url())
 
 
 def has_no_empty_params(rule):
