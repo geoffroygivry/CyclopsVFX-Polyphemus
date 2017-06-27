@@ -271,11 +271,13 @@ def modify_shot(shot_name):
     print("The shot you want to modify is: {} and the task is {} and the assignee is {}".format(shot_name, shot_to_modify, shot_assignee))
     return redirect(redirect_url())
 
+
 @app.route('/modify-show/<show_name>', methods=['POST'])
 def modify_show(show_name):
     show_is_active = request.form['show-active']
     print(show_is_active, show_name)
     return redirect(redirect_url())
+
 
 def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()
@@ -289,17 +291,24 @@ def get_user_by_task(task):
     users = [x for x in mongo.db.users.find()]
     for user in users:
         for task_user in user.get('tasks'):
-            print( user.get('tasks'))
+            print(user.get('tasks'))
             if task_user == task:
                 assignee.append(user.get('name'))
 
-    return Response(json.dumps(assignee),  mimetype='application/json')
+    return Response(json.dumps(assignee), mimetype='application/json')
 
 
 @app.route('/delete-shot', methods=['POST'])
 def delete_shot():
     shot_to_delete = request.form['shotName']
     print("You are about to delete {}".format(shot_to_delete))
+    return redirect(redirect_url())
+
+
+@app.route('/remove-show/<show_name>', methods=['POST'])
+def remove_show(show_name):
+    show_to_delete = request.form['showName']
+    print("You are about to delete {}".format(show_to_delete))
     return redirect(redirect_url())
 
 

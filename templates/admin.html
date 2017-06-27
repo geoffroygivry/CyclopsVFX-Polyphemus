@@ -46,7 +46,7 @@
                                         {% else %}
                                         <td><span class="label label-default">Non Active</span></td>
                                         {% endif %}
-										<td><div style="text-align: right;"><a href="#modal-show-modify-{{show.name}}" class="btn btn-warning btn-xs m-r-5 modify-show" data-id="{{show.name}}" data-toggle="modal">Modify</a> <a href="#modal-alert" class="btn btn-danger btn-xs m-r-5 delete-show" data-toggle="modal" data-id="{{show.name}}">Delete</a></div></td>
+										<td><div style="text-align: right;"><a href="#modal-show-modify-{{show.name}}" class="btn btn-warning btn-xs m-r-5 modify-show" data-id="{{show.name}}" data-toggle="modal">Modify</a> <a href="#modal-delete-{{show.name}}" class="btn btn-danger btn-xs m-r-5 delete-show" data-toggle="modal" data-id="{{show.name}}">Delete</a></div></td>
                                     </tr>
 								{% endfor %}
                                 </tbody>
@@ -90,7 +90,7 @@
                                 <tbody>
 									{% for shot in shots %}
                                     {% set shot_target_date = utils.convert_isotime_to_datetime(shot.target_date) %}
-                                    {% set pretty_target_date = shot_target_date.strftime(format) %}						
+                                    {% set pretty_target_date = shot_target_date.strftime(format) %}
                                     <tr>
                                         <td><a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}">{{shot.name}}</a></td>
                                         <td><a href="{{url_for('seq', show=shot.show, seq=shot.seq)}}">{{shot.seq}}</a></td>
@@ -249,14 +249,14 @@
 				</div>
 			</div>
 
-							{% for show in shows %}		
+							{% for show in shows %}
 							{% include 'show-form.html' %}
 							{% endfor %}
 
-							{% for shot in shots %}		
+							{% for shot in shots %}
 							{% include 'shot-form.html' %}
 							{% endfor %}
-			
+
 
 
         </div>
