@@ -26,18 +26,18 @@ $(document).ready(function () {
                 });
             });
 
-$(document).on("click", ".delete-shot", function () {
-     var shotName = $(this).data('id');
-     $("#cyc-entity").html("<strong>" + shotName + "</strong>");
-    $(".modal-footer #shotNameDelete").val( shotName );
-});
+// $(document).on("click", ".delete-shot", function () {
+//      var shotName = $(this).data('id');
+//      $("#cyc-entity").html("<strong>" + shotName + "</strong>");
+//     $(".modal-footer #shotNameDelete").val( shotName );
+// });
 
-$(document).on("click", ".modify-shot", function () {
-     var shotName = $(this).data('id');
-     $("#modify-cyc-entity").html("<strong>" + shotName + "</strong>");
-});
+// $(document).on("click", ".modify-shot", function () {
+//      var shotName = $(this).data('id');
+//      $("#modify-cyc-entity").html("<strong>" + shotName + "</strong>");
+// });
 
 
-$("#deleteModalBtn").on("click", function() {
-   $("#modal-alert").modal("hide"); 
-});
+// $("#deleteModalBtn").on("click", function() {
+//    $("#modal-alert").modal("hide"); 
+// });

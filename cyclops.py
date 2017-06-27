@@ -298,8 +298,8 @@ def get_user_by_task(task):
     return Response(json.dumps(assignee), mimetype='application/json')
 
 
-@app.route('/delete-shot', methods=['POST'])
-def delete_shot():
+@app.route('/delete-shot/<shot_name>', methods=['POST'])
+def delete_shot(shot_name):
     shot_to_delete = request.form['shotName']
     print("You are about to delete {}".format(shot_to_delete))
     return redirect(redirect_url())
@@ -309,6 +309,27 @@ def delete_shot():
 def remove_show(show_name):
     show_to_delete = request.form['showName']
     print("You are about to delete {}".format(show_to_delete))
+    return redirect(redirect_url())
+
+
+@app.route('/remove-seq/<seq_name>', methods=['POST'])
+def remove_seq(seq_name):
+    seq_to_delete = request.form['seqName']
+    print("You are about to delete {}".format(seq_to_delete))
+    return redirect(redirect_url())
+
+
+@app.route('/remove-user/<user_name>', methods=['POST'])
+def remove_user(user_name):
+    user_to_delete = request.form['userName']
+    print("You are about to delete {}".format(user_to_delete))
+    return redirect(redirect_url())
+
+
+@app.route('/remove-sub/<ptuid>', methods=['POST'])
+def remove_sub(ptuid):
+    sub_to_delete = request.form['ptuid']
+    print("You are about to delete {}".format(sub_to_delete))
     return redirect(redirect_url())
 
 

@@ -59,6 +59,7 @@
                                     <tr>
                                         <th>Name</th>
                                         <th>Show</th>
+										<th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -66,6 +67,7 @@
                                     <tr class="odd gradeX">
                                         <td><a href="{{url_for('seq', show=seq.show, seq=seq.name)}}">{{seq.name}}</a></td>
                                         <td><a href="{{url_for('show', show=seq.show)}}">{{seq.show}}</a></td>
+										<td><div style="text-align: right;"><a href="#modal-delete-{{seq.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{seq.name}}">Delete</a></div></td>
                                     </tr>
 									{% endfor %}
                                 </tbody>
@@ -109,7 +111,7 @@
 										<td><div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{shot.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div></td>
 										<td><span class="label {{shot.status}}">{{shot.status}}</span></td>
 
-										<td><div style="text-align: right;"><a href="#modal-shot-modify-{{shot.name}}" class="btn btn-warning btn-xs m-r-5 modify-shot" data-id="{{shot.name}}" data-toggle="modal">Modify</a> <a href="#modal-alert" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{shot.name}}">Delete</a></div></td>
+										<td><div style="text-align: right;"><a href="#modal-shot-modify-{{shot.name}}" class="btn btn-warning btn-xs m-r-5 modify-shot" data-id="{{shot.name}}" data-toggle="modal">Modify</a> <a href="#modal-delete-{{shot.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{shot.name}}">Delete</a></div></td>
                                     </tr>
 									{% endfor %}
                                 </tbody>
@@ -151,6 +153,7 @@
                                         <th>shows</th>
                                         <th>shots or assets</th>
                                         <th>task</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -173,6 +176,7 @@
                                         {{task}}&nbsp;|&nbsp;
 										{% endfor %}
 										</td>
+										<td><div style="text-align: right;"><a href="#modal-delete-{{user.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{user.name}}">Delete</a></div></td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
@@ -191,6 +195,7 @@
                                         <th>ptuid</th>
                                         <th>date</th>
                                         <th>status</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -206,6 +211,7 @@
                                         <td><a href="{{url_for('shot', show=sub.Show, seq=sub.seq, shot_name=sub.Shot, _anchor=sub.ptuid)}}">{{sub.ptuid}}</a></td>
 										<td><div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{sub.Date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div></td>
                                         <td><span class="label {{sub.status}}">{{sub.status}}</span></td>
+										<td><div style="text-align: right;"><a href="#modal-delete-{{sub.ptuid}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{sub.ptuid}}">Delete</a></div></td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
@@ -224,37 +230,26 @@
             </div>
             <!-- end row -->
 
-			<div class="modal fade" id="modal-alert" style="display: none;">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<h4 class="modal-title">Alert Deleting Action! </h4>
-						</div>
-						<div class="modal-body">
-							<div class="alert alert-danger m-b-0">
-								<h4><i class="fa fa-info-circle"></i> You are about to delete <span id="cyc-entity"></span></h4>
-								<p>Are you sure you want to do it?</p>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
-							<form action="{{ url_for('delete_shot') }}" method="POST" target="hiddenFrame">
-								<input type="hidden" name="shotName" id="shotNameDelete" value=""/>
-							<a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
-								<input class="btn btn-sm btn-danger" id="deleteModalBtn" name="deleteShot" type="submit" value="Delete"/>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
+
 
 							{% for show in shows %}
 							{% include 'show-form.html' %}
 							{% endfor %}
 
+							{% for seq in seqs %}
+							{% include 'seq-form.html' %}
+							{% endfor %}
+
 							{% for shot in shots %}
 							{% include 'shot-form.html' %}
+							{% endfor %}
+
+							{% for user in users %}
+							{% include 'user-form.html' %}
+							{% endfor %}
+
+							{% for sub in subs %}
+							{% include 'sub-form.html' %}
 							{% endfor %}
 
 
