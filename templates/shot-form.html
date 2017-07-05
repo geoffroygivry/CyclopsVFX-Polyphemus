@@ -21,9 +21,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Add Task</label>
-                        <div class="col-md-3">
-                            <select name="task-select" class="form-control" id="shot-task">
+                        <label class="col-md-2 control-label">Add Task</label>
+                        <div class="col-md-2">
+                            <select style="width: auto;" name="task-select" class="form-control" id="shot-task">
                                 <option>Choose...</option>
                                 {% for statuses in utilz %}
                                 {% for shot_task in statuses.shot_tasks %}
@@ -32,17 +32,27 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <label class="col-md-3 control-label">Add Assignee</label>
-                        <div class="col-md-3">
-                            <select name="task-assignee" class="form-control" id="user-dropdown-shot">
+                        <label class="col-md-2 control-label">Add Assignee</label>
+                        <div class="col-md-2">
+                            <select style="width: auto;" name="task-assignee" class="form-control" id="user-dropdown-shot">
                                 <option>Choose...</option>
                                 {% for user in users %}
                                 <option>{{user.name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
+                        <label class="col-md-2 control-label">Task status</label>
+                        <div class="col-md-2">
+                            <select name="task-status" class="form-control">
+                                {% for statuses in utilz %}
+                                {% for status in statuses.valid_statuses %}
+                                <option>{{status}}</option>
+                                {% endfor %}
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
-                    {% include 'datepicker.html' %}
+                    {% include 'datepicker-shot.html' %}
                     <div class="form-group">
                         <label class="col-md-3 control-label"> </label>
                         <div class="col-md-9">

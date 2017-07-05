@@ -266,9 +266,11 @@ def admin():
 
 @app.route('/modify-shot/<shot_name>', methods=['POST'])
 def modify_shot(shot_name):
-    shot_to_modify = request.form['task-select']
-    shot_assignee = request.form['task-assignee']
-    print("The shot you want to modify is: {} and the task is {} and the assignee is {}".format(shot_name, shot_to_modify, shot_assignee))
+    task_to_modify = request.form['task-select']
+    task_assignee = request.form['task-assignee']
+    target_date = request.form['date-{}'.format(shot_name)]
+    iso_target_date = utils.convert_datepicker_to_isotime(target_date)
+    print("The shot you want to modify is: {}, the task is {}, the target date is {} and the assignee is {}".format(shot_name, task_to_modify, iso_target_date, task_assignee))
     return redirect(redirect_url())
 
 

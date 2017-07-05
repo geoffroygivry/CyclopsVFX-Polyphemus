@@ -26,6 +26,18 @@ def convert_isotime_to_datetime(isotime_format):
     return dt + datetime.timedelta(microseconds=us)
 
 
+def convert_datepicker_to_isotime(date_picker_format):
+    """the date_picker_format argument comes from the html forms and it should looks like this: MM/DD/YYYY.
+       We want to transform them into our standart ISO format like this :
+       YYYY-MM-DDThh:mm:ss.ms
+    """
+    year = date_picker_format.split('/')[-1]
+    month = date_picker_format.split('/')[0]
+    day = date_picker_format.split('/')[1]
+    iso_format = "{}-{}-{}T18:00:00.000000".format(year, month, day)
+    return iso_format
+
+
 def sort_by_date(shots):
     overdueList = []
     todayList = []
