@@ -11,13 +11,23 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label">Status</label>
                         <div class="col-md-9">
-                            <select class="form-control">
+                            <select name="shot-status" class="form-control">
                                 {% for statuses in utilz %}
                                 {% for status in statuses.valid_statuses %}
                                 <option>{{status}}</option>
                                 {% endfor %}
                                 {% endfor %}
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Frame in</label>
+                        <div class="col-md-3">
+                            <input type="number" name="frame-in" class="form-control" placeholder="{{shot.frame_in}}">
+                        </div>
+                        <label class="col-md-3 control-label">Frame out</label>
+                        <div class="col-md-3">
+                            <input type="number" name="frame-out" class="form-control" placeholder="{{shot.frame_out}}">
                         </div>
                     </div>
                     <div class="form-group">

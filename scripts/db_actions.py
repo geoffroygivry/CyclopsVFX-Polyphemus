@@ -22,8 +22,10 @@
 
 from scripts import connect_db as con
 
-server = con.server
-db = server.hydra
+def get_connection():
+    server = con.server
+    db = server.hydra
+    return db
 
 
 def create_show(long_name, code_name):

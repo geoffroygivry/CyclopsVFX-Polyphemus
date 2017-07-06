@@ -25,11 +25,33 @@ import sys
 
 from scripts import db_actions
 
-db = db_actions.db
 
+def modify_shot(shot_name, status, task_type, task_assignee, task_status, iso_target_date, frame_in, frame_out):
+    db = db_actions.get_connection()
+    if status != "NOT-STARTED":
+        db.shots.update({"name": shot_name}, {"$set": {"status": status}})
+    if task_type != "Choose...":
+        if task_assignee != "Choose...":
+            db.shots.update(
+                {"name": shot_name},
+                {"$push":
+                 {"tasks": {"task": task_type, "assignee": task_assignee, "status": task_status}}
+                 }
+            )
+    if iso_target_date is not None:
+        db.shots.update({"name": shot_name}, {"$set": {"target_date": iso_target_date}})
+    if frame_in != "":
+        db.shots.update({"name": shot_name}, {"$set": {"frame_in": frame_in}})
+    if frame_out != "":
+        db.shots.update({"name": shot_name}, {"$set": {"frame_out": frame_out}})
 
-def modify_shot(**kwargs):
-    if kwargs is not None:
-        for key, value in kwargs.items():
-            print("%s == %s" %(key,value))
+            
+            
+            
+            
+            
+            
+            
+            
+            
             

@@ -31,11 +31,14 @@ def convert_datepicker_to_isotime(date_picker_format):
        We want to transform them into our standart ISO format like this :
        YYYY-MM-DDThh:mm:ss.ms
     """
-    year = date_picker_format.split('/')[-1]
-    month = date_picker_format.split('/')[0]
-    day = date_picker_format.split('/')[1]
-    iso_format = "{}-{}-{}T18:00:00.000000".format(year, month, day)
-    return iso_format
+    try:
+        year = date_picker_format.split('/')[-1]
+        month = date_picker_format.split('/')[0]
+        day = date_picker_format.split('/')[1]
+        iso_format = "{}-{}-{}T18:00:00.000000".format(year, month, day)
+        return iso_format
+    except IndexError:
+        return None
 
 
 def sort_by_date(shots):

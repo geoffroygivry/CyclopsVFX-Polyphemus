@@ -7,6 +7,7 @@ from scripts import utils
 from scripts.flask_celery import make_celery
 from scripts import aws_s3
 from scripts import generate_images
+from scripts import admin as ad
 from scripts import check_img as ci
 from scripts.forms import ShotForm
 import bcrypt
@@ -266,11 +267,16 @@ def admin():
 
 @app.route('/modify-shot/<shot_name>', methods=['POST'])
 def modify_shot(shot_name):
-    task_to_modify = request.form['task-select']
+    status = request.form['shot-status']
+    task_type = request.form['task-select']
     task_assignee = request.form['task-assignee']
+    task_status = request.form['task-status']
     target_date = request.form['date-{}'.format(shot_name)]
+    frame_in = request.form['frame-in']
+    frame_out = request.form['frame-out']
     iso_target_date = utils.convert_datepicker_to_isotime(target_date)
-    print("The shot you want to modify is: {}, the task is {}, the target date is {} and the assignee is {}".format(shot_name, task_to_modify, iso_target_date, task_assignee))
+    ad.modify_shot(shot_name, status, task_type, task_assignee, task_status, iso_target_date, frame_in, frame_out)
+    print("The shot you want to modify is: {}, the task is {}, the target date is {} and the assignee is {}. frame in: {}, frame out: {}".format(shot_name, task_type, iso_target_date, task_assignee, frame_in, frame_out))
     return redirect(redirect_url())
 
 
