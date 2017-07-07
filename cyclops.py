@@ -114,6 +114,7 @@ def register():
     return render_template('register.html')
 
 
+
 @app.route('/polyphemus')
 def polyphemus():
     if 'username' in session:
@@ -241,6 +242,38 @@ def user(user_name):
 
     return render_template("user.html", user_name=user_name, subs=subs, user_session=user_session,
                            notifications=notifications, shows=shows, shots=shots)
+
+@app.route('/polyphemus/profile/<user_name>')
+def profile(user_name):
+    if 'username' in session:
+        user_name = mongo.db.users.find_one({"name": user_name})
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        subs = [x for x in mongo.db.submissions.find()]
+        notifications = [x for x in mongo.db.notifications.find()]
+        shots = [x for x in mongo.db.shots.find()]
+        if user_session['role'] == 'admin':
+            shows = [x for x in mongo.db.shows.find()]
+        else:
+            shows = []
+            shows_user_artist = user_session.get("shows")
+            for n in shows_user_artist:
+                new_show = mongo.db.shows.find_one(n)
+                shows.append(new_show)
+
+    return render_template("user-profile.html", user_name=user_name, subs=subs, user_session=user_session,
+                           notifications=notifications, shows=shows, shots=shots)
+
+
+@app.route('/update-user', methods=['POST', 'GET'])
+def update_profile():
+    if request.method == 'POST':
+        user_name = mongo.db.users.find_one({"name": user_name})
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
+        users.insert({'password': hashpass})
+
+
+    return render_template('user-profile.html')
 
 
 @app.route('/admin')

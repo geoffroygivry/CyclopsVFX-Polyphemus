@@ -159,7 +159,7 @@
                                 <tbody>
                                 {% for user in users %}
                                     <tr class="odd gradeX">
-                                        <td><a href="#">{{user.name}}</a></td>
+                                        <td><a href="{{url_for('user', user_name=user.name)}}">{{user.name}}</a></td>
                                         <td><a href="#">{{user.email}}</a></td>
                                         <td>{{user.role}}</a></td>
                                         <td>{% for show in user.shows %}<a href="{{url_for('show', show=show)}}">{{show}}</a>&nbsp;|&nbsp;{% endfor %}</td>

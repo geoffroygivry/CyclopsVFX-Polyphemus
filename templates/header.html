@@ -252,7 +252,7 @@
                     <li><a href="{{url_for('admin')}}">Admin Dashboard</a></li>
                     <li class="divider"></li>
                     {% endif %}
-                    <li><a href="#">Edit Profile</a></li>
+                    <li><a href="{{url_for('profile', user_name=user_session.name)}}">Edit Profile</a></li>
                     <li><a href="#"><span class="badge badge-danger pull-right">2</span> Inbox</a></li>
                     <li class="divider"></li>
                     <li><a href="javascript:;">Log Out</a></li>
