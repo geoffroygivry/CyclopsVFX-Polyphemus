@@ -100,7 +100,7 @@
                                         <td>{{shot.frame_in}} - {{shot.frame_out}}</td>
 										<td>
 										{% for task in shot.tasks %}
-										<span class="label {{task.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{task.status}}">{{task.task}}</span>&nbsp;
+										<span class="label {{task.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{task.assignee}} - {{task.status}}">{{task.task}}</span>&nbsp;
 										{% endfor %}
 										</td>
 										<td>

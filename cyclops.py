@@ -309,21 +309,24 @@ def get_user_by_task(task):
 @app.route('/delete-shot/<shot_name>', methods=['POST'])
 def delete_shot(shot_name):
     shot_to_delete = request.form['shotName']
-    print("You are about to delete {}".format(shot_to_delete))
+    mongo.db.shots.delete_one({"name": shot_to_delete})
+    print("Shot {} has been deleted!".format(shot_to_delete))
     return redirect(redirect_url())
 
 
 @app.route('/remove-show/<show_name>', methods=['POST'])
 def remove_show(show_name):
     show_to_delete = request.form['showName']
-    print("You are about to delete {}".format(show_to_delete))
+    mongo.db.shows.delete_one({"name": show_to_delete})
+    print("Show {} has been deleted!".format(show_to_delete))
     return redirect(redirect_url())
 
 
 @app.route('/remove-seq/<seq_name>', methods=['POST'])
 def remove_seq(seq_name):
     seq_to_delete = request.form['seqName']
-    print("You are about to delete {}".format(seq_to_delete))
+    mongo.db.seqs.delete_one({"name": seq_to_delete})
+    print("Seq {} has been deleted!".format(seq_to_delete))
     return redirect(redirect_url())
 
 

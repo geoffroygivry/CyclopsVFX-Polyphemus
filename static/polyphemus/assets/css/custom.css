@@ -125,6 +125,18 @@ blockquote {
 .COMPLETED {
     background-color: green;
 }
+.CREATIVE-APPROVED {
+	background-color: #B481C7;
+}
+.ON-HOLD {
+	background-color: #5E5E5E;
+}
+.FINAL {
+	background-color: green;
+}
+.FINAL-PENDING-TECH-CHECK {
+	background-color: #87B27D;
+}
 .btn.btn-default {
     color: #fff;
     background: rgba(182, 194, 201, 0.21);
