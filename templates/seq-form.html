@@ -15,6 +15,7 @@
                 <iframe name="hiddenFrame4" width="0" height="0" border="0" style="display: none;"></iframe>
                 <form action="{{ url_for('remove_seq', seq_name=seq.name) }}" method="POST" target="hiddenFrame4">
                     <input type="hidden" name="seqName" id="seqNameDelete" value="{{seq.name}}"/>
+                    <input type="hidden" name="showName" id="seqInShowNameDelete" value="{{seq.show}}"/>
                 <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
                     <input class="btn btn-sm btn-danger" id="deleteModalBtn" name="deleteShow" type="submit" value="Delete" onclick="$('#modal-delete-{{seq.name}}').modal('hide')"/>
                 </form>

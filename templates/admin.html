@@ -1,43 +1,39 @@
-{% extends 'admin-base.html' %}
-{% block title %}Polyphemus | Admin{% endblock %}
-{% block content %}
-        <!-- begin #content -->
-        <div id="content" class="content-admin-page" style="padding: 60px;">
-            <!-- begin page-header -->
-            <h1 class="page-header">Admin Space <small>some magics are made here too...</small></h1>
-            <!-- end page-header -->
-
-            <!-- begin row -->
-            <div class="row">
-                <!-- begin col-12 -->
-                <div class="col-md-12">
-                    <!-- begin panel -->
-                    <div class="panel-body2" >
-
-			    <!-- begin col-6 -->
-			    <div>
-					<ul class="nav nav-pills">
-						<li class="active"><a href="#nav-pills-tab-1" data-toggle="tab">Shows</a></li>
-						<li><a href="#nav-pills-tab-2" data-toggle="tab">Sequences</a></li>
-						<li><a href="#nav-pills-tab-3" data-toggle="tab">Shots</a></li>
-						<li><a href="#nav-pills-tab-4" data-toggle="tab">Assets</a></li>
-						<li><a href="#nav-pills-tab-5" data-toggle="tab">Users</a></li>
-						<li><a href="#nav-pills-tab-6" data-toggle="tab">Submissions</a></li>
-					</ul>
-					<div class="tab-content">
-						<div class="tab-pane fade active in" id="nav-pills-tab-1">
-						    <h3 class="m-t-10">Shows</h3>
+{% extends 'admin-base.html' %} {% block title %}Polyphemus | Admin{% endblock %} {% block content %}
+<!-- begin #content -->
+<div id="content" class="content-admin-page" style="padding: 60px;">
+    <!-- begin page-header -->
+    <h1 class="page-header">Admin Space <small>some magics are made here too...</small></h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-md-12">
+            <!-- begin panel -->
+            <div class="panel-body2">
+                <!-- begin col-6 -->
+                <div>
+                    <ul class="nav nav-pills">
+                        <li class="active"><a href="#nav-pills-tab-1" data-toggle="tab">Shows</a></li>
+                        <li><a href="#nav-pills-tab-2" data-toggle="tab">Sequences</a></li>
+                        <li><a href="#nav-pills-tab-3" data-toggle="tab">Shots</a></li>
+                        <li><a href="#nav-pills-tab-4" data-toggle="tab">Assets</a></li>
+                        <li><a href="#nav-pills-tab-5" data-toggle="tab">Users</a></li>
+                        <li><a href="#nav-pills-tab-6" data-toggle="tab">Submissions</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="nav-pills-tab-1">
+                            <h3 class="m-t-10">Shows</h3>
                             <table id="" class="table display table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
                                         <th>Long name</th>
                                         <th>Show active</th>
-										<th>Actions</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-									{% for show in shows %}
+                                    {% for show in shows %}
                                     <tr>
                                         <td><a href="{{url_for('show', show=show.name)}}">{{show.name}}</a></td>
                                         <td>{{show.long_name}}</td>
@@ -46,35 +42,39 @@
                                         {% else %}
                                         <td><span class="label label-default">Non Active</span></td>
                                         {% endif %}
-										<td><div style="text-align: right;"><a href="#modal-show-modify-{{show.name}}" class="btn btn-warning btn-xs m-r-5 modify-show" data-id="{{show.name}}" data-toggle="modal">Modify</a> <a href="#modal-delete-{{show.name}}" class="btn btn-danger btn-xs m-r-5 delete-show" data-toggle="modal" data-id="{{show.name}}">Delete</a></div></td>
+                                        <td>
+                                            <div style="text-align: right;"><a href="#modal-show-modify-{{show.name}}" class="btn btn-warning btn-xs m-r-5 modify-show" data-id="{{show.name}}" data-toggle="modal">Modify</a> <a href="#modal-delete-{{show.name}}" class="btn btn-danger btn-xs m-r-5 delete-show" data-toggle="modal" data-id="{{show.name}}">Delete</a></div>
+                                        </td>
                                     </tr>
-								{% endfor %}
+                                    {% endfor %}
                                 </tbody>
                             </table>
-						</div>
-						<div class="tab-pane fade" id="nav-pills-tab-2">
-						    <h3 class="m-t-10">Sequences</h3>
+                        </div>
+                        <div class="tab-pane fade" id="nav-pills-tab-2">
+                            <h3 class="m-t-10">Sequences</h3>
                             <table id="" class="table display table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
                                         <th>Show</th>
-										<th>Actions</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-									{% for seq in seqs %}
+                                    {% for seq in seqs %}
                                     <tr class="odd gradeX">
                                         <td><a href="{{url_for('seq', show=seq.show, seq=seq.name)}}">{{seq.name}}</a></td>
                                         <td><a href="{{url_for('show', show=seq.show)}}">{{seq.show}}</a></td>
-										<td><div style="text-align: right;"><a href="#modal-delete-{{seq.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{seq.name}}">Delete</a></div></td>
+                                        <td>
+                                            <div style="text-align: right;"><a href="#modal-delete-{{seq.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{seq.name}}">Delete</a></div>
+                                        </td>
                                     </tr>
-									{% endfor %}
+                                    {% endfor %}
                                 </tbody>
                             </table>
-						</div>
-						<div class="tab-pane fade" id="nav-pills-tab-3">
-						    <h3 class="m-t-10">Shots</h3>
+                        </div>
+                        <div class="tab-pane fade" id="nav-pills-tab-3">
+                            <h3 class="m-t-10">Shots</h3>
                             <table id="" class="table display table-striped table-bordered">
                                 <thead>
                                     <tr>
@@ -90,35 +90,34 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-									{% for shot in shots %}
-                                    {% set shot_target_date = utils.convert_isotime_to_datetime(shot.target_date) %}
-                                    {% set pretty_target_date = shot_target_date.strftime(format) %}
+                                    {% for shot in shots %} {% set shot_target_date = utils.convert_isotime_to_datetime(shot.target_date) %} {% set pretty_target_date = shot_target_date.strftime(format) %}
                                     <tr>
                                         <td><a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}">{{shot.name}}</a></td>
                                         <td><a href="{{url_for('seq', show=shot.show, seq=shot.seq)}}">{{shot.seq}}</a></td>
                                         <td><a href="{{url_for('show', show=shot.show)}}">{{shot.show}}</a></td>
                                         <td>{{shot.frame_in}} - {{shot.frame_out}}</td>
-										<td>
-										{% for task in shot.tasks %}
-										<span class="label {{task.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{task.assignee}} - {{task.status}}">{{task.task}}</span>&nbsp;
-										{% endfor %}
-										</td>
-										<td>
-										{% for asset in shot.assets %}
-										 <span class="label label-default">{{asset.name}}</span>&nbsp;
-										{% endfor %}
-										</td>
-										<td><div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{shot.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div></td>
-										<td><span class="label {{shot.status}}">{{shot.status}}</span></td>
-
-										<td><div style="text-align: right;"><a href="#modal-shot-modify-{{shot.name}}" class="btn btn-warning btn-xs m-r-5 modify-shot" data-id="{{shot.name}}" data-toggle="modal">Modify</a> <a href="#modal-delete-{{shot.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{shot.name}}">Delete</a></div></td>
+                                        <td>
+                                            {% for task in shot.tasks %}
+                                            <span class="label {{task.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{task.assignee}} - {{task.status}}">{{task.task}}</span>&nbsp; {% endfor %}
+                                        </td>
+                                        <td>
+                                            {% for asset in shot.assets %}
+                                            <span class="label label-default">{{asset.name}}</span>&nbsp; {% endfor %}
+                                        </td>
+                                        <td>
+                                            <div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{shot.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div>
+                                        </td>
+                                        <td><span class="label {{shot.status}}">{{shot.status}}</span></td>
+                                        <td>
+                                            <div style="text-align: right;"><a href="#modal-shot-modify-{{shot.name}}" class="btn btn-warning btn-xs m-r-5 modify-shot" data-id="{{shot.name}}" data-toggle="modal">Modify</a> <a href="#modal-delete-{{shot.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{shot.name}}">Delete</a></div>
+                                        </td>
                                     </tr>
-									{% endfor %}
+                                    {% endfor %}
                                 </tbody>
                             </table>
-						</div>
-						<div class="tab-pane fade" id="nav-pills-tab-4">
-						    <h3 class="m-t-10">Assets</h3>
+                        </div>
+                        <div class="tab-pane fade" id="nav-pills-tab-4">
+                            <h3 class="m-t-10">Assets</h3>
                             <table id="" class="table display table-striped table-bordered">
                                 <thead>
                                     <tr>
@@ -129,21 +128,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {% for asset in assets %}
-                                {% set asset_target_date = utils.convert_isotime_to_datetime(asset.target_date) %}
-                                {% set pretty_target_date = asset_target_date.strftime(format) %}
+                                    {% for asset in assets %} {% set asset_target_date = utils.convert_isotime_to_datetime(asset.target_date) %} {% set pretty_target_date = asset_target_date.strftime(format) %}
                                     <tr class="odd gradeX">
                                         <td><a href="#">{{asset.name}}</a></td>
                                         <td><a href="{{url_for('show', show=asset.show)}}">{{asset.show}}</a></td>
                                         <td>{% for task in asset.tasks %}<a href="{{url_for('user', user_name=task.assignee)}}">{{task.assignee}}</a>{% endfor %}</td>
-                                        <td><div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{asset.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div></td>
+                                        <td>
+                                            <div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{asset.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div>
+                                        </td>
                                     </tr>
-                                {% endfor %}
+                                    {% endfor %}
                                 </tbody>
                             </table>
-						</div>
-						<div class="tab-pane fade" id="nav-pills-tab-5">
-						    <h3 class="m-t-10">Users</h3>
+                        </div>
+                        <div class="tab-pane fade" id="nav-pills-tab-5">
+                            <h3 class="m-t-10">Users</h3>
                             <table id="" class="table display table-striped table-bordered">
                                 <thead>
                                     <tr>
@@ -157,33 +156,29 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {% for user in users %}
+                                    {% for user in users %}
                                     <tr class="odd gradeX">
                                         <td><a href="#">{{user.name}}</a></td>
                                         <td><a href="#">{{user.email}}</a></td>
-                                        <td>{{user.role}}</a></td>
-                                        <td>{% for show in user.shows %}<a href="{{url_for('show', show=show)}}">{{show}}</a>&nbsp;|&nbsp;{% endfor %}</td>
-                                        <td>{% for shot in shots %}
-                                        {% for task in shot.tasks %}
-                                        {% if task.assignee == user.name %}
-                                        <a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}">{{shot.name}}</a>&nbsp;|&nbsp;
-                                        {% endif %}
-                                        {% endfor %}
-                                        {% endfor %}
+                                        <td>{{user.role}}</a>
                                         </td>
-										<td>
-										{% for task in user.tasks %}
-                                        {{task}}&nbsp;|&nbsp;
-										{% endfor %}
-										</td>
-										<td><div style="text-align: right;"><a href="#modal-delete-{{user.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{user.name}}">Delete</a></div></td>
+                                        <td>{% for show in user.shows %}<a href="{{url_for('show', show=show)}}">{{show}}</a>&nbsp;|&nbsp;{% endfor %}</td>
+                                        <td>{% for shot in shots %} {% for task in shot.tasks %} {% if task.assignee == user.name %}
+                                            <a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}">{{shot.name}}</a>&nbsp;|&nbsp; {% endif %} {% endfor %} {% endfor %}
+                                        </td>
+                                        <td>
+                                            {% for task in user.tasks %} {{task}}&nbsp;|&nbsp; {% endfor %}
+                                        </td>
+                                        <td>
+                                            <div style="text-align: right;"><a href="#modal-delete-{{user.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{user.name}}">Delete</a></div>
+                                        </td>
                                     </tr>
-                                {% endfor %}
+                                    {% endfor %}
                                 </tbody>
                             </table>
-						</div>
-						<div class="tab-pane fade" id="nav-pills-tab-6">
-						    <h3 class="m-t-10">Submissions</h3>
+                        </div>
+                        <div class="tab-pane fade" id="nav-pills-tab-6">
+                            <h3 class="m-t-10">Submissions</h3>
                             <table id="" class="table display table-striped table-bordered">
                                 <thead>
                                     <tr>
@@ -199,9 +194,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {% for sub in subs %}
-								{% set sub_target_date = utils.convert_isotime_to_datetime(sub.Date) %}
-                                {% set pretty_target_date = sub_target_date.strftime(format) %}
+                                    {% for sub in subs %} {% set sub_target_date = utils.convert_isotime_to_datetime(sub.Date) %} {% set pretty_target_date = sub_target_date.strftime(format) %}
                                     <tr class="odd gradeX">
                                         <td><a href="{{url_for('user', user_name=sub.Username)}}">{{sub.Username}}</a></td>
                                         <td><a href="{{url_for('shot', show=sub.Show, seq=sub.seq, shot_name=sub.Shot)}}">{{sub.Shot}}</a></td>
@@ -209,55 +202,31 @@
                                         <td><a href="{{url_for('show', show=sub.Show)}}">{{sub.Show}}</a></td>
                                         <td>{{sub.type}}</td>
                                         <td><a href="{{url_for('shot', show=sub.Show, seq=sub.seq, shot_name=sub.Shot, _anchor=sub.ptuid)}}">{{sub.ptuid}}</a></td>
-										<td><div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{sub.Date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div></td>
+                                        <td>
+                                            <div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{sub.Date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div>
+                                        </td>
                                         <td><span class="label {{sub.status}}">{{sub.status}}</span></td>
-										<td><div style="text-align: right;"><a href="#modal-delete-{{sub.ptuid}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{sub.ptuid}}">Delete</a></div></td>
+                                        <td>
+                                            <div style="text-align: right;"><a href="#modal-delete-{{sub.ptuid}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{sub.ptuid}}">Delete</a></div>
+                                        </td>
                                     </tr>
-                                {% endfor %}
+                                    {% endfor %}
                                 </tbody>
                             </table>
-
-
-						</div>
-					</div>
-				</div>
-			    <!-- end col-6 -->
-
                         </div>
-                    <!-- end panel -->
+                    </div>
                 </div>
-                <!-- end col-12 -->
+                <!-- end col-6 -->
             </div>
-            <!-- end row -->
-
-
-
-							{% for show in shows %}
-							{% include 'show-form.html' %}
-							{% endfor %}
-
-							{% for seq in seqs %}
-							{% include 'seq-form.html' %}
-							{% endfor %}
-
-							{% for shot in shots %}
-							{% include 'shot-form.html' %}
-							{% endfor %}
-
-							{% for user in users %}
-							{% include 'user-form.html' %}
-							{% endfor %}
-
-							{% for sub in subs %}
-							{% include 'sub-form.html' %}
-							{% endfor %}
-
-
-
+            <!-- end panel -->
         </div>
-        <!-- end #content -->
-
-        <!-- begin scroll to top btn -->
-        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
-        <!-- end scroll to top btn -->
+        <!-- end col-12 -->
+    </div>
+    <!-- end row -->
+    {% for show in shows %} {% include 'show-form.html' %} {% endfor %} {% for seq in seqs %} {% include 'seq-form.html' %} {% endfor %} {% for shot in shots %} {% include 'shot-form.html' %} {% endfor %} {% for user in users %} {% include 'user-form.html' %} {% endfor %} {% for sub in subs %} {% include 'sub-form.html' %} {% endfor %}
+</div>
+<!-- end #content -->
+<!-- begin scroll to top btn -->
+<a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+<!-- end scroll to top btn -->
 {% endblock %}

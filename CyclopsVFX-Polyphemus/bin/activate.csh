@@ -7,7 +7,7 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-setenv VIRTUAL_ENV "/home/cabox/workspace/CyclopsVFX-Polyphemus/CyclopsVFX-Polyphemus"
+setenv VIRTUAL_ENV "/home/geoff/Dropbox/01_DEV/02_webDev/cyclops-vfx/polyphemus/CyclopsVFX-Polyphemus"
 
 set _OLD_VIRTUAL_PATH="$PATH"
 setenv PATH "$VIRTUAL_ENV/bin:$PATH"

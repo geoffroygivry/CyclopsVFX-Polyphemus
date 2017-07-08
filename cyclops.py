@@ -283,7 +283,12 @@ def modify_shot(shot_name):
 @app.route('/modify-show/<show_name>', methods=['POST'])
 def modify_show(show_name):
     show_is_active = request.form['show-active']
-    print(show_is_active, show_name)
+    if show_is_active == "Active":
+        mongo.db.shows.update({"name": show_name}, {"$set": {"active": True}})
+    else:
+        mongo.db.shows.update({"name": show_name}, {"$set": {"active": False}})
+        print(show_name, "False")
+    # print(show_is_active, show_name)
     return redirect(redirect_url())
 
 
@@ -318,14 +323,20 @@ def delete_shot(shot_name):
 def remove_show(show_name):
     show_to_delete = request.form['showName']
     mongo.db.shows.delete_one({"name": show_to_delete})
-    print("Show {} has been deleted!".format(show_to_delete))
+    mongo.db.seqs.delete_many({"show": show_to_delete})
+    mongo.db.shots.delete_many({"show": show_to_delete})
+    mongo.db.submissions.delete_many({"Show": show_to_delete})
+    mongo.db.assets.delete_many({"show": show_to_delete})
     return redirect(redirect_url())
 
 
 @app.route('/remove-seq/<seq_name>', methods=['POST'])
 def remove_seq(seq_name):
     seq_to_delete = request.form['seqName']
+    show = request.form['showName']
+    mongo.db.shows.update({"name": show}, {"$pull": {"sequences": {"name": seq_name}}})
     mongo.db.seqs.delete_one({"name": seq_to_delete})
+    mongo.db.shots.delete_many({"seq": seq_name})
     print("Seq {} has been deleted!".format(seq_to_delete))
     return redirect(redirect_url())
 
@@ -333,14 +344,14 @@ def remove_seq(seq_name):
 @app.route('/remove-user/<user_name>', methods=['POST'])
 def remove_user(user_name):
     user_to_delete = request.form['userName']
-    print("You are about to delete {}".format(user_to_delete))
+    mongo.db.users.delete_one({"name": user_to_delete})
     return redirect(redirect_url())
 
 
 @app.route('/remove-sub/<ptuid>', methods=['POST'])
 def remove_sub(ptuid):
     sub_to_delete = request.form['ptuid']
-    print("You are about to delete {}".format(sub_to_delete))
+    mongo.db.submissions.delete_one({"ptuid": sub_to_delete})
     return redirect(redirect_url())
 
 

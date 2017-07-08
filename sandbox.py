@@ -24,8 +24,9 @@ from scripts import connect_db as con
 from pprint import pprint
 
 db = con.server.hydra
-   
-def delete_seq(seq_name):
+
+
+def delete_seq(show_name, seq_name):
     seq_to_delete = db.seqs.find({"name": seq_name})
 #     seq_to_delete = db.seqs.delete_many({"name": seq_name})
     shot_to_delete = db.shots.find({"seq": seq_name})
@@ -34,5 +35,10 @@ def delete_seq(seq_name):
         pprint(seq)
     for shot in shot_to_delete:
         pprint(shot)
-            
-delete_seq("HRM")
+    print("=====================================================================\n\n")
+    for seq in seq_in_show:
+        pprint(seq)
+    print("\n\n=====================================================================\n\n")
+
+
+delete_seq("RBY", "HRM")
