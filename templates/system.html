@@ -27,25 +27,43 @@
 					<div class="tab-content">
 						<div class="tab-pane fade active in" id="nav-pills-tab-1">
 						   <h3 class="m-t-10">System settings</h3>
+               {% for one in renderer %}
+               <div class="user-detail">{{one}} </br></div>
+               {% endfor %}
+
 						</div>
 						<div class="tab-pane fade" id="nav-pills-tab-2">
 						  <h3 class="m-t-10">Players Configuration</h3>
+              {% for one in players %}
+              <div class="user-detail">{{one}} </br></div>
+              {% endfor %}
+
 						</div>
 						<div class="tab-pane fade" id="nav-pills-tab-3">
 						    <h3 class="m-t-10">Software Configuration</h3>
-
+                {% for one in software %}
+                <div class="user-detail">{{one}} </br></div>
+                {% endfor %}
 						</div>
 						<div class="tab-pane fade" id="nav-pills-tab-4">
 						    <h3 class="m-t-10">Studio Configuration</h3>
-
+                {% for one in studio %}
+                <div class="user-detail">{{one}} </br></div>
+                {% endfor %}
 						</div>
 						<div class="tab-pane fade" id="nav-pills-tab-5">
-						    <h3 class="m-t-10">Users</h3>
+						    <h3 class="m-t-10">CYC</h3>
+                {% for one in cyc %}
+                <div class="user-detail">{{one}} </br></div>
+                {% endfor %}
 						</div>
 						<div class="tab-pane fade" id="nav-pills-tab-6">
 						 <h3 class="m-t-10">Misc Configuration</h3>
-             {% for line in lines %}
-             <div class="user-detail">{{line}} </br></div>
+             {% for one in tools %}
+             <div class="user-detail">{{one}} </br></div>
+             {% endfor %}
+             {% for one in games %}
+             <div class="user-detail">{{one}} </br></div>
              {% endfor %}
 
 						</div>

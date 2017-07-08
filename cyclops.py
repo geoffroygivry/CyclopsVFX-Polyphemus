@@ -300,10 +300,17 @@ def system_dash():
         if user_session.get('role') == 'admin':
             studio_conf= open('studio_config.py')
             lines = [line.strip() for line in studio_conf]
+            filter_soft = [x for x in lines if 'soft_' in x]
+            filter_players = [x for x in lines if 'player_' in x]
+            filter_cyc = [x for x in lines if 'cyc_' in x]
+            filter_studio = [x for x in lines if 'studio_' in x]
+            filter_renderer = [x for x in lines if 'renderer_' in x]
+            filter_tools = [x for x in lines if 'tool_' in x]
+            filter_game = [x for x in lines if 'game_' in x]
             notifications = [x for x in mongo.db.notifications.find()]
             users = [x for x in mongo.db.users.find()]
             utilz = [x for x in mongo.db.utils.find()]
-            return render_template("system.html", lines=lines, user_session=user_session, users=users, notifications=notifications, utilz=utilz)
+            return render_template("system.html", lines=lines, games=filter_game, tools=filter_tools, players=filter_players, renderer=filter_renderer, software=filter_soft, cyc=filter_cyc, studio=filter_studio, user_session=user_session, users=users, notifications=notifications, utilz=utilz)
         else:
             return render_template("oops.html")
     else:

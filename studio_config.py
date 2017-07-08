@@ -6,7 +6,7 @@ studio_city='nyc'
 studio_timezone='utc'
 
 #localisation?
-st_locale='eng'   #ita fr de ru in cn ?
+st_locale='eng',   #ita fr de ru in cn ?
 
 studio_contact='goeff@cyclopsvfx.com'
 studio_owner='goeff@cyclopsvfx.com'
@@ -22,18 +22,18 @@ studio_status='offline' #online / offline
 studio_fps='25'
 
 #software: players
-st_path_vlc='path/to/player'
-st_path_rv='path/to/player'
-st_path_hiero='path/to/player'
-st_path_custom='path/to/player'
+player_path_vlc='path/to/player'
+player_path_rv='path/to/player'
+player_path_hiero='path/to/player'
+player_path_custom='path/to/player'
 
 #what else do we want to put here
 
 
 #system setup copy from cyc_envs unity
 # cyc_env
-st_root='/di'
-show_path = '/jobs'
+studio_root='/di'
+studio_show_path = '/jobs'
 
 cyc_3de_env = '/cyclopsvfx/core/config/3deenv'
 cyc_clarisse_env = '/cyclopsvfx/core/config/clarisseenv'
@@ -50,46 +50,46 @@ cyc_root = '/cyclopsvfx'
 cyc_rv_env = '/cyclopsvfx/core/config/rvenv'
 cyc_show_env = '/cyclopsvfx/core/config/showenv'
 cyc_steropes_path = '/cyclopsvfx/apps/steropes'
-nuke_path = '/cyclopsvfx/core/config/nukeenv'
+cyc_nuke_path = '/cyclopsvfx/core/config/nukeenv'
 
 #game engines
-unreal='c:/path'
-unity3d='c:/path'
-blenderengine=='c:/path'
+game_unreal='c:/path'
+game_unity3d='c:/path'
+game_blenderengine=='c:/path'
 
 
 #user prefs -  we should move this to user prefs
-nuke ='c:/program files/nuke9.0v7/nuke9.0.exe -- nukex'
-maya='c:/path'
-houdini='c:/path'
-clarisse='c:/path'
-cinema='c:/path'
-blender='c:/path'
-modo='c:/path'
+soft_nuke ='c:/program files/nuke9.0v7/nuke9.0.exe -- nukex'
+soft_maya='c:/path'
+soft_houdini='c:/path'
+soft_clarisse='c:/path'
+soft_cinema='c:/path'
+soft_blender='c:/path'
+soft_modo='c:/path'
 
-mari='c:/path'
-marmoset=''
-3dcoat='c:/path'
-substance='c:/path'
-3dsmax='c:/path'
-photoshop='c:/path'
-zbrush=''
-mocha='c:/path'
-milkshape='c:/path'
-aftereffects='c:/path'
-natron='c:/path'
+soft_mari='c:/path'
+soft_marmoset=''
+soft_3dcoat='c:/path'
+soft_substance='c:/path'
+soft_3dsmax='c:/path'
+soft_photoshop='c:/path'
+soft_zbrush=''
+soft_mocha='c:/path'
+soft_milkshape='c:/path'
+soft_aftereffects='c:/path'
+soft_natron='c:/path'
 
-worldmachine='c:/path'
-worldcreator='c:/path'
+soft_worldmachine='c:/path'
+soft_worldcreator='c:/path'
 
-appleseed=''
+renderer_appleseed=''
 
-cortex=''
+tools_cortex=''
 
 #studio renderers?
-st_arnold='c:/path'
-st_vray='c:/path'
-st_mentalray='c:/path'
-st_renderman='c:/path'
-st_custom_renderer='c:/path'
-st_appleseed='c:/path'
+renderer_arnold='c:/path'
+renderer_vray='c:/path'
+renderer_mentalray='c:/path'
+renderer_renderman='c:/path'
+renderer_custom_renderer='c:/path'
+renderer_appleseed='c:/path'
