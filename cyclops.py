@@ -298,7 +298,8 @@ def system_dash():
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
         if user_session.get('role') == 'admin':
-            lines = open('studio_config.py').read().split("\n")
+            studio_conf= open('studio_config.py')
+            lines = [line.strip() for line in studio_conf]
             notifications = [x for x in mongo.db.notifications.find()]
             users = [x for x in mongo.db.users.find()]
             utilz = [x for x in mongo.db.utils.find()]

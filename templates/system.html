@@ -44,7 +44,10 @@
 						</div>
 						<div class="tab-pane fade" id="nav-pills-tab-6">
 						 <h3 class="m-t-10">Misc Configuration</h3>
-              {{lines}}
+             {% for line in lines %}
+             <div class="user-detail">{{line}} </br></div>
+             {% endfor %}
+
 						</div>
 					</div>
 				</div>
