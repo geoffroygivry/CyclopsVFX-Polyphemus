@@ -248,32 +248,27 @@ def profile(user_name):
     if 'username' in session:
         user_name = mongo.db.users.find_one({"name": user_name})
         user_session = mongo.db.users.find_one({"name": session['username']})
-        subs = [x for x in mongo.db.submissions.find()]
         notifications = [x for x in mongo.db.notifications.find()]
-        shots = [x for x in mongo.db.shots.find()]
-        if user_session['role'] == 'admin':
-            shows = [x for x in mongo.db.shows.find()]
-        else:
-            shows = []
-            shows_user_artist = user_session.get("shows")
-            for n in shows_user_artist:
-                new_show = mongo.db.shows.find_one(n)
-                shows.append(new_show)
 
-    return render_template("user-profile.html", user_name=user_name, subs=subs, user_session=user_session,
-                           notifications=notifications, shows=shows, shots=shots)
+
+    return render_template("user-profile.html", user_name=user_name, user_session=user_session,
+                           notifications=notifications)
 
 
 @app.route('/update-user', methods=['POST', 'GET'])
 def update_profile():
+    user_name = mongo.db.users.find_one({"name": session['username']})
+    user_session = mongo.db.users.find_one({"name": session['username']})
     if request.method == 'POST':
-        user_name = mongo.db.users.find_one({"name": user_name})
-        user_session = mongo.db.users.find_one({"name": session['username']})
-        hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
-        users.insert({'password': hashpass})
+        #users = mongo.db.users
+        #user_name = users.find_one({"name": user_name})
+        #user_name = mongo.db.users.find_one({"name": session['user_name']})
+        #user_session = mongo.db.users.find_one({"name": session['user_name']})
+        pass_to_change = request.form['newpassword']
+        hashpass = bcrypt.hashpw(pass_to_change.encode('utf-8'), bcrypt.gensalt())
 
-
-    return render_template('user-profile.html')
+        mongo.db.users.update_one({'name' : user_session }, {"$set": {"password": hashpass}}, upsert=False)
+    return render_template("user-profile.html", user_name=user_name, user_session=user_session)
 
 
 @app.route('/admin')
@@ -296,6 +291,23 @@ def admin():
             return render_template("oops.html")
     else:
         return render_template('login.html')
+
+
+@app.route('/system-dashboard')
+def system_dash():
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        if user_session.get('role') == 'admin':
+            lines = open('studio_config.py').read().split("\n")
+            notifications = [x for x in mongo.db.notifications.find()]
+            users = [x for x in mongo.db.users.find()]
+            utilz = [x for x in mongo.db.utils.find()]
+            return render_template("system.html", lines=lines, user_session=user_session, users=users, notifications=notifications, utilz=utilz)
+        else:
+            return render_template("oops.html")
+    else:
+        return render_template('login.html')
+
 
 
 @app.route('/modify-shot/<shot_name>', methods=['POST'])
