@@ -13,7 +13,9 @@ from scripts.forms import ShotForm
 import bcrypt
 import json
 
+#import configs
 from cyc_config import cyc_config as cfg
+#import studio_config as studiocfg
 
 from werkzeug.utils import secure_filename
 

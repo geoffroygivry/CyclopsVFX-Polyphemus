@@ -55,7 +55,7 @@ cyc_nuke_path = '/cyclopsvfx/core/config/nukeenv'
 #game engines
 game_unreal='c:/path'
 game_unity3d='c:/path'
-game_blenderengine=='c:/path'
+game_blenderengine='c:/path'
 
 
 #user prefs -  we should move this to user prefs
