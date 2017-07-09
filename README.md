@@ -2,6 +2,8 @@
 
 ## Welcome to CyclopsVFX Polyphemus! ##
 
+[![Build Status](https://travis-ci.org/geoffroygivry/CyclopsVFX-Polyphemus.svg?branch=master)](https://travis-ci.org/geoffroygivry/CyclopsVFX-Polyphemus.svg?branch=master)
+
 ### A beta release is scheduled for Sept/Oct 2017. At the meantime, if you have any questions, please open an issue and I'll reply ASAP. Contributors are more than welcome if you are interested in the project. Thank you! ###
 
 **CyclopsVFX**, is an Open Source Production Tracking Software and pipeline toolkit, for your **VFX, Video Game and Animation pipeline**. CyclopsVFX has 2 main Frameworks : **Unity** and **Polyphemus**.
