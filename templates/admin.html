@@ -151,7 +151,6 @@
                                         <th>role</th>
                                         <th>shows</th>
                                         <th>shots or assets</th>
-                                        <th>task</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -165,9 +164,6 @@
                                         <td>{% for show in user.shows %}<a href="{{url_for('show', show=show)}}">{{show}}</a>&nbsp;|&nbsp;{% endfor %}</td>
                                         <td>{% for shot in shots %} {% for task in shot.tasks %} {% if task.assignee == user.name %}
                                             <a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}">{{shot.name}}</a>&nbsp;|&nbsp; {% endif %} {% endfor %} {% endfor %}
-                                        </td>
-                                        <td>
-                                            {% for task in user.tasks %} {{task}}&nbsp;|&nbsp; {% endfor %}
                                         </td>
                                         <td>
                                             <div style="text-align: right;"><a href="#modal-delete-{{user.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{user.name}}">Delete</a></div>

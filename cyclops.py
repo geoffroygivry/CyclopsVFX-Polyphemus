@@ -345,6 +345,10 @@ def remove_seq(seq_name):
 def remove_user(user_name):
     user_to_delete = request.form['userName']
     mongo.db.users.delete_one({"name": user_to_delete})
+    shots = [x for x in mongo.db.shots.find()]
+    for shot in shots:
+        mongo.db.shots.update({"name": shot.get("name")}, {"$pull": {"tasks": {"assignee": user_name}}})
+
     return redirect(redirect_url())
 
 
