@@ -8,26 +8,26 @@
             <div class="modal-body">
                 <iframe name="hiddenFrame3" width="0" height="0" border="0" style="display: none;"></iframe>
                 <form class="form-horizontal" action="{{url_for('modify_show', show_name=show.name)}}" method="POST" target="hiddenFrame3">
-                     <div class="form-group">
-                    <label class="col-md-3 control-label"></label>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label"></label>
                         <div class="col-md-9">
                             <div class="checkbox">
-                            <select class="form-control" name="show-active">
-                                {% if show.active %}
-                                <option selected="selected">Active</option>
-                                <option>Non Active</option>
-                                {% else %}
-                                <option>Active</option>
-                                <option selected="selected">Non Active</option>
-                                {% endif %}
-                            </select>
+                                <select class="form-control" name="show-active">
+                                    {% if show.active %}
+                                    <option selected="selected">Active</option>
+                                    <option>Non Active</option>
+                                    {% else %}
+                                    <option>Active</option>
+                                    <option selected="selected">Non Active</option>
+                                    {% endif %}
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label"> </label>
                         <div class="col-md-9">
-                            <input class="btn btn-sm btn-warning" id="modifyShowBtn" name="ModifyShow" type="submit" value="Modify" onclick="$('#modal-show-modify-{{show.name}}').modal('hide')"/>
+                            <input class="btn btn-sm btn-warning" id="modifyShowBtn" name="ModifyShow" type="submit" value="Modify" onclick="$('#modal-show-modify-{{show.name}}').modal('hide')" />
                         </div>
                     </div>
                 </form>
@@ -38,7 +38,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="modal-delete-{{show.name}}" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -49,15 +48,15 @@
             <div class="modal-body">
                 <div class="alert alert-danger m-b-0">
                     <h4><i class="fa fa-info-circle"></i> You are about to delete <strong>{{show.name}}</strong></h4>
-                    <p>Are you sure? <small>You can't undo it...</small></p>
+                    <p>Are you sure? <strong>You will delete every single sequence, shot, asset and submission for this show... This is an irrevocable action.</strong></p>
                 </div>
             </div>
             <div class="modal-footer">
                 <iframe name="hiddenFrame4" width="0" height="0" border="0" style="display: none;"></iframe>
                 <form action="{{ url_for('remove_show', show_name=show.name) }}" method="POST" target="hiddenFrame4">
-                    <input type="hidden" name="showName" id="showNameDelete" value="{{show.name}}"/>
-                <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
-                    <input class="btn btn-sm btn-danger" id="deleteModalBtn" name="deleteShow" type="submit" value="Delete" onclick="$('#modal-delete-{{show.name}}').modal('hide')"/>
+                    <input type="hidden" name="showName" id="showNameDelete" value="{{show.name}}" />
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+                    <input class="btn btn-sm btn-danger" id="deleteModalBtn" name="deleteShow" type="submit" value="Delete" onclick="$('#modal-delete-{{show.name}}').modal('hide')" />
                 </form>
             </div>
         </div>

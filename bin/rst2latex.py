@@ -1,4 +1,4 @@
-#!/home/cabox/workspace/CyclopsVFX-Polyphemus/bin/python3
+#!/home/geoff/Dropbox/01_DEV/02_webDev/cyclops-vfx/polyphemus/bin/python3
 
 # $Id: rst2latex.py 5905 2009-04-16 12:04:49Z milde $
 # Author: David Goodger <goodger@python.org>

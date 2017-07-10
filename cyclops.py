@@ -363,7 +363,12 @@ def modify_shot(shot_name):
 @app.route('/modify-show/<show_name>', methods=['POST'])
 def modify_show(show_name):
     show_is_active = request.form['show-active']
-    print(show_is_active, show_name)
+    if show_is_active == "Active":
+        mongo.db.shows.update({"name": show_name}, {"$set": {"active": True}})
+    else:
+        mongo.db.shows.update({"name": show_name}, {"$set": {"active": False}})
+        print(show_name, "False")
+    # print(show_is_active, show_name)
     return redirect(redirect_url())
 
 
@@ -389,35 +394,48 @@ def get_user_by_task(task):
 @app.route('/delete-shot/<shot_name>', methods=['POST'])
 def delete_shot(shot_name):
     shot_to_delete = request.form['shotName']
-    print("You are about to delete {}".format(shot_to_delete))
+    mongo.db.shots.delete_one({"name": shot_to_delete})
+    print("Shot {} has been deleted!".format(shot_to_delete))
     return redirect(redirect_url())
 
 
 @app.route('/remove-show/<show_name>', methods=['POST'])
 def remove_show(show_name):
     show_to_delete = request.form['showName']
-    print("You are about to delete {}".format(show_to_delete))
+    mongo.db.shows.delete_one({"name": show_to_delete})
+    mongo.db.seqs.delete_many({"show": show_to_delete})
+    mongo.db.shots.delete_many({"show": show_to_delete})
+    mongo.db.submissions.delete_many({"Show": show_to_delete})
+    mongo.db.assets.delete_many({"show": show_to_delete})
     return redirect(redirect_url())
 
 
 @app.route('/remove-seq/<seq_name>', methods=['POST'])
 def remove_seq(seq_name):
     seq_to_delete = request.form['seqName']
-    print("You are about to delete {}".format(seq_to_delete))
+    show = request.form['showName']
+    mongo.db.shows.update({"name": show}, {"$pull": {"sequences": {"name": seq_name}}})
+    mongo.db.seqs.delete_one({"name": seq_to_delete})
+    mongo.db.shots.delete_many({"seq": seq_name})
+    print("Seq {} has been deleted!".format(seq_to_delete))
     return redirect(redirect_url())
 
 
 @app.route('/remove-user/<user_name>', methods=['POST'])
 def remove_user(user_name):
     user_to_delete = request.form['userName']
-    print("You are about to delete {}".format(user_to_delete))
+    mongo.db.users.delete_one({"name": user_to_delete})
+    shots = [x for x in mongo.db.shots.find()]
+    for shot in shots:
+        mongo.db.shots.update({"name": shot.get("name")}, {"$pull": {"tasks": {"assignee": user_name}}})
+
     return redirect(redirect_url())
 
 
 @app.route('/remove-sub/<ptuid>', methods=['POST'])
 def remove_sub(ptuid):
     sub_to_delete = request.form['ptuid']
-    print("You are about to delete {}".format(sub_to_delete))
+    mongo.db.submissions.delete_one({"ptuid": sub_to_delete})
     return redirect(redirect_url())
 
 
