@@ -22,6 +22,7 @@
 
 import os
 import sys
+import bcrypt
 
 from scripts import db_actions
 
@@ -46,7 +47,11 @@ def modify_shot(shot_name, status, task_type, task_assignee, task_status, iso_ta
         db.shots.update({"name": shot_name}, {"$set": {"frame_out": frame_out}})
 
             
-            
+def modify_password(login_user, current_password, new_password):
+            db = db_actions.get_connection()
+            if bcrypt.hashpw(current_password.encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password'].encode('utf-8'):
+                hashpass = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+                db.users.update({'name': login_user['name']}, {"$set": {'password': hashpass.decode('utf-8')}})
             
             
             

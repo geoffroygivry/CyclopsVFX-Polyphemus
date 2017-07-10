@@ -24,21 +24,27 @@
                             <!-- begin col-8 -->
                             <div class="col-md-6">
 
-
-                              <form method=POST action="{{ url_for('update_profile') }}">
+                                <iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
+                              <form method=POST action="{{ url_for('update_profile') }}" target="hiddenFrame">
                             <div class="form-group row">
                               <label for="profile-text-input" class="col-2 col-form-label">Name</label>
                               <div class="col-4">
-                                <input class="form-control" type="text" value="{{user_name.name}}" id="profile-text-input">
+                                <input class="form-control" type="text" name="username" value="{{user_name.name}}" id="profile-text-input">
                               </div>
                             </div>
                             <div class="form-group row">
                               <label for="profile-password-input" class="col-2 col-form-label">Password</label>
                               <div class="col-4">
-                                <input class="form-control" type="password" value="{{user_name.password}}" name="newpassword" id="newpassword" autocomplete="off">
+                                <input class="form-control" type="password" value="{{user_name.password}}" name="currentPassword" id="currentPassword" autocomplete="off">
                                 {{user_name.password}}
                               </div>
                             </div>
+                            <div class="form-group row">
+                              <label for="profile-password-input" class="col-2 col-form-label">Type New Password</label>
+                              <div class="col-4">
+                                <input class="form-control" type="password" value="" name="newPassword" id="newPassword" autocomplete="off">
+                              </div>
+                                  </div>
                             <div class="form-group row">
                               <label for="profile-email-input" class="col-2 col-form-label">Email</label>
                               <div class="col-4">

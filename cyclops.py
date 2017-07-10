@@ -248,31 +248,46 @@ def user(user_name):
 @app.route('/polyphemus/profile/<user_name>')
 def profile(user_name):
     if 'username' in session:
-        user_name = mongo.db.users.find_one({"name": user_name})
-        user_session = mongo.db.users.find_one({"name": session['username']})
-        notifications = [x for x in mongo.db.notifications.find()]
+        if session['username'] == user_name:
+            user_name = mongo.db.users.find_one({"name": user_name})
+            user_session = mongo.db.users.find_one({"name": session['username']})
+            notifications = [x for x in mongo.db.notifications.find()]
 
 
-    return render_template("user-profile.html", user_name=user_name, user_session=user_session,
-                           notifications=notifications)
+            return render_template("user-profile.html", user_name=user_name, user_session=user_session,
+                               notifications=notifications)
+        else:
+            return render_template("oops.html")
+    else:
+        return render_template("login.html")
 
 
 @app.route('/update-user', methods=['POST', 'GET'])
 def update_profile():
     if 'username' in session:
-        user_name = mongo.db.users.find_one({"name": session['username']})
         user_session = mongo.db.users.find_one({"name": session['username']})
+        subs = [x for x in mongo.db.submissions.find()]
+        notifications = [x for x in mongo.db.notifications.find()]
+        shots = [x for x in mongo.db.shots.find()]
+        if user_session['role'] == 'admin':
+            shows = [x for x in mongo.db.shows.find()]
+        else:
+            shows = []
+            for n in shows_user_artist:
+                new_show = mongo.db.shows.find_one(n)
+                shows.append(new_show)
         if request.method == 'POST':
-            #users = mongo.db.users
-            #user_name = users.find_one({"name": user_name})
-            #user_name = mongo.db.users.find_one({"name": session['user_name']})
-            #user_session = mongo.db.users.find_one({"name": session['user_name']})
-            pass_to_change = request.form['newpassword']
-            hashpass = bcrypt.hashpw(pass_to_change.encode('utf-8'), bcrypt.gensalt())
-            mongo.db.users.update_one({'name' : user_session }, {"$set": {"password": hashpass}}, upsert=False)
+            pass_to_change = request.form['currentPassword']
+            new_password = request.form['newPassword']
+            login_user = mongo.db.users.find_one({'name': request.form['username']})
+            
+            ad.modify_password(login_user, pass_to_change, new_password)
+            
             return redirect(redirect_url())
 
-        return render_template("user-profile.html", user_name=user_name, user_session=user_session)
+        return render_template("user-profile.html", user_session=user_session, subs=subs, notifications=notifications, shots=shots, shows=shows)
+    else:
+        return render_template("login.html")
 
 
 @app.route('/admin')
