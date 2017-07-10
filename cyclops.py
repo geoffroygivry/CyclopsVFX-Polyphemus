@@ -13,9 +13,7 @@ from scripts.forms import ShotForm
 import bcrypt
 import json
 
-#import configs
 from cyc_config import cyc_config as cfg
-#import studio_config as studiocfg
 
 from werkzeug.utils import secure_filename
 
@@ -315,34 +313,6 @@ def admin():
 
     else:
         return render_template('login.html')
-
-
-@app.route('/system-dashboard')
-def system_dash():
-    if 'username' in session:
-        user_session = mongo.db.users.find_one({"name": session['username']})
-        if user_session.get('role') == 'admin':
-            studio_conf= open('studio_config.py')
-            lines = [line.strip() for line in studio_conf]
-            filter_soft = [x for x in lines if 'soft_' in x]
-            filter_players = [x for x in lines if 'player_' in x]
-            filter_cyc = [x for x in lines if 'cyc_' in x]
-            filter_studio = [x for x in lines if 'studio_' in x]
-            filter_renderer = [x for x in lines if 'renderer_' in x]
-            filter_tools = [x for x in lines if 'tool_' in x]
-            filter_game = [x for x in lines if 'game_' in x]
-            notifications = [x for x in mongo.db.notifications.find()]
-            users = [x for x in mongo.db.users.find()]
-            utilz = [x for x in mongo.db.utils.find()]
-            return render_template("system.html", lines=lines, games=filter_game, tools=filter_tools, players=filter_players, renderer=filter_renderer, software=filter_soft, cyc=filter_cyc, studio=filter_studio, user_session=user_session, users=users, notifications=notifications, utilz=utilz)
-        else:
-            warning_header="System Restricted Area."
-            warning_msg="If you want to tweak, ask your Admin what to do next"
-            return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
-
-    else:
-        return render_template('login.html')
-
 
 
 @app.route('/modify-shot/<shot_name>', methods=['POST'])
