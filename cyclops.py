@@ -114,7 +114,6 @@ def register():
     return render_template('register.html')
 
 
-
 @app.route('/polyphemus')
 def polyphemus():
     if 'username' in session:
@@ -243,6 +242,7 @@ def user(user_name):
     return render_template("user.html", user_name=user_name, subs=subs, user_session=user_session,
                            notifications=notifications, shows=shows, shots=shots)
 
+
 @app.route('/polyphemus/profile/<user_name>')
 def profile(user_name):
     if 'username' in session:
@@ -251,12 +251,11 @@ def profile(user_name):
             user_session = mongo.db.users.find_one({"name": session['username']})
             notifications = [x for x in mongo.db.notifications.find()]
 
-
             return render_template("user-profile.html", user_name=user_name, user_session=user_session,
-                               notifications=notifications)
+                                   notifications=notifications)
         else:
-            warning_header="Restricted Area. Toxic!"
-            warning_msg="It seems you dont have all rights to do this action. Ask your Admin what to do next"
+            warning_header = "Restricted Area. Toxic!"
+            warning_msg = "It seems you dont have all rights to do this action. Ask your Admin what to do next"
             return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
     else:
         return render_template("login.html")
@@ -273,6 +272,7 @@ def update_profile():
             shows = [x for x in mongo.db.shows.find()]
         else:
             shows = []
+            shows_user_artist = user_session.get("shows")
             for n in shows_user_artist:
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
@@ -307,12 +307,17 @@ def admin():
             return render_template("admin.html", user_session=user_session, shows=shows, subs=subs,
                                    users=users, seqs=seqs, shots=shots, assets=assets, notifications=notifications, utilz=utilz)
         else:
-            warning_header="Restricted Area. Toxic!"
-            warning_msg="It seems you are not an Admin Role User"
+            warning_header = "Restricted Area. Toxic!"
+            warning_msg = "It seems you are not an Admin Role User"
             return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
 
     else:
         return render_template('login.html')
+
+
+@app.route('/system-dash')
+def system_dash():
+    return "<h1>This is sys dash</h1>"
 
 
 @app.route('/modify-shot/<shot_name>', methods=['POST'])
