@@ -1,0 +1,14 @@
+{
+  "language": "python",
+  "python": "3.4",
+  "cache": "pip",
+  "install": [
+    "pip install -r requirements.txt"
+  ],
+  "script": [
+    "python echobuild.py"
+  ],
+  "group": "stable",
+  "dist": "precise",
+  "os": "linux"
+}
