@@ -257,7 +257,9 @@ def profile(user_name):
             return render_template("user-profile.html", user_name=user_name, user_session=user_session,
                                notifications=notifications)
         else:
-            return render_template("oops.html")
+            warning_header="Restricted Area. Toxic!"
+            warning_msg="It seems you dont have all rights to do this action. Ask your Admin what to do next"
+            return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
     else:
         return render_template("login.html")
 
@@ -280,9 +282,9 @@ def update_profile():
             pass_to_change = request.form['currentPassword']
             new_password = request.form['newPassword']
             login_user = mongo.db.users.find_one({'name': request.form['username']})
-            
+
             ad.modify_password(login_user, pass_to_change, new_password)
-            
+
             return redirect(redirect_url())
 
         return render_template("user-profile.html", user_session=user_session, subs=subs, notifications=notifications, shots=shots, shows=shows)
@@ -307,7 +309,10 @@ def admin():
             return render_template("admin.html", user_session=user_session, shows=shows, subs=subs,
                                    users=users, seqs=seqs, shots=shots, assets=assets, notifications=notifications, utilz=utilz)
         else:
-            return render_template("oops.html")
+            warning_header="Restricted Area. Toxic!"
+            warning_msg="It seems you are not an Admin Role User"
+            return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
+
     else:
         return render_template('login.html')
 
@@ -331,7 +336,10 @@ def system_dash():
             utilz = [x for x in mongo.db.utils.find()]
             return render_template("system.html", lines=lines, games=filter_game, tools=filter_tools, players=filter_players, renderer=filter_renderer, software=filter_soft, cyc=filter_cyc, studio=filter_studio, user_session=user_session, users=users, notifications=notifications, utilz=utilz)
         else:
-            return render_template("oops.html")
+            warning_header="System Restricted Area."
+            warning_msg="If you want to tweak, ask your Admin what to do next"
+            return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
+
     else:
         return render_template('login.html')
 
