@@ -270,6 +270,7 @@ def update_profile():
         hashpass = bcrypt.hashpw(pass_to_change.encode('utf-8'), bcrypt.gensalt())
 
         mongo.db.users.update_one({'name' : user_session }, {"$set": {"password": hashpass}}, upsert=False)
+        return redirect(redirect_url())
     return render_template("user-profile.html", user_name=user_name, user_session=user_session)
 
 
