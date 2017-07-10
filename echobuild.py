@@ -1,1 +1,1 @@
-print "branch test ok"
+print("branch test ok")
