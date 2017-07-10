@@ -1,0 +1,92 @@
+{% extends 'admin-base.html' %}
+{% block title %}Polyphemus | Admin{% endblock %}
+{% block content %}
+        <!-- begin #content -->
+        <div id="content" class="content-admin-page" style="padding: 60px;">
+            <!-- begin page-header -->
+            <h1 class="page-header">System Admin Space <small>more magics are made here too...</small></h1>
+            <!-- end page-header -->
+
+            <!-- begin row -->
+            <div class="row">
+                <!-- begin col-12 -->
+                <div class="col-md-12">
+                    <!-- begin panel -->
+                    <div class="panel-body2" >
+
+			    <!-- begin col-6 -->
+			    <div>
+					<ul class="nav nav-pills">
+						<li class="active"><a href="#nav-pills-tab-1" data-toggle="tab">System</a></li>
+						<li><a href="#nav-pills-tab-2" data-toggle="tab">Players</a></li>
+						<li><a href="#nav-pills-tab-3" data-toggle="tab">Software</a></li>
+						<li><a href="#nav-pills-tab-4" data-toggle="tab">Studio</a></li>
+						<li><a href="#nav-pills-tab-5" data-toggle="tab">Users</a></li>
+						<li><a href="#nav-pills-tab-6" data-toggle="tab">Misc</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane fade active in" id="nav-pills-tab-1">
+						   <h3 class="m-t-10">System settings</h3>
+               {% for one in renderer %}
+               <div class="user-detail">{{one}} </br></div>
+               {% endfor %}
+
+						</div>
+						<div class="tab-pane fade" id="nav-pills-tab-2">
+						  <h3 class="m-t-10">Players Configuration</h3>
+              {% for one in players %}
+              <div class="user-detail">{{one}} </br></div>
+              {% endfor %}
+
+						</div>
+						<div class="tab-pane fade" id="nav-pills-tab-3">
+						    <h3 class="m-t-10">Software Configuration</h3>
+                {% for one in software %}
+                <div class="user-detail">{{one}} </br></div>
+                {% endfor %}
+						</div>
+						<div class="tab-pane fade" id="nav-pills-tab-4">
+						    <h3 class="m-t-10">Studio Configuration</h3>
+                {% for one in studio %}
+                <div class="user-detail">{{one}} </br></div>
+                {% endfor %}
+						</div>
+						<div class="tab-pane fade" id="nav-pills-tab-5">
+						    <h3 class="m-t-10">CYC</h3>
+                {% for one in cyc %}
+                <div class="user-detail">{{one}} </br></div>
+                {% endfor %}
+						</div>
+						<div class="tab-pane fade" id="nav-pills-tab-6">
+						 <h3 class="m-t-10">Misc Configuration</h3>
+             {% for one in tools %}
+             <div class="user-detail">{{one}} </br></div>
+             {% endfor %}
+             {% for one in games %}
+             <div class="user-detail">{{one}} </br></div>
+             {% endfor %}
+
+						</div>
+					</div>
+				</div>
+			    <!-- end col-6 -->
+
+                        </div>
+                    <!-- end panel -->
+                </div>
+                <!-- end col-12 -->
+            </div>
+            <!-- end row -->
+
+
+
+
+
+
+        </div>
+        <!-- end #content -->
+
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+{% endblock %}

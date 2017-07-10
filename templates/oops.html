@@ -14,10 +14,10 @@
         <div class="error">
             <div class="error-code m-b-10">oops! <i class="fa fa-warning"></i></div>
             <div class="error-content">
-                <div class="error-message">This is a restricted area.</div>
+                <div class="error-message">  {{warning_header}}</div>
                 <div class="error-desc m-b-20">
-                    Really sorry but this page is for administrators only. <br />
-                    Hope you will find the page you were for!
+                    {{warning_msg}}. <br />
+                    Hope you will find the page you were looking for!
                 </div>
                 <div>
                     <a href="{{url_for('polyphemus')}}" class="btn btn-success">Go Back to the Dashboard Page</a>

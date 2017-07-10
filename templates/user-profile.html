@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Polyphemus | {{user_session.name}}{% endblock %}
+
+{% block content %}
+        <!-- begin profile-section -->
+        <div class="profile-section">
+            <!-- begin profile-left -->
+            <div class="profile-left">
+                <!-- begin profile-image -->
+                <div class="
+                            ">
+                    <img src="{{user_name.email | gravatar}}" />
+                    <i class="fa fa-user hide"></i>
+                </div>
+            </div>
+            <!-- end profile-left -->
+            <!-- begin profile-right -->
+            <div class="profile-right">
+                <!-- begin profile-info -->
+                <div class="profile-info">
+
+                        <div class="row">
+                            <!-- begin col-8 -->
+                            <div class="col-md-6">
+
+                                <iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
+                              <form method=POST action="{{ url_for('update_profile') }}" target="hiddenFrame">
+                            <div class="form-group row">
+                              <label for="profile-text-input" class="col-2 col-form-label">Name</label>
+                              <div class="col-4">
+                                <input class="form-control" type="text" name="username" value="{{user_name.name}}" id="profile-text-input">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label for="profile-password-input" class="col-2 col-form-label">Password</label>
+                              <div class="col-4">
+                                <input class="form-control" type="password" value="{{user_name.password}}" name="currentPassword" id="currentPassword" autocomplete="off">
+                                {{user_name.password}}
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label for="profile-password-input" class="col-2 col-form-label">Type New Password</label>
+                              <div class="col-4">
+                                <input class="form-control" type="password" value="" name="newPassword" id="newPassword" autocomplete="off">
+                              </div>
+                                  </div>
+                            <div class="form-group row">
+                              <label for="profile-email-input" class="col-2 col-form-label">Email</label>
+                              <div class="col-4">
+                                <input class="form-control" type="email" value="{{user_name.email}}" id="profile-email-input">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label for="profile-url-input" class="col-2 col-form-label">Insert your webpage</label>
+                              <div class="col-4">
+                                <input class="form-control" type="url" value="https://google.com" id="profile-url-input">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label for="profile-tel-input" class="col-2 col-form-label">Telephone</label>
+                              <div class="col-4">
+                                <input class="form-control" type="tel" value="1-(555)-555-5555" id="profile-tel-input">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label for="profile-tel-input" class="col-2 col-form-label">Skype</label>
+                              <div class="col-4">
+                                <input class="form-control" type="tel" value="skype username" id="profile-skype-input">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label for="profile-datetime-local-input" class="col-2 col-form-label">Date and time</label>
+                              <div class="col-4">
+                                <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="profile-datetime-local-input">
+                              </div>
+                            </div>
+
+                        <div class="form-group row pull-right">
+                          </br>  <button type="submit" class="btn btn-primary">Save profile</button>
+                          </div>
+                          </div>
+                        </form>
+
+  <!-- end col-2 -->
+
+      <!-- begin col-2 -->
+
+      <div class="row col-md-2 pull-right">
+<span class="badge badge-pill badge-success">{{user_name.role}} </span>
+
+</div>
+<!-- end row -->
+                </div> <!-- end profile-info -->
+            </div> <!-- end profile-right -->
+        </div> <!-- end profile-section -->
+
+{% endblock %}

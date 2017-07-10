@@ -13,7 +13,9 @@ from scripts.forms import ShotForm
 import bcrypt
 import json
 
+#import configs
 from cyc_config import cyc_config as cfg
+#import studio_config as studiocfg
 
 from werkzeug.utils import secure_filename
 
@@ -112,6 +114,7 @@ def register():
         return 'That username already exists!'
 
     return render_template('register.html')
+
 
 
 @app.route('/polyphemus')
@@ -242,6 +245,52 @@ def user(user_name):
     return render_template("user.html", user_name=user_name, subs=subs, user_session=user_session,
                            notifications=notifications, shows=shows, shots=shots)
 
+@app.route('/polyphemus/profile/<user_name>')
+def profile(user_name):
+    if 'username' in session:
+        if session['username'] == user_name:
+            user_name = mongo.db.users.find_one({"name": user_name})
+            user_session = mongo.db.users.find_one({"name": session['username']})
+            notifications = [x for x in mongo.db.notifications.find()]
+
+
+            return render_template("user-profile.html", user_name=user_name, user_session=user_session,
+                               notifications=notifications)
+        else:
+            warning_header="Restricted Area. Toxic!"
+            warning_msg="It seems you dont have all rights to do this action. Ask your Admin what to do next"
+            return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
+    else:
+        return render_template("login.html")
+
+
+@app.route('/update-user', methods=['POST', 'GET'])
+def update_profile():
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        subs = [x for x in mongo.db.submissions.find()]
+        notifications = [x for x in mongo.db.notifications.find()]
+        shots = [x for x in mongo.db.shots.find()]
+        if user_session['role'] == 'admin':
+            shows = [x for x in mongo.db.shows.find()]
+        else:
+            shows = []
+            for n in shows_user_artist:
+                new_show = mongo.db.shows.find_one(n)
+                shows.append(new_show)
+        if request.method == 'POST':
+            pass_to_change = request.form['currentPassword']
+            new_password = request.form['newPassword']
+            login_user = mongo.db.users.find_one({'name': request.form['username']})
+
+            ad.modify_password(login_user, pass_to_change, new_password)
+
+            return redirect(redirect_url())
+
+        return render_template("user-profile.html", user_session=user_session, subs=subs, notifications=notifications, shots=shots, shows=shows)
+    else:
+        return render_template("login.html")
+
 
 @app.route('/admin')
 def admin():
@@ -260,9 +309,40 @@ def admin():
             return render_template("admin.html", user_session=user_session, shows=shows, subs=subs,
                                    users=users, seqs=seqs, shots=shots, assets=assets, notifications=notifications, utilz=utilz)
         else:
-            return render_template("oops.html")
+            warning_header="Restricted Area. Toxic!"
+            warning_msg="It seems you are not an Admin Role User"
+            return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
+
     else:
         return render_template('login.html')
+
+
+@app.route('/system-dashboard')
+def system_dash():
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        if user_session.get('role') == 'admin':
+            studio_conf= open('studio_config.py')
+            lines = [line.strip() for line in studio_conf]
+            filter_soft = [x for x in lines if 'soft_' in x]
+            filter_players = [x for x in lines if 'player_' in x]
+            filter_cyc = [x for x in lines if 'cyc_' in x]
+            filter_studio = [x for x in lines if 'studio_' in x]
+            filter_renderer = [x for x in lines if 'renderer_' in x]
+            filter_tools = [x for x in lines if 'tool_' in x]
+            filter_game = [x for x in lines if 'game_' in x]
+            notifications = [x for x in mongo.db.notifications.find()]
+            users = [x for x in mongo.db.users.find()]
+            utilz = [x for x in mongo.db.utils.find()]
+            return render_template("system.html", lines=lines, games=filter_game, tools=filter_tools, players=filter_players, renderer=filter_renderer, software=filter_soft, cyc=filter_cyc, studio=filter_studio, user_session=user_session, users=users, notifications=notifications, utilz=utilz)
+        else:
+            warning_header="System Restricted Area."
+            warning_msg="If you want to tweak, ask your Admin what to do next"
+            return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
+
+    else:
+        return render_template('login.html')
+
 
 
 @app.route('/modify-shot/<shot_name>', methods=['POST'])
