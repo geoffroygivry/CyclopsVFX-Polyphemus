@@ -249,10 +249,20 @@ def profile(user_name):
         if session['username'] == user_name:
             user_name = mongo.db.users.find_one({"name": user_name})
             user_session = mongo.db.users.find_one({"name": session['username']})
+            subs = [x for x in mongo.db.submissions.find()]
             notifications = [x for x in mongo.db.notifications.find()]
+            shots = [x for x in mongo.db.shots.find()]
+            if user_session['role'] == 'admin':
+                shows = [x for x in mongo.db.shows.find()]
+            else:
+                shows = []
+                shows_user_artist = user_session.get("shows")
+                for n in shows_user_artist:
+                    new_show = mongo.db.shows.find_one(n)
+                    shows.append(new_show)
 
             return render_template("user-profile.html", user_name=user_name, user_session=user_session,
-                                   notifications=notifications)
+                                   notifications=notifications, subs=subs, shots=shots, shows=shows)
         else:
             warning_header = "Restricted Area. Toxic!"
             warning_msg = "It seems you dont have all rights to do this action. Ask your Admin what to do next"
@@ -261,7 +271,7 @@ def profile(user_name):
         return render_template("login.html")
 
 
-@app.route('/update-user', methods=['POST', 'GET'])
+@app.route('/update-profile', methods=['POST', 'GET'])
 def update_profile():
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
