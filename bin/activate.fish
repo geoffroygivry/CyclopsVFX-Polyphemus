@@ -36,7 +36,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/geoff/Dropbox/01_DEV/02_webDev/cyclops-vfx/polyphemus"
+set -gx VIRTUAL_ENV "/home/cabox/workspace/CyclopsVFX-Polyphemus"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
