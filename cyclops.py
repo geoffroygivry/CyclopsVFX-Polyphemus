@@ -259,19 +259,20 @@ def profile(user_name):
 
 @app.route('/update-user', methods=['POST', 'GET'])
 def update_profile():
-    user_name = mongo.db.users.find_one({"name": session['username']})
-    user_session = mongo.db.users.find_one({"name": session['username']})
-    if request.method == 'POST':
-        #users = mongo.db.users
-        #user_name = users.find_one({"name": user_name})
-        #user_name = mongo.db.users.find_one({"name": session['user_name']})
-        #user_session = mongo.db.users.find_one({"name": session['user_name']})
-        pass_to_change = request.form['newpassword']
-        hashpass = bcrypt.hashpw(pass_to_change.encode('utf-8'), bcrypt.gensalt())
+    if 'username' in session:
+        user_name = mongo.db.users.find_one({"name": session['username']})
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        if request.method == 'POST':
+            #users = mongo.db.users
+            #user_name = users.find_one({"name": user_name})
+            #user_name = mongo.db.users.find_one({"name": session['user_name']})
+            #user_session = mongo.db.users.find_one({"name": session['user_name']})
+            pass_to_change = request.form['newpassword']
+            hashpass = bcrypt.hashpw(pass_to_change.encode('utf-8'), bcrypt.gensalt())
+            mongo.db.users.update_one({'name' : user_session }, {"$set": {"password": hashpass}}, upsert=False)
+            return redirect(redirect_url())
 
-        mongo.db.users.update_one({'name' : user_session }, {"$set": {"password": hashpass}}, upsert=False)
-        return redirect(redirect_url())
-    return render_template("user-profile.html", user_name=user_name, user_session=user_session)
+        return render_template("user-profile.html", user_name=user_name, user_session=user_session)
 
 
 @app.route('/admin')
