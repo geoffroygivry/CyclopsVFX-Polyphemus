@@ -118,7 +118,6 @@ def register():
 @app.route('/logout')
 def logout():
     if 'username' in session:
-        #user_session = mongo.db.users.find_one({"name": session['username']})
         session.pop('username', None)
         return redirect(url_for('index'))
 
