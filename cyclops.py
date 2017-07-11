@@ -109,10 +109,18 @@ def register():
             session['username'] = request.form['username']
             return redirect(url_for('index'))
 
-        return 'That username already exists!'
+        warning_header = "That username already exists!"
+        warning_msg = "Please choose another username."
+        return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
 
     return render_template('register.html')
 
+@app.route('/logout')
+def logout():
+    if 'username' in session:
+        #user_session = mongo.db.users.find_one({"name": session['username']})
+        session.pop('username', None)
+        return redirect(url_for('index'))
 
 @app.route('/polyphemus')
 def polyphemus():
