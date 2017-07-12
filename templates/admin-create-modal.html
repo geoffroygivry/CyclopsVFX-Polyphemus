@@ -6,20 +6,10 @@
                 <h4 class="modal-title">Create Entities</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="uploadtemplate" enctype="multipart/form-data" method="post" action="#">
-                    <div class="form-group form-group-create " style="margin: 5px;">
-                        <label class="col-md-12 control-labels">Create entities from .xls or .csv?</label>
-                        <div class="col-md-12">
-                           <input id="fileupload" name="mytemplate" type="file" />
-                           <input class="btn btn-dl btn-block" type="submit" value="submit" id="submit" style="margin: 15px;"/>
-                        </div>
-                        <label class="col-md-12 control-labels"><small>Don't have any? Please use our template and fill it with goodness! <br/> <a href="#">Template.xls</a> | <a href="">Template.csv</a></small></label>
-                    </div>
-                </form>
-                
                 <form class="form-horizontal" method="post" action="#">
                     <div class="form-group form-group-create " style="margin: 5px;">
-                        <label class="col-md-12 control-labels"><h3>Create show:</h3></label>
+                        <label class="col-md-12 control-labels">
+                            <h3>Create show:</h3></label>
                         <label class="col-md-3 control-label">Short name</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="show-name" placeholder="Short name takes 3 letters only...">
@@ -29,32 +19,70 @@
                             <input type="text" class="form-control" name="show-longname" placeholder="It can be as long as you want">
                         </div>
                         <div class="col-md-12">
-                           <input class="btn btn-dl btn-block" type="submit" value="submit" id="submit" style="margin: 15px;"/>
+                            <input class="btn btn-info btn-block" type="submit" value="submit" id="submit" style="margin: 15px;" />
                         </div>
                     </div>
                 </form>
-                
                 <form class="form-horizontal" method="post" action="#">
                     <div class="form-group form-group-create " style="margin: 5px;">
-                        <label class="col-md-12 control-labels"><h3>Create sequence:</h3></label>
-                        <label class="col-md-3 control-label">Show</label>
+                        <label class="col-md-12 control-labels">
+                            <h3>Create sequence:</h3></label>
+                        <label class="col-md-2 control-label">Show</label>
                         <div class="col-md-3">
-                            <select name="shot-status" class="form-control">
+                            <select name="show" class="form-control">
                                 {% for show in shows %}
                                 <option>{{show.name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
-                        <label class="col-md-3 control-label">Name</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="show-name" placeholder="Sequence name">
+                        <label class="col-md-2 control-label">Name</label>
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" name="seq-name" placeholder="Sequence name">
                         </div>
                         <div class="col-md-12">
-                           <input class="btn btn-dl btn-block" type="submit" value="submit" id="submit" style="margin: 15px;"/>
+                            <input class="btn btn-info btn-block" type="submit" value="submit" id="submit" style="margin: 15px;" />
                         </div>
                     </div>
                 </form>
-                
+                <form class="form-horizontal" method="post" action="#">
+                    <div class="form-group form-group-create " style="margin: 5px;">
+                        <label class="col-md-12 control-labels">
+                            <h3>Create shot</h3></label>
+                        <label class="col-md-3 control-label">Show</label>
+                        <div class="col-md-9">
+                            <select name="show" class="form-control">
+                                {% for show in shows %}
+                                <option>{{show.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <label class="col-md-3 control-label">Seq</label>
+                        <div class="col-md-9">
+                            <select name="seq" class="form-control">
+                                {% for seq in seqs %}
+                                <option>{{seq.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <label class="col-md-3 control-label">Shot name</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="shot-name" placeholder="Shot name">
+                        </div>
+                        <div class="col-md-12">
+                            <input class="btn btn-info btn-block" type="submit" value="submit" id="submit" style="margin: 15px;" />
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal" id="uploadtemplate" enctype="multipart/form-data" method="post" action="#">
+                    <div class="form-group form-group-create " style="margin: 5px;">
+                        <label class="col-md-12 control-labels">Create entities from .xls or .csv?</label>
+                        <div class="col-md-12">
+                            <input id="fileupload" name="mytemplate" type="file" />
+                            <input class="btn btn-dl btn-block" type="submit" value="submit" id="submit" style="margin: 15px;" />
+                        </div>
+                        <label class="col-md-12 control-labels"><small>Don't have any? Please use our template and fill it with goodness! <br/> <a href="#">Template.xls</a> | <a href="">Template.csv</a></small></label>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>

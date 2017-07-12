@@ -9,7 +9,6 @@ from scripts import aws_s3
 from scripts import generate_images
 from scripts import admin as ad
 from scripts import check_img as ci
-from scripts.forms import ShotForm
 import bcrypt
 import json
 
@@ -80,6 +79,20 @@ def redirect_url(default='index'):
         url_for(default)
 
 
+def dirs_to_watch(extras_dirs):
+    from os import path
+
+    extra_dirs = [extras_dirs, ]
+    extra_files = extra_dirs[:]
+    for extra_dir in extra_dirs:
+        for dirname, dirs, files in os.walk(extra_dir):
+            for filename in files:
+                filename = path.join(dirname, filename)
+                if path.isfile(filename):
+                    extra_files.append(filename)
+    return extra_files
+
+
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
@@ -115,11 +128,13 @@ def register():
 
     return render_template('register.html')
 
+
 @app.route('/logout')
 def logout():
     if 'username' in session:
         session.pop('username', None)
         return redirect(url_for('index'))
+
 
 @app.route('/polyphemus')
 def polyphemus():
@@ -439,4 +454,4 @@ def process(current_route, username):
 
 if __name__ == "__main__":
     app.secret_key = cfg.FLASK_APP_SECRET_KEY
-    app.run(debug=True, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0", extra_files=dirs_to_watch("templates"))
