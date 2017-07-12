@@ -3,136 +3,61 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Modal Dialog</h4>
+                <h4 class="modal-title">Create Entities</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Default Input</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" placeholder="Default input">
+                <form class="form-horizontal" id="uploadtemplate" enctype="multipart/form-data" method="post" action="#">
+                    <div class="form-group form-group-create " style="margin: 5px;">
+                        <label class="col-md-12 control-labels">Create entities from .xls or .csv?</label>
+                        <div class="col-md-12">
+                           <input id="fileupload" name="mytemplate" type="file" />
+                           <input class="btn btn-dl btn-block" type="submit" value="submit" id="submit" style="margin: 15px;"/>
                         </div>
+                        <label class="col-md-12 control-labels"><small>Don't have any? Please use our template and fill it with goodness! <br/> <a href="#">Template.xls</a> | <a href="">Template.csv</a></small></label>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Disabled Input</label>
+                </form>
+                
+                <form class="form-horizontal" method="post" action="#">
+                    <div class="form-group form-group-create " style="margin: 5px;">
+                        <label class="col-md-12 control-labels"><h3>Create show:</h3></label>
+                        <label class="col-md-3 control-label">Short name</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" placeholder="Disabled input" disabled="">
+                            <input type="text" class="form-control" name="show-name" placeholder="Short name takes 3 letters only...">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Select</label>
+                        <label class="col-md-3 control-label">Long name</label>
                         <div class="col-md-9">
-                            <select class="form-control">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
+                            <input type="text" class="form-control" name="show-longname" placeholder="It can be as long as you want">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Select (multiple)</label>
-                        <div class="col-md-9">
-                            <select multiple="" class="form-control">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Textarea</label>
-                        <div class="col-md-9">
-                            <textarea class="form-control" placeholder="Textarea" rows="5"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Checkbox</label>
-                        <div class="col-md-9">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value=""> Checkbox Label 1
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value=""> Checkbox Label 2
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Inline Checkbox</label>
-                        <div class="col-md-9">
-                            <label class="checkbox-inline">
-                                <input type="checkbox" value=""> Checkbox Label 1
-                            </label>
-                            <label class="checkbox-inline">
-                                <input type="checkbox" value=""> Checkbox Label 2
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Radio Button</label>
-                        <div class="col-md-9">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" value="option1" checked=""> Radio option 1
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" value="option2"> Radio option 2
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Inline Radio Button</label>
-                        <div class="col-md-9">
-                            <label class="radio-inline">
-                                <input type="radio" name="optionsRadios" value="option1" checked=""> Radio option 1
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="optionsRadios" value="option2"> Radio option 2
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group has-success has-feedback">
-                        <label class="col-md-3 control-label">Input with Success</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control">
-                            <span class="fa fa-check form-control-feedback"></span>
-                        </div>
-                    </div>
-                    <div class="form-group has-warning has-feedback">
-                        <label class="col-md-3 control-label">Input with Warning</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control">
-                            <span class="fa fa-warning form-control-feedback"></span>
-                        </div>
-                    </div>
-                    <div class="form-group has-error has-feedback">
-                        <label class="col-md-3 control-label">Input with Error</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control">
-                            <span class="fa fa-times form-control-feedback"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Submit</label>
-                        <div class="col-md-9">
-                            <button type="submit" class="btn btn-sm btn-success">Submit Button</button>
+                        <div class="col-md-12">
+                           <input class="btn btn-dl btn-block" type="submit" value="submit" id="submit" style="margin: 15px;"/>
                         </div>
                     </div>
                 </form>
+                
+                <form class="form-horizontal" method="post" action="#">
+                    <div class="form-group form-group-create " style="margin: 5px;">
+                        <label class="col-md-12 control-labels"><h3>Create sequence:</h3></label>
+                        <label class="col-md-3 control-label">Show</label>
+                        <div class="col-md-3">
+                            <select name="shot-status" class="form-control">
+                                {% for show in shows %}
+                                <option>{{show.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <label class="col-md-3 control-label">Name</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="show-name" placeholder="Sequence name">
+                        </div>
+                        <div class="col-md-12">
+                           <input class="btn btn-dl btn-block" type="submit" value="submit" id="submit" style="margin: 15px;"/>
+                        </div>
+                    </div>
+                </form>
+                
             </div>
             <div class="modal-footer">
                 <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
-                <a href="javascript:;" class="btn btn-sm btn-success">Action</a>
             </div>
         </div>
     </div>

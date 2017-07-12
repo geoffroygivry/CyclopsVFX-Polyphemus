@@ -90,7 +90,7 @@ def login():
             if bcrypt.hashpw(request.form['password'].encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password'].encode('utf-8'):
                 session['username'] = request.form['username']
                 # return redirect(url_for('polyphemus'))
-                return redirect(redirect_url())
+                return redirect(url_for('profile', user_name=session['username']))
 
         return 'Invalid username/password combination'
 

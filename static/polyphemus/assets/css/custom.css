@@ -189,3 +189,13 @@ blockquote {
 .animated-switch > input[type="checkbox"]:checked + label::after {
   background: inherit;
   left: 20px; }
+
+.form-group-create {
+	padding: 25px;
+    background: #d9e0e7;
+    margin: 5px;
+}
+.btn-dl {
+	background: #634D8C;
+	color: white;
+}
