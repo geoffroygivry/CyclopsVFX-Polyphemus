@@ -9,6 +9,7 @@ from scripts import aws_s3
 from scripts import generate_images
 from scripts import admin as ad
 from scripts import check_img as ci
+from scripts import db_actions as dba
 import bcrypt
 import json
 
@@ -444,6 +445,16 @@ def remove_sub(ptuid):
     sub_to_delete = request.form['ptuid']
     mongo.db.submissions.delete_one({"ptuid": sub_to_delete})
     return redirect(redirect_url())
+
+
+@app.route('/create-show', methods=['POST'])
+def create_show():
+    show_name = request.form['show-name']
+    show_longname = request.form['show-longname']
+    dba.create_show(show_longname, show_name)
+    print("show_name: {}, show_long_name: {}".format(show_name, show_longname))
+    return redirect(redirect_url())
+    
 
 
 @app.route("/process/<current_route>/<username>")

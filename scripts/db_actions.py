@@ -22,10 +22,7 @@
 
 from scripts import connect_db as con
 
-def get_connection():
-    server = con.server
-    db = server.hydra
-    return db
+
 
 
 def create_show(long_name, code_name):
@@ -36,6 +33,7 @@ def create_show(long_name, code_name):
     Example of use:
         create_show("RUBBISHBOY", "RBY")
     """
+    db = con.server.hydra
     db.shows.insert(
         {
             "name": code_name,
@@ -53,6 +51,7 @@ def create_seq(show_name, seq_name):
     Example of usage:
         create_seq("RBY", "MANOR")
     """
+    db = con.server.hydra
     db.seqs.insert(
         {
             "name": seq_name,
@@ -75,6 +74,7 @@ def create_shot(show_name, seq_name, shot_name, frame_in=1001, frame_out=1001,
     Example of usage:
         create_shot("RBY", "MANOR", "MANOR_010", frame_in=1001, frame_out=1067)
     """
+    db = con.server.hydra
     db.shots.insert(
         {
             "name": shot_name,
@@ -100,6 +100,7 @@ def create_shot(show_name, seq_name, shot_name, frame_in=1001, frame_out=1001,
 
 def add_task(shot_name, task_type, assignee, status="NOT_STARTED"):
     """ This function is used only for adding tasks to shots."""
+    db = con.server.hydra
     valid_statuses = ["NOT_STARTED", "IN_PROGRESS", "COMPLETED"]
     for n in valid_statuses:
         if status in n:
@@ -113,6 +114,7 @@ def add_task(shot_name, task_type, assignee, status="NOT_STARTED"):
 
 def update_shot_status(shot_name, status):
     """ update the status of the given shot."""
+    db = con.server.hydra
     valid_statuses = ["NOT_STARTED", "IN_PROGRESS", "ON_HOLD", "CANCELLED",
                       "CREATIVE_APPROVED", "FINAL_PENDING_TECH_CHECK", "FINAL"]
     for n in valid_statuses:
@@ -126,6 +128,7 @@ def update_shot_status(shot_name, status):
 
 
 def update_shot_target_date(shot_name, target_date):
+    db = con.server.hydra
     """ Update the target date of the shot"""
     db.shots.update(
         {"name": shot_name},
@@ -136,6 +139,7 @@ def update_shot_target_date(shot_name, target_date):
 
 
 def set_active_show(show_name, true_or_false):
+    db = con.server.hydra
     db.shows.update(
         {"name": show_name},
         {"$set":
@@ -145,6 +149,7 @@ def set_active_show(show_name, true_or_false):
 
 
 def link_asset_to_shot(asset_name, shot_name):
+    db = con.server.hydra
     db.shots.update(
         {"name": shot_name},
         {"$push":

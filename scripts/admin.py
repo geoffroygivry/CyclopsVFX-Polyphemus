@@ -24,11 +24,11 @@ import os
 import sys
 import bcrypt
 
-from scripts import db_actions
+from scripts import connect_db as con
 
 
 def modify_shot(shot_name, status, task_type, task_assignee, task_status, iso_target_date, frame_in, frame_out):
-    db = db_actions.get_connection()
+    db = con.server.hydra
     if status != "NOT-STARTED":
         db.shots.update({"name": shot_name}, {"$set": {"status": status}})
     if task_type != "Choose...":
@@ -48,7 +48,7 @@ def modify_shot(shot_name, status, task_type, task_assignee, task_status, iso_ta
 
             
 def modify_password(login_user, current_password, new_password):
-            db = db_actions.get_connection()
+            db = con.server.hydra
             if bcrypt.hashpw(current_password.encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password'].encode('utf-8'):
                 hashpass = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
                 db.users.update({'name': login_user['name']}, {"$set": {'password': hashpass.decode('utf-8')}})
