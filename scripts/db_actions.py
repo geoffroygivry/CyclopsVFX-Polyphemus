@@ -23,8 +23,6 @@
 from scripts import connect_db as con
 
 
-
-
 def create_show(long_name, code_name):
     """ Creation of a show entity.
     The show has 2 names: the normal name and the code name which is normally no
@@ -39,7 +37,7 @@ def create_show(long_name, code_name):
             "name": code_name,
             "long_name": long_name,
             "sequences": [],
-            "active": True,
+            "active": False,
             "ptuid": 1
         }
     )
@@ -65,7 +63,7 @@ def create_seq(show_name, seq_name):
 
 
 def create_shot(show_name, seq_name, shot_name, frame_in=1001, frame_out=1001,
-                tasks=[], status="NOT STARTED", target_date=None):
+                tasks=[], status="NOT-STARTED", target_date=None):
     """ creates a shot entity within the show an the sequence.
     it takes some arguments like the show name, the sequence name, the shot name
     the first frame and the last frame.
@@ -98,10 +96,10 @@ def create_shot(show_name, seq_name, shot_name, frame_in=1001, frame_out=1001,
     )
 
 
-def add_task(shot_name, task_type, assignee, status="NOT_STARTED"):
+def add_task(shot_name, task_type, assignee, status="NOT-STARTED"):
     """ This function is used only for adding tasks to shots."""
     db = con.server.hydra
-    valid_statuses = ["NOT_STARTED", "IN_PROGRESS", "COMPLETED"]
+    valid_statuses = ["NOT-STARTED", "IN-PROGRESS", "COMPLETED"]
     for n in valid_statuses:
         if status in n:
             db.shots.update(
@@ -115,8 +113,8 @@ def add_task(shot_name, task_type, assignee, status="NOT_STARTED"):
 def update_shot_status(shot_name, status):
     """ update the status of the given shot."""
     db = con.server.hydra
-    valid_statuses = ["NOT_STARTED", "IN_PROGRESS", "ON_HOLD", "CANCELLED",
-                      "CREATIVE_APPROVED", "FINAL_PENDING_TECH_CHECK", "FINAL"]
+    valid_statuses = ["NOT-STARTED", "IN-PROGRESS", "ON-HOLD", "CANCELLED",
+                      "CREATIVE-APPROVED", "FINAL-PENDING-TECH-CHECK", "FINAL"]
     for n in valid_statuses:
         if status in n:
             db.shots.update(

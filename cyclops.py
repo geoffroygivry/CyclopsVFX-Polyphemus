@@ -104,7 +104,7 @@ def login():
             if bcrypt.hashpw(request.form['password'].encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password'].encode('utf-8'):
                 session['username'] = request.form['username']
                 # return redirect(url_for('polyphemus'))
-                return redirect(url_for('profile', user_name=session['username']))
+                return redirect(redirect_url())
 
         return 'Invalid username/password combination'
 
@@ -454,7 +454,40 @@ def create_show():
     dba.create_show(show_longname, show_name)
     print("show_name: {}, show_long_name: {}".format(show_name, show_longname))
     return redirect(redirect_url())
-    
+
+
+@app.route('/create-seq', methods=['POST'])
+def create_seq():
+    show_name = request.form['show']
+    seq_name = request.form['seq-name']
+    print(show_name, seq_name)
+    dba.create_seq(show_name, seq_name)
+    return redirect(redirect_url())
+
+
+@app.route('/create-shot', methods=['POST'])
+def create_shot():
+    show_name = request.form['show']
+    seq_name = request.form['seq']
+    shot_name = request.form['shot-name']
+    frame_in = request.form['frame-in']
+    frame_out = request.form['frame-out']
+    target_date = request.form['date']
+    iso_target_date = utils.convert_datepicker_to_isotime(target_date)
+    dba.create_shot(show_name, seq_name, shot_name, frame_in=frame_in, frame_out=frame_out, target_date=iso_target_date)
+    return redirect(redirect_url())
+
+
+@app.route('/create-asset', methods=['POST'])
+def create_asset():
+    show_name = request.form['show']
+    asset_name = request.form['asset-name']
+    asset_hero_type = request.form['asset-hero-type']
+    asset_type = request.form['asset-type']
+    target_date = request.form['date-create-asset']
+    iso_target_date = utils.convert_datepicker_to_isotime(target_date)
+    print(show_name, asset_name, asset_hero_type, asset_type, iso_target_date)
+    return redirect(redirect_url())
 
 
 @app.route("/process/<current_route>/<username>")

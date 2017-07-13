@@ -20,11 +20,11 @@
                             <input type="text" class="form-control" name="show-longname" placeholder="It can be as long as 10 characters" maxlength="20">
                         </div>
                         <div class="col-md-12">
-                            <input class="btn btn-info btn-block" type="submit" value="Create show" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')"/>
+                            <input class="btn btn-info btn-block" type="submit" value="Create show" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')" />
                         </div>
                     </div>
                 </form>
-                <form class="form-horizontal" method="post" action="#">
+                <form class="form-horizontal" method="post" action="{{url_for('create_seq')}}" target="hiddenFrame">
                     <div class="form-group form-group-create " style="margin: 5px;">
                         <label class="col-md-12 control-labels">
                             <h3>Create sequence:</h3></label>
@@ -41,11 +41,11 @@
                             <input type="text" class="form-control" name="seq-name" placeholder="Sequence name">
                         </div>
                         <div class="col-md-12">
-                            <input class="btn btn-info btn-block" type="submit" value="Create sequence" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')"/>
+                            <input class="btn btn-info btn-block" type="submit" value="Create sequence" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')" />
                         </div>
                     </div>
                 </form>
-                <form class="form-horizontal" method="post" action="#">
+                <form class="form-horizontal" method="post" action="{{url_for('create_shot')}}" target="hiddenFrame">
                     <div class="form-group form-group-create " style="margin: 5px;">
                         <label class="col-md-12 control-labels">
                             <h3>Create shot</h3></label>
@@ -79,13 +79,11 @@
                         </div>
                         {% include 'datepicker.html' %}
                         <div class="col-md-12">
-                            <input class="btn btn-info btn-block" type="submit" value="Create shot" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')"/>
+                            <input class="btn btn-info btn-block" type="submit" value="Create shot" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')" />
                         </div>
                     </div>
                 </form>
-                
-                
-                <form class="form-horizontal" method="post" action="#">
+                <form class="form-horizontal" method="post" action="{{url_for('create_asset')}}" target="hiddenFrame">
                     <div class="form-group form-group-create " style="margin: 5px;">
                         <label class="col-md-12 control-labels">
                             <h3>Create Asset</h3></label>
@@ -104,8 +102,8 @@
                         <label class="col-md-2 control-label">Hero type</label>
                         <div class="col-md-3">
                             <select name="asset-hero-type" class="form-control">
-                                <option>Hero</option>
                                 <option>Non hero</option>
+                                <option>Hero</option>
                             </select>
                         </div>
                         <label class="col-md-12 control-labels"></label>
@@ -120,14 +118,12 @@
                                 <option>fx</option>
                             </select>
                         </div>
-                        {% include 'datepicker.html' %}
+                        {% include 'datepicker-create-asset.html' %}
                         <div class="col-md-12">
-                            <input class="btn btn-info btn-block" type="submit" value="Create asset" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')"/>
+                            <input class="btn btn-info btn-block" type="submit" value="Create asset" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')" />
                         </div>
                     </div>
                 </form>
-                
-                
                 <form class="form-horizontal" id="uploadtemplate" enctype="multipart/form-data" method="post" action="#">
                     <div class="form-group form-group-create " style="margin: 5px;">
                         <label class="col-md-12 control-labels">Create entities from .xls or .csv?</label>
