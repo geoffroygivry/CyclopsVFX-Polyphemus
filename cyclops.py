@@ -482,11 +482,16 @@ def create_shot():
 def create_asset():
     show_name = request.form['show']
     asset_name = request.form['asset-name']
-    asset_hero_type = request.form['asset-hero-type']
+    hero_type = request.form['asset-hero-type']
+    if hero_type == "Hero":
+        hero = True
+    else:
+        hero = False
     asset_type = request.form['asset-type']
     target_date = request.form['date-create-asset']
     iso_target_date = utils.convert_datepicker_to_isotime(target_date)
-    print(show_name, asset_name, asset_hero_type, asset_type, iso_target_date)
+    dba.create_asset(show_name, asset_name, asset_type, hero, iso_target_date)
+    print(show_name, asset_name, hero, asset_type, iso_target_date)
     return redirect(redirect_url())
 
 
