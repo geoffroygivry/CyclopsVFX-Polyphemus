@@ -1,0 +1,4 @@
+{
+  "blacklist": ["useStrict"],
+  "plugins": ["object-assign"]
+}

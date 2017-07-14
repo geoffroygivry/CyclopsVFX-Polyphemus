@@ -83,7 +83,7 @@
                         </div>
                     </div>
                 </form>
-                <form class="form-horizontal" method="post" action="{{url_for('create_asset')}}" target="hiddenFrame">
+                <form id="create-asset" class="form-horizontal" method="post" action="{{url_for('create_asset')}}" target="hiddenFrame" data-parsley-validate="true">
                     <div class="form-group form-group-create " style="margin: 5px;">
                         <label class="col-md-12 control-labels">
                             <h3>Create Asset</h3></label>
@@ -95,9 +95,9 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <label class="col-md-3 control-label">Asset name</label>
+                        <label class="col-md-3 control-label">Asset name*</label>
                         <div class="col-md-4">
-                            <input type="text" class="form-control" name="asset-name" placeholder="Asset name">
+                            <input type="text" class="form-control" name="asset-name" placeholder="Required" data-parsley-length="[4, 20]" data-parsley-required="true">
                         </div>
                         <label class="col-md-2 control-label">Hero type</label>
                         <div class="col-md-3">
@@ -120,7 +120,7 @@
                         </div>
                         {% include 'datepicker-create-asset.html' %}
                         <div class="col-md-12">
-                            <input class="btn btn-info btn-block" type="submit" value="Create asset" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')" />
+                            <input class="btn btn-info btn-block" type="submit" value="Create asset" id="asset-submit" style="margin: 15px;" />
                         </div>
                     </div>
                 </form>
@@ -141,3 +141,54 @@
         </div>
     </div>
 </div>
+
+
+<!-- <script type="text/javascript">
+$(function () {
+    
+    $( "#asset-submit" ).click(function() {
+        var formIsValid = $('#create-asset').parsley('isValid').validationResult;
+        console.log(formIsValid);
+        if ( formIsValid == true){
+            $('#create-entities-modal-dialog').modal('hide');
+        }
+    })});
+
+</script> -->
+
+<script type="text/javascript">
+$(function () {
+  $('#create-asset').parsley().on('field:validated', function() {
+    var ok = $('.parsley-error').length === 0;
+    $('.bs-callout-info').toggleClass('hidden', !ok);
+    $('.bs-callout-warning').toggleClass('hidden', ok);
+  })
+  .on('form:submit', function() {
+    $('#create-entities-modal-dialog').modal('hide');
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

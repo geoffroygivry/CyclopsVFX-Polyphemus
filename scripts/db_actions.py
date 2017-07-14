@@ -96,6 +96,26 @@ def create_shot(show_name, seq_name, shot_name, frame_in=1001, frame_out=1001,
     )
 
 
+def create_asset(show_name, asset_name, asset_type, hero, target_date):
+    """Create asset entity within a show"""
+    db = con.server.hydra
+    db.assets.insert(
+        {
+            "name": asset_name,
+            "show": show_name,
+            "type": asset_type,
+            "hero": hero,
+            "target_date": target_date
+        }
+    )
+    db.shows.update(
+        {"name": show_name},
+        {"$push":
+         {"assets": {"name": asset_name}}
+         }
+    )
+    
+    
 def add_task(shot_name, task_type, assignee, status="NOT-STARTED"):
     """ This function is used only for adding tasks to shots."""
     db = con.server.hydra
