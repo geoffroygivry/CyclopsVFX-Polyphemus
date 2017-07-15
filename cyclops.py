@@ -368,6 +368,23 @@ def modify_shot(shot_name):
     return redirect(redirect_url())
 
 
+@app.route('/modify-asset/<asset_name>', methods=['POST'])
+def modify_asset(asset_name):
+    hero_type = request.form['asset-hero-type']
+    if hero_type == "Hero":
+        hero = True
+    else:
+        hero = False
+    task_type = request.form['task-select']
+    task_assignee = request.form['task-assignee']
+    task_status = request.form['task-status']
+    target_date = request.form['date-{}'.format(asset_name)]
+    iso_target_date = utils.convert_datepicker_to_isotime(target_date)
+    ad.modify_asset(asset_name, task_type, task_assignee, task_status, iso_target_date, hero)
+    print("The asset you want to modify is: {}, the task is {}, the target date is {} and the assignee is {}. frame in: {}, frame out: {}".format(asset_name, task_type, task_assignee, task_status, iso_target_date, hero))
+    return redirect(redirect_url())
+
+
 @app.route('/modify-show/<show_name>', methods=['POST'])
 def modify_show(show_name):
     show_is_active = request.form['show-active']
@@ -404,6 +421,14 @@ def delete_shot(shot_name):
     shot_to_delete = request.form['shotName']
     mongo.db.shots.delete_one({"name": shot_to_delete})
     print("Shot {} has been deleted!".format(shot_to_delete))
+    return redirect(redirect_url())
+
+
+@app.route('/delete-asset/<asset_name>', methods=['POST'])
+def delete_asset(asset_name):
+    asset_to_delete = request.form['assetName']
+    mongo.db.assets.delete_one({"name": asset_to_delete})
+    print("asset {} has been deleted!".format(asset_to_delete))
     return redirect(redirect_url())
 
 
