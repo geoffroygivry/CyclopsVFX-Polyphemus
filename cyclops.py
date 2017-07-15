@@ -285,6 +285,7 @@ def update_profile():
         subs = [x for x in mongo.db.submissions.find()]
         notifications = [x for x in mongo.db.notifications.find()]
         shots = [x for x in mongo.db.shots.find()]
+        user_url = 'webadres'
         if user_session['role'] == 'admin':
             shows = [x for x in mongo.db.shows.find()]
         else:
@@ -300,6 +301,45 @@ def update_profile():
 
             ad.modify_password(login_user, pass_to_change, new_password)
 
+            return redirect(redirect_url())
+
+        return render_template("user-profile.html", user_session=user_session, subs=subs, notifications=notifications, shots=shots, shows=shows)
+    else:
+        return render_template("login.html")
+
+
+@app.route('/update-profile-details')
+def update_profile_details():
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        subs = [x for x in mongo.db.submissions.find()]
+        notifications = [x for x in mongo.db.notifications.find()]
+        shots = [x for x in mongo.db.shots.find()]
+        if user_session['role'] == 'admin':
+            shows = [x for x in mongo.db.shows.find()]
+        else:
+            shows = []
+            shows_user_artist = user_session.get("shows")
+            for n in shows_user_artist:
+                new_show = mongo.db.shows.find_one(n)
+                shows.append(new_show)
+        if request.method == 'POST':
+            name = mongo.db.users.find_one({"name": session['username']})
+            details.email = request.form['email']
+            details.url = request.form('url')
+            details.phone = request.form('phone')
+            details.skype = request.form('skype')
+            details.datetime = requext.form('datetime')
+            if details.email is not None:
+                update({"name": name}, {"$set": {"email": details.email}})
+            if details.url is not None:
+                db.users.update({"name": name}, {"$set": {"url": details.url}})
+            if details.phone is not None:
+                update({"name": name}, {"$set": {"phone": details.phone}})
+            if details.skype is not None:
+                update({"name": name}, {"$set": {"skype": details.skype}})
+            if details.datetime is not None:
+                update({"name": name}, {"$set": {"datetime": details.datetime}})
             return redirect(redirect_url())
 
         return render_template("user-profile.html", user_session=user_session, subs=subs, notifications=notifications, shots=shots, shows=shows)
