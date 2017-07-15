@@ -285,7 +285,6 @@ def update_profile():
         subs = [x for x in mongo.db.submissions.find()]
         notifications = [x for x in mongo.db.notifications.find()]
         shots = [x for x in mongo.db.shots.find()]
-        user_url = 'webadres'
         if user_session['role'] == 'admin':
             shows = [x for x in mongo.db.shows.find()]
         else:
@@ -326,20 +325,11 @@ def update_profile_details():
         if request.method == 'POST':
             name = mongo.db.users.find_one({"name": session['username']})
             details.email = request.form['email']
-            details.url = request.form('url')
-            details.phone = request.form('phone')
-            details.skype = request.form('skype')
-            details.datetime = requext.form('datetime')
-            if details.email is not None:
-                update({"name": name}, {"$set": {"email": details.email}})
-            if details.url is not None:
-                db.users.update({"name": name}, {"$set": {"url": details.url}})
-            if details.phone is not None:
-                update({"name": name}, {"$set": {"phone": details.phone}})
-            if details.skype is not None:
-                update({"name": name}, {"$set": {"skype": details.skype}})
-            if details.datetime is not None:
-                update({"name": name}, {"$set": {"datetime": details.datetime}})
+            details.url = request.form['url']
+            details.phone = request.form['phone']
+            details.skype = request.form['skype']
+            details.datetime = requext.form['datetime']
+            mongo.db.users.update_one({"name": name}, {"$set": {"url": details.url}})
             return redirect(redirect_url())
 
         return render_template("user-profile.html", user_session=user_session, subs=subs, notifications=notifications, shots=shots, shows=shows)
