@@ -5,3 +5,6 @@ cyc_config.py
 .idea/
 *.obv
 .directory
+__pycache__/
+*.ipynb
+.ipynb_checkpoints/
