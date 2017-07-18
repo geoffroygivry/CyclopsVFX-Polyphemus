@@ -114,8 +114,8 @@ def create_asset(show_name, asset_name, asset_type, hero, target_date):
          {"assets": {"name": asset_name}}
          }
     )
-    
-    
+
+
 def add_task(shot_name, task_type, assignee, status="NOT-STARTED"):
     """ This function is used only for adding tasks to shots."""
     db = con.server.hydra

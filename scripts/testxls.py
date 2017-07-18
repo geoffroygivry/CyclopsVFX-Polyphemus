@@ -6,7 +6,7 @@ class xls_to_mongodb():
     def __init__(self, path_to_xls, db):
         self.db = db
         self.workbook = xlrd.open_workbook(path_to_xls)
-        
+
     def pull_data(self, sheet_page):
         worksheet = self.workbook.sheet_by_index(sheet_page)
         first_row = []  # The row where we stock the name of the column
@@ -29,18 +29,34 @@ class xls_to_mongodb():
             else:
                 dba.create_show(document['long_name'], document['name'])
                 print("{} will be inserted".format(document['name']))
-                
-                
+
     def populate_seqs(self):
         data = self.pull_data(1)
         for document in data:
             if self.db.seqs.find({"name": document['name']}).count() > 0:
                 print("{} already exists!".format(document['name']))
             else:
-#                 dba.create_show(document['long_name'], document['name'])
-                print("{} will be inserted".format(document['name']))
+                dba.create_seq(document['show'], document['name'])
+                print("{} is inserted".format(document['name']))
+
+    def populate_shots(self):
+        data = self.pull_data(2)
+        for document in data:
+            if self.db.shots.find({"name": document['name']}).count() > 0:
+                print("{} already exists!".format(document['name']))
+            else:
+                dba.create_shot(document['show'], document['seq'], document['name'], frame_in=int(document.get('frame_in', 1001)), frame_out=int(document.get('frame_out', 1001)), status=document['status'], target_date="{}T18:00:00.292000".format(document['target_date']))
+                print("{} is inserted".format(document['name']))
 
 
+"""
+# For testing purpose:
+from scripts import testxls as xls
+from scripts import connect_db as con
+from importlib import reload
+reload(xls)
+db = con.server.hydra
 
-# load_xls = xls_to_mongodb("/home/geoff/Downloads/cyc-template.xlsx", db)
-# load_xls.populate_shows()
+xx = xls.xls_to_mongodb("/home/geoff/Downloads/cyc-template.xlsx", db)
+xx.populate_shots()
+"""
