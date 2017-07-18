@@ -31,7 +31,7 @@
                               <div class="panel-heading"><h4>Update profile information</h4></div>
                               <div class="panel-body">
                                 <iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
-                              <form method=POST action="{{ url_for('update_profile_details') }}" target="hiddenFrame">
+                              <form method=POST action="{{ url_for('update_profile_detail') }}" target="hiddenFrame">
                                 <div class="form-group row">
                               <label for="profile-text-input" class="col-2 col-form-label">Name</label>
                               <div class="col-4">
@@ -62,13 +62,6 @@
                                 <input class="form-control" type="tel" name="skype" value="{{user_name.skype}}" id="profile-skype">
                               </div>
                             </div>
-                            <div class="form-group row">
-                              <label for="profile-datetime-local-input" class="col-2 col-form-label">Date and time</label>
-                              <div class="col-4">
-                                <input class="form-control" type="datetime-local" name="timezone" value="{{user_name.localtimezone}}" id="profile-datetime-local-input">
-                              </div>
-                            </div>
-
                         <div class="form-group row pull-right">
                         </br><button type="submit" class="btn btn-primary">Save profile</button>
                       </div>
