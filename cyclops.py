@@ -278,33 +278,15 @@ def profile(user_name):
         return render_template("login.html")
 
 
-@app.route('/update-profile', methods=['POST', 'GET'])
+@app.route('/update-profile', methods=['POST'])
 def update_profile():
-    if 'username' in session:
-        user_session = mongo.db.users.find_one({"name": session['username']})
-        subs = [x for x in mongo.db.submissions.find()]
-        notifications = [x for x in mongo.db.notifications.find()]
-        shots = [x for x in mongo.db.shots.find()]
-        if user_session['role'] == 'admin':
-            shows = [x for x in mongo.db.shows.find()]
-        else:
-            shows = []
-            shows_user_artist = user_session.get("shows")
-            for n in shows_user_artist:
-                new_show = mongo.db.shows.find_one(n)
-                shows.append(new_show)
-        if request.method == 'POST':
-            pass_to_change = request.form['currentPassword']
-            new_password = request.form['newPassword']
-            login_user = mongo.db.users.find_one({'name': request.form['username']})
+    pass_to_change = request.form['currentPassword']
+    new_password = request.form['newPassword']
+    login_user = mongo.db.users.find_one({'name': session['username']})
 
-            ad.modify_password(login_user, pass_to_change, new_password)
+    ad.modify_password(login_user, pass_to_change, new_password)
+    return redirect(redirect_url())
 
-            return redirect(redirect_url())
-
-        return render_template("user-profile.html", user_session=user_session, subs=subs, notifications=notifications, shots=shots, shows=shows)
-    else:
-        return render_template("login.html")
 
 @app.route('/update-profile-detail', methods=['POST', 'GET'])
 def update_profile_detail():

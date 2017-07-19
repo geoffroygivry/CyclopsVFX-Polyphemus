@@ -75,17 +75,16 @@
                          <div class="panel-heading"><h4>Change Password</h4></div>
                          <div class="panel-body">
                            <iframe name="hiddenFrame-pass" width="0" height="0" border="0" style="display: none;"></iframe>
-                         <form method=POST action="{{ url_for('update_profile') }}" target="hiddenFrame-pass">
+                         <form method="POST" action="{{ url_for('update_profile') }}" target="hiddenFrame-pass">
                            <div class="form-group row">
-                             <label for="profile-password-input" class="col-2 col-form-label">Password</label>
+                             <label for="profile-password-input" class="col-2 col-form-label">Current password</label>
                              <div class="col-4">
-                               <input class="form-control" type="password" value="{{user_name.password}}" name="currentPassword" id="currentPassword" autocomplete="off">
-                               {{user_name.password}}
+                               <input class="form-control" type="password" value="" name="currentPassword" id="currentPassword" autocomplete="off">
                              </div>
                            </div>
                          </br>
                            <div class="form-group row">
-                             <label for="profile-password-input" class="col-2 col-form-label">Type New Password</label>
+                             <label for="profile-password-input" class="col-2 col-form-label">New password</label>
                              <div class="col-4">
                                <input class="form-control" type="password" value="" name="newPassword" id="newPassword" autocomplete="off">
                              </div>
