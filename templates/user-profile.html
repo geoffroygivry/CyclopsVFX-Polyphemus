@@ -19,79 +19,94 @@
             <div class="profile-right">
                 <!-- begin profile-info -->
                 <div class="profile-info">
+                  <div class="row col-md-2 pull-right">
+                  <span class="badge badge-pill badge-success">{{user_name.role}} </span>
+                  </div>
 
-                        <div class="row">
                             <!-- begin col-8 -->
-                            <div class="col-md-6">
+                            <div class="row">
 
+
+                            <div class="col-md-6 panel panel-default">
+                              <div class="panel-heading"><h4>Update profile information</h4></div>
+                              <div class="panel-body">
                                 <iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
-                              <form method=POST action="{{ url_for('update_profile') }}" target="hiddenFrame">
-                            <div class="form-group row">
+                              <form method=POST action="{{ url_for('update_profile_detail') }}" target="hiddenFrame">
+                                <div class="form-group row">
                               <label for="profile-text-input" class="col-2 col-form-label">Name</label>
                               <div class="col-4">
-                                <input class="form-control" type="text" name="username" value="{{user_name.name}}" id="profile-text-input">
+                                <input class="form-control" type="text" name="username" value="{{user_name.name}}" id="profile-name">
                               </div>
                             </div>
-                            <div class="form-group row">
-                              <label for="profile-password-input" class="col-2 col-form-label">Password</label>
-                              <div class="col-4">
-                                <input class="form-control" type="password" value="{{user_name.password}}" name="currentPassword" id="currentPassword" autocomplete="off">
-                                {{user_name.password}}
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label for="profile-password-input" class="col-2 col-form-label">Type New Password</label>
-                              <div class="col-4">
-                                <input class="form-control" type="password" value="" name="newPassword" id="newPassword" autocomplete="off">
-                              </div>
-                                  </div>
                             <div class="form-group row">
                               <label for="profile-email-input" class="col-2 col-form-label">Email</label>
                               <div class="col-4">
-                                <input class="form-control" type="email" value="{{user_name.email}}" id="profile-email-input">
+                                <input class="form-control" type="email" name="email" value="{{user_name.email}}" id="profile-email">
                               </div>
                             </div>
                             <div class="form-group row">
                               <label for="profile-url-input" class="col-2 col-form-label">Insert your webpage</label>
                               <div class="col-4">
-                                <input class="form-control" type="url" value="https://google.com" id="profile-url-input">
+                                <input class="form-control" type="url" name="url" value="{{user_name.url}}" id="url">
                               </div>
                             </div>
                             <div class="form-group row">
                               <label for="profile-tel-input" class="col-2 col-form-label">Telephone</label>
                               <div class="col-4">
-                                <input class="form-control" type="tel" value="1-(555)-555-5555" id="profile-tel-input">
+                                <input class="form-control" type="tel" name="phone" value="{{user_name.phone}}" id="profile-tel">
                               </div>
                             </div>
                             <div class="form-group row">
                               <label for="profile-tel-input" class="col-2 col-form-label">Skype</label>
                               <div class="col-4">
-                                <input class="form-control" type="tel" value="skype username" id="profile-skype-input">
+                                <input class="form-control" type="tel" name="skype" value="{{user_name.skype}}" id="profile-skype">
                               </div>
                             </div>
-                            <div class="form-group row">
-                              <label for="profile-datetime-local-input" class="col-2 col-form-label">Date and time</label>
-                              <div class="col-4">
-                                <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="profile-datetime-local-input">
-                              </div>
-                            </div>
-
                         <div class="form-group row pull-right">
-                          </br>  <button type="submit" class="btn btn-primary">Save profile</button>
-                          </div>
-                          </div>
+                        </br><button type="submit" class="btn btn-primary">Save profile</button>
+                      </div>
                         </form>
+                        </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                        <div class="col-md-6 panel panel-default">
+                         <div class="panel-heading"><h4>Change Password</h4></div>
+                         <div class="panel-body">
+                           <iframe name="hiddenFrame-pass" width="0" height="0" border="0" style="display: none;"></iframe>
+                         <form method=POST action="{{ url_for('update_profile') }}" target="hiddenFrame-pass">
+                           <div class="form-group row">
+                             <label for="profile-password-input" class="col-2 col-form-label">Password</label>
+                             <div class="col-4">
+                               <input class="form-control" type="password" value="{{user_name.password}}" name="currentPassword" id="currentPassword" autocomplete="off">
+                               {{user_name.password}}
+                             </div>
+                           </div>
+                         </br>
+                           <div class="form-group row">
+                             <label for="profile-password-input" class="col-2 col-form-label">Type New Password</label>
+                             <div class="col-4">
+                               <input class="form-control" type="password" value="" name="newPassword" id="newPassword" autocomplete="off">
+                             </div>
+                                 </div>
+                                 <div class="form-group row pull-right">
+                                 </br>  <button type="submit" class="btn btn-primary">Update Password</button>
+                                   </div>
+                                 </form>
+                         </div>
+                         </div>
+                       </div>
+
+
 
   <!-- end col-2 -->
 
+
+
       <!-- begin col-2 -->
 
-      <div class="row col-md-2 pull-right">
-<span class="badge badge-pill badge-success">{{user_name.role}} </span>
-
-</div>
-<!-- end row -->
-                </div> <!-- end profile-info -->
+                    </div> <!-- end profile-info -->
             </div> <!-- end profile-right -->
         </div> <!-- end profile-section -->
 

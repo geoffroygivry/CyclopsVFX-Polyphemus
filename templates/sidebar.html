@@ -5,7 +5,7 @@
                 <ul class="nav">
                     <li class="nav-profile">
                         <div class="image">
-                            <a href="javascript:;"><img src="{{ user_session.email | gravatar }}" alt="" /></a>
+                            <a href="{{url_for('profile', user_name=user_session.name)}}"><img src="{{ user_session.email | gravatar }}" alt="" /></a>
                         </div>
                         <div class="info">
                             {{user_session.name}}
