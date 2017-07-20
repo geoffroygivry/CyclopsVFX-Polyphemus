@@ -47,6 +47,19 @@ class xls_to_mongodb():
             else:
                 dba.create_shot(document['show'], document['seq'], document['name'], frame_in=int(document.get('frame_in', 1001)), frame_out=int(document.get('frame_out', 1001)), status=document['status'], target_date="{}T18:00:00.292000".format(document['target_date']))
                 print("{} is inserted".format(document['name']))
+                
+    def populate_assets(self):
+        data = self.pull_data(3)
+        for document in data:
+            if self.db.assets.find({"name": document['name']}).count() > 0:
+                print("{} already exists!".format(document['name']))
+            else:
+                if document['hero'] == "Hero":
+                    hero_type = True
+                else:
+                    hero_type = False
+                dba.create_asset(document['show'], document['name'], document['type'], hero_type, document['target_date'])
+#                 print(document['show'], document['name'], document['type'], hero_type, document['target_date'])
 
 
 """
