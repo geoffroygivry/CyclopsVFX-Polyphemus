@@ -101,9 +101,12 @@ class xls_to_mongodb():
         self.workbook = xlrd.open_workbook(path_to_xls)
 
     def convert_xlsDate_to_datetime(self, xls_date):
-        year, month, day, hour, minute, second = xlrd.xldate_as_tuple(xls_date, self.workbook.datemode)
-        iso_date = datetime.datetime(year, month, day, hour, minute, second).isoformat()
-        return "{}.000000".format(iso_date)
+        if xls_date != "":
+            year, month, day, hour, minute, second = xlrd.xldate_as_tuple(xls_date, self.workbook.datemode)
+            iso_date = datetime.datetime(year, month, day, hour, minute, second).isoformat()
+            return str("{}.000000".format(iso_date))
+        else:
+            return None
 
     def pull_data(self, sheet_page):
         worksheet = self.workbook.sheet_by_index(sheet_page)
@@ -157,6 +160,9 @@ class xls_to_mongodb():
                 else:
                     hero_type = False
                 dba.create_asset(document['show'], document['name'], document['type'], hero_type, self.convert_xlsDate_to_datetime(document['target_date']))
+                print("{} has been inserted in the database".format(document['name']))
+
+                    
 
     def populate_all(self):
         self.populate_shows()
