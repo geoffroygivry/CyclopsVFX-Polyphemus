@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}CyclopsVFX | Polyphemus{% endblock %}
+
+{% block content %}
+
+<h1 class="page-header">{{asset_details.name}}</h1> <!-- begin page-header -->
+  <div class="row col-md-4">
+    <div class="previewer">
+      <img src="/static/polyphemus/assets/img/cyc_placeholder.png" class="img-rounded" alt="{{asset_details.name}}" width="100%" height="auto">
+    </div>
+    <div class="progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="{{overall_progress}}" aria-valuemin="0" aria-valuemax="100" style="width:{{overall_progress}}%">
+          {{overall_progress}}% Complete ({{pretty_target_date}}) INP: {{asset_details.tasks.0.status}}
+          </div>
+        </div>
+  </div>
+
+  <div class="row col-md-4">
+      <div class="table-responsive">
+        <table class="table table-profile">
+            <tbody>
+              <tr class="divider">
+              </tr>
+              <tr class="highlight">
+                  <td class="field">Asset name:</td>
+                  <td>{{asset_details.name}}</td>
+              </tr>
+              <tr class="highlight">
+                  <td class="field">Parent show:</td>
+                  <td><a href="{{url_for('show', show=asset_details.show)}}">{{asset_details.show}}</a></td>
+              </tr>
+              <tr class="highlight">
+                  <td class="field">Hero asset:</td>
+                  <td>{{asset_details.hero}}</td>
+              </tr>
+              <tr class="highlight">
+                  <td class="field">Asset type:</td>
+                  <td>{{asset_details.type}}</td>
+              </tr>
+              <tr class="divider">
+              </tr>
+              <tr class="highlight">
+                  <td class="field">Assignee:</td>
+                  <td><a href="{{url_for('user', user_name=asset_details.tasks.0.assignee)}}">{{asset_details.tasks.0.assignee}}</a></td>
+              </tr>
+              <tr class="highlight">
+                  <td class="field">Asset status:</td>
+                  <td>    <span class="label {{asset_details.tasks.0.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{asset_details.tasks.0.assignee}} - {{asset_details.tasks.0.status}}">
+                  {{asset_details.tasks.0.task}}</span> | {{asset_details.tasks.0.status}} | {{overall_progress}}%</td>
+              </tr>
+
+              <tr class="highlight">
+                {% if asset_details.target_date != None %}
+                {% set asset_target_date = utils.convert_isotime_to_datetime(asset_details.target_date) %}
+                {% set pretty_target_date = asset_target_date.strftime(format) %}
+                {% else %}
+                {% set asset_target_date = None %}
+                {% endif %}
+                {% if asset_target_date != None %}
+                <td class="field">Target date:</td>
+                <td><time class="pubdate" datetime="{{asset_details.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time>
+                </td>
+                {% endif %}
+
+              </tr>
+                <tr class="divider">
+              </tr>
+              <tr class="highlight">
+                  <td class="field">Origin software:</td>
+                  <td>Maya</td>
+              </tr>
+              <tr class="highlight">
+                  <td class="field">Versions:</td>
+                  <td>3</td>
+              </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+
+{% endblock %}

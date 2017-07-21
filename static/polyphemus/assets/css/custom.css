@@ -60,7 +60,6 @@
 .label-default.label-fill{
    background-color: #999999;
 }
-
 .progress {
     background-color: #E5E5E5;
     border-radius: 3px;
@@ -189,3 +188,11 @@ blockquote {
 .animated-switch > input[type="checkbox"]:checked + label::after {
   background: inherit;
   left: 20px; }
+
+.card{
+  margin-right:0em;
+}
+.card-block{
+    padding: 1em;
+    background-color: #FFF;
+  }

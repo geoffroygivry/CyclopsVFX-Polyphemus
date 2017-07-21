@@ -130,9 +130,9 @@
                                 <tbody>
                                     {% for asset in assets %} {% set asset_target_date = utils.convert_isotime_to_datetime(asset.target_date) %} {% set pretty_target_date = asset_target_date.strftime(format) %}
                                     <tr class="odd gradeX">
-                                        <td><a href="#">{{asset.name}}</a></td>
+                                        <td><a href="/asset/{{asset._id}}">{{asset.name}}</a></td>
                                         <td><a href="{{url_for('show', show=asset.show)}}">{{asset.show}}</a></td>
-                                        <td>{% for task in asset.tasks %}<a href="{{url_for('user', user_name=task.assignee)}}">{{task.assignee}}</a>{% endfor %}</td>
+                                        <td>{% for task in asset.tasks %}<a href="{{url_for('user', user_name=task.assignee)}}">{{task.assignee}}</a>  {% endfor %}</td>
                                         <td>
                                             <div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{asset.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div>
                                         </td>
@@ -164,7 +164,7 @@
                                         <td>{% for show in user.shows %}<a href="{{url_for('show', show=show)}}">{{show}}</a>&nbsp;|&nbsp;{% endfor %}</td>
                                         <td>
                                             {% for shot in shots %} {% for task in shot.tasks %} {% if task.assignee == user.name %}
-                                            <a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{task.task}}">{{shot.name}}</a>&nbsp;|&nbsp; 
+                                            <a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{task.task}}">{{shot.name}}</a>&nbsp;|&nbsp;
                                             {% endif %} {% endfor %} {% endfor %}
                                         </td>
                                         <td>

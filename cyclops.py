@@ -12,6 +12,7 @@ from scripts import check_img as ci
 from scripts.forms import ShotForm
 import bcrypt
 import json
+from bson.objectid import ObjectId
 
 from cyc_config import cyc_config as cfg
 
@@ -227,6 +228,24 @@ def seq(show, seq):
 @app.route('/polyphemus/<show>')
 def show(show):
     return render_template("show.html", show=show)
+
+@app.route('/asset/<asset_id>')
+def asset_view(asset_id):
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        asset_name = asset_id
+        asset_details = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
+        asset_tasks = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
+        overall_progress = '80'
+    return render_template("asset.html", overall_progress=overall_progress, asset_tasks=asset_tasks, user_session=user_session, asset_details=asset_details, asset_view=asset_view, asset_name=asset_name)
+
+@app.route('/assets')
+def assets_view():
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        assets = [x for x in mongo.db.assets.find()]
+        tagz = "model, house, 3d, walls, details, wall piece"
+    return render_template("assets.html", tagz=tagz, assets=assets, user_session=user_session, assets_view=assets_view)
 
 
 @app.route('/polyphemus/users/<user_name>')
