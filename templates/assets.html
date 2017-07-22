@@ -10,7 +10,7 @@
             {% for asset in assets %}
             <div class="card col-md-2">
               <div class="previewer">
-                <img src="/static/polyphemus/assets/img/cyc_placeholder.png" class="img-rounded" alt="{{asset.name}}" width="100%" height="auto">
+                <img src="/static/polyphemus/assets/img/cyc_placeholder.png" class="img-responsive" alt="{{asset.name}}" width="100%" height="auto">
               </div>
               <div class="card-block">
                 <a href="/asset/{{asset._id}}"><h5 class="title">{{asset.name}}</h5></a>
@@ -24,9 +24,11 @@
                     {% endif %}
                     </small>
                   </p>
-                  <small>{{tagz}}</small>
-
+                  {% for tag in tagz %}
+                  <small>{{ tag }}</small>
+                  {% endfor %}
                 </div>
+
               </div>
             </br>
             </div>

@@ -189,10 +189,28 @@ blockquote {
   background: inherit;
   left: 20px; }
 
-.card{
-  margin-right:0em;
-}
 .card-block{
-    padding: 1em;
+    padding: 0.7em;
+    margin:0;
     background-color: #FFF;
+    height:auto;
   }
+.card-reference{
+    padding: 0.7em;
+    background-color: #FFF;
+    height:auto;
+    }
+.card-block-ref{
+    padding: 0.7em;
+    background-color: #FFF;
+      }
+.references{
+  display: block;
+}
+.card-asset-img{
+  width: auto;
+  height: auto;
+  display: block;
+  padding: .7em;
+  background-color: #FFF;
+}

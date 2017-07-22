@@ -90,8 +90,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for shot in shots %} {% set shot_target_date = utils.convert_isotime_to_datetime(shot.target_date) %} {% set pretty_target_date = shot_target_date.strftime(format) %}
-                                    <tr>
+                                  {% for shot in shots %}
+                                  {% if shot.target_date != None %}
+                                  {% set shot_target_date = utils.convert_isotime_to_datetime(shot.target_date) %}
+                                  {% set pretty_target_date = shot_target_date.strftime(format) %}
+                                  {% else %}
+                                  {% set shot_target_date = None %}
+                                  {% endif %}
+                                  <tr>
                                         <td><a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}">{{shot.name}}</a></td>
                                         <td><a href="{{url_for('seq', show=shot.show, seq=shot.seq)}}">{{shot.seq}}</a></td>
                                         <td><a href="{{url_for('show', show=shot.show)}}">{{shot.show}}</a></td>
@@ -105,7 +111,9 @@
                                             <span class="label label-default">{{asset.name}}</span>&nbsp; {% endfor %}
                                         </td>
                                         <td>
+                                          {% if shot_target_date != None %}
                                             <div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{shot.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div>
+                                          {% endif %}
                                         </td>
                                         <td><span class="label {{shot.status}}">{{shot.status}}</span></td>
                                         <td>

@@ -12,6 +12,7 @@ from scripts import check_img as ci
 from scripts.forms import ShotForm
 import bcrypt
 import json
+import re
 from bson.objectid import ObjectId
 
 from cyc_config import cyc_config as cfg
@@ -233,18 +234,25 @@ def show(show):
 def asset_view(asset_id):
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
-        asset_name = asset_id
         asset_details = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
         asset_tasks = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
-        overall_progress = '80'
-    return render_template("asset.html", overall_progress=overall_progress, asset_tasks=asset_tasks, user_session=user_session, asset_details=asset_details, asset_view=asset_view, asset_name=asset_name)
+        tages = "model_house/3d-walls*details#wall$piece mounted whitespace"
+        tagz = re.split("[, \-!?._:/*#$%&]+", tages)
+        #progress WIP asset_details.tasks.0.status
+        progstat = "Being worked on"
+        print(progstat)
+        overall_progress = progstat
+
+    return render_template("asset.html", tagz=tagz, overall_progress=overall_progress, asset_tasks=asset_tasks, user_session=user_session, asset_details=asset_details, asset_view=asset_view)
 
 @app.route('/assets')
 def assets_view():
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
         assets = [x for x in mongo.db.assets.find()]
-        tagz = "model, house, 3d, walls, details, wall piece"
+        tages = "model_house/3d-walls*details#wall$piece mounted whitespace"
+        tagz = re.split("[, \-!?_:/.*#$%&]+", tages)
+
     return render_template("assets.html", tagz=tagz, assets=assets, user_session=user_session, assets_view=assets_view)
 
 
@@ -358,7 +366,7 @@ def admin():
             shots = [x for x in mongo.db.shots.find()]
             assets = [x for x in mongo.db.assets.find()]
             utilz = [x for x in mongo.db.utils.find()]
-
+            iso_time = datetime.utcnow()
             return render_template("admin.html", user_session=user_session, shows=shows, subs=subs,
                                    users=users, seqs=seqs, shots=shots, assets=assets, notifications=notifications, utilz=utilz)
         else:
