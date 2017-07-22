@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, url_for, request, session, redirect, Response
+from flask import Flask, render_template, url_for, request, session, redirect, Response, flash
 from flask_pymongo import PyMongo
 from flask_gravatar import Gravatar
 from datetime import datetime
@@ -20,6 +20,7 @@ from werkzeug.utils import secure_filename
 dir_path = os.path.dirname(os.path.realpath(__file__))
 UPLOAD_FOLDER = os.path.join(dir_path, 'tmp')
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_XLS_EXTENSIONS = set(['xls', 'xlsx'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -46,6 +47,11 @@ gravatar = Gravatar(app,
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def allowed_xls_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_XLS_EXTENSIONS
 
 
 @celery.task(name="cyclops.reset_notification")
@@ -179,12 +185,11 @@ def shot(show, seq, shot_name):
     if 'username' in session:
         shot = mongo.db.shots.find_one({"name": shot_name})
         users = [x for x in mongo.db.users.find()]
-#         subs = [x for x in mongo.db.submissions.find() if x.get('Shot') == shot_name]
         subs = [x for x in mongo.db.submissions.find()]
         user_session = mongo.db.users.find_one({"name": session['username']})
         notifications = [x for x in mongo.db.notifications.find()]
         iso_time = datetime.utcnow()
-        collaborators = [x for x in shot.get('tasks')]
+        collaborators = [x for x in shot.get('tasks', [])]
         current_route = get_current_route()
         assets = [x for x in shot.get('assets', [])]
         if user_session['role'] == 'admin':
@@ -517,6 +522,32 @@ def create_asset():
     iso_target_date = utils.convert_datepicker_to_isotime(target_date)
     dba.create_asset(show_name, asset_name, asset_type, hero, iso_target_date)
     print(show_name, asset_name, hero, asset_type, iso_target_date)
+    return redirect(redirect_url())
+
+
+@app.route('/create-xls', methods=['GET', 'POST'])
+def create_xls():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            print("sorry sorry lah")
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            print("no file at filename")
+            return redirect(request.url)
+        if file and allowed_xls_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_full_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_full_path)
+            print(file_full_path)
+            Xls = utils.Xls_to_mongodb(file_full_path, mongo.db)
+            Xls.populate_all()
+            return redirect(redirect_url())
     return redirect(redirect_url())
 
 

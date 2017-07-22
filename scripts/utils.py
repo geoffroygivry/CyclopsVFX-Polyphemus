@@ -86,7 +86,7 @@ def get_users_from_shot(db, shot_name):
     return users
 
 
-class xls_to_mongodb():
+class Xls_to_mongodb():
     """ Description:
         Class that takes the CyclopsVFX's Excel template and populate the db with entities in bulk.
 
@@ -161,8 +161,6 @@ class xls_to_mongodb():
                     hero_type = False
                 dba.create_asset(document['show'], document['name'], document['type'], hero_type, self.convert_xlsDate_to_datetime(document['target_date']))
                 print("{} has been inserted in the database".format(document['name']))
-
-                    
 
     def populate_all(self):
         self.populate_shows()

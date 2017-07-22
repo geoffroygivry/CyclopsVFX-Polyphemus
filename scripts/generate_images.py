@@ -1,6 +1,7 @@
 import os
 import subprocess
 
+
 def banner_and_thumb(filename, shot_name):
     tmp_folder = "./tmp"
     dest_folder = "./static/polyphemus/assets/img/banners"

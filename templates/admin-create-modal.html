@@ -124,14 +124,14 @@
                         </div>
                     </div>
                 </form>
-                <form class="form-horizontal" id="uploadtemplate" enctype="multipart/form-data" method="post" action="#">
+                <form class="form-horizontal" id="uploadtemplate" enctype="multipart/form-data" target="hiddenFrame" method="post" action="{{url_for('create_xls')}}">
                     <div class="form-group form-group-create " style="margin: 5px;">
-                        <label class="col-md-12 control-labels">Create entities from .xls or .csv?</label>
+                        <label class="col-md-12 control-labels">Create entities from .xlsx?</label>
                         <div class="col-md-12">
-                            <input id="fileupload" name="mytemplate" type="file" />
-                            <input class="btn btn-dl btn-block" type="submit" value="submit" id="submit" style="margin: 15px;" />
+                            <input id="fileupload" name="file" type="file" />
+                            <input class="btn btn-dl btn-block" type="submit" value="submit" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')"/>
                         </div>
-                        <label class="col-md-12 control-labels"><small>Don't have any? Please choose one of our template and fill it with goodness! <br/> <a href="#">Template.xls</a> | <a href="">Template.csv</a></small></label>
+                        <label class="col-md-12 control-labels"><small>Don't have any? Please choose our template and fill it with goodness! <br/> <a href="#">CyclopsVFX-Template.xlsx</a></small></label>
                         <label><small>If you want to customize your entities fields, please read our <a href="#">guide</a>.</small></label>
                     </div>
                 </form>
