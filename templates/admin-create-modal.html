@@ -131,7 +131,7 @@
                             <input id="fileupload" name="file" type="file" />
                             <input class="btn btn-dl btn-block" type="submit" value="submit" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')"/>
                         </div>
-                        <label class="col-md-12 control-labels"><small>Don't have any? Please choose our template and fill it with goodness! <br/> <a href="#">CyclopsVFX-Template.xlsx</a></small></label>
+                        <label class="col-md-12 control-labels"><small>Don't have any? Please choose our template and fill it with goodness! <br/> <a href="{{url_for('static', filename='polyphemus/assets/files/CyclopsVFX-Template.xlsx')}}">CyclopsVFX-Template.xlsx</a></small></label>
                         <label><small>If you want to customize your entities fields, please read our <a href="#">guide</a>.</small></label>
                     </div>
                 </form>

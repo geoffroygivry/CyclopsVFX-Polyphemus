@@ -547,6 +547,7 @@ def create_xls():
             print(file_full_path)
             Xls = utils.Xls_to_mongodb(file_full_path, mongo.db)
             Xls.populate_all()
+            os.remove(file_full_path)
             return redirect(redirect_url())
     return redirect(redirect_url())
 
