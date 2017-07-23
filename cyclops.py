@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, url_for, request, session, redirect, Response
+from flask import Flask, render_template, url_for, request, session, redirect, Response, flash
 from flask_pymongo import PyMongo
 from flask_gravatar import Gravatar
 from datetime import datetime
@@ -9,7 +9,7 @@ from scripts import aws_s3
 from scripts import generate_images
 from scripts import admin as ad
 from scripts import check_img as ci
-from scripts.forms import ShotForm
+from scripts import db_actions as dba
 import bcrypt
 import json
 
@@ -20,6 +20,7 @@ from werkzeug.utils import secure_filename
 dir_path = os.path.dirname(os.path.realpath(__file__))
 UPLOAD_FOLDER = os.path.join(dir_path, 'tmp')
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_XLS_EXTENSIONS = set(['xls', 'xlsx'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -46,6 +47,11 @@ gravatar = Gravatar(app,
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def allowed_xls_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_XLS_EXTENSIONS
 
 
 @celery.task(name="cyclops.reset_notification")
@@ -78,6 +84,20 @@ def redirect_url(default='index'):
     return request.args.get('next') or \
         request.referrer or \
         url_for(default)
+
+
+def dirs_to_watch(extras_dirs):
+    from os import path
+
+    extra_dirs = [extras_dirs, ]
+    extra_files = extra_dirs[:]
+    for extra_dir in extra_dirs:
+        for dirname, dirs, files in os.walk(extra_dir):
+            for filename in files:
+                filename = path.join(dirname, filename)
+                if path.isfile(filename):
+                    extra_files.append(filename)
+    return extra_files
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -115,11 +135,13 @@ def register():
 
     return render_template('register.html')
 
+
 @app.route('/logout')
 def logout():
     if 'username' in session:
         session.pop('username', None)
         return redirect(url_for('index'))
+
 
 @app.route('/polyphemus')
 def polyphemus():
@@ -163,12 +185,11 @@ def shot(show, seq, shot_name):
     if 'username' in session:
         shot = mongo.db.shots.find_one({"name": shot_name})
         users = [x for x in mongo.db.users.find()]
-#         subs = [x for x in mongo.db.submissions.find() if x.get('Shot') == shot_name]
         subs = [x for x in mongo.db.submissions.find()]
         user_session = mongo.db.users.find_one({"name": session['username']})
         notifications = [x for x in mongo.db.notifications.find()]
         iso_time = datetime.utcnow()
-        collaborators = [x for x in shot.get('tasks')]
+        collaborators = [x for x in shot.get('tasks', [])]
         current_route = get_current_route()
         assets = [x for x in shot.get('assets', [])]
         if user_session['role'] == 'admin':
@@ -371,6 +392,23 @@ def modify_shot(shot_name):
     return redirect(redirect_url())
 
 
+@app.route('/modify-asset/<asset_name>', methods=['POST'])
+def modify_asset(asset_name):
+    hero_type = request.form['asset-hero-type']
+    if hero_type == "Hero":
+        hero = True
+    else:
+        hero = False
+    task_type = request.form['task-select']
+    task_assignee = request.form['task-assignee']
+    task_status = request.form['task-status']
+    target_date = request.form['date-{}'.format(asset_name)]
+    iso_target_date = utils.convert_datepicker_to_isotime(target_date)
+    ad.modify_asset(asset_name, task_type, task_assignee, task_status, iso_target_date, hero)
+    print("The asset you want to modify is: {}, the task is {}, the target date is {} and the assignee is {}. frame in: {}, frame out: {}".format(asset_name, task_type, task_assignee, task_status, iso_target_date, hero))
+    return redirect(redirect_url())
+
+
 @app.route('/modify-show/<show_name>', methods=['POST'])
 def modify_show(show_name):
     show_is_active = request.form['show-active']
@@ -407,6 +445,14 @@ def delete_shot(shot_name):
     shot_to_delete = request.form['shotName']
     mongo.db.shots.delete_one({"name": shot_to_delete})
     print("Shot {} has been deleted!".format(shot_to_delete))
+    return redirect(redirect_url())
+
+
+@app.route('/delete-asset/<asset_name>', methods=['POST'])
+def delete_asset(asset_name):
+    asset_to_delete = request.form['assetName']
+    mongo.db.assets.delete_one({"name": asset_to_delete})
+    print("asset {} has been deleted!".format(asset_to_delete))
     return redirect(redirect_url())
 
 
@@ -450,6 +496,81 @@ def remove_sub(ptuid):
     return redirect(redirect_url())
 
 
+@app.route('/create-show', methods=['POST'])
+def create_show():
+    show_name = request.form['show-name']
+    show_longname = request.form['show-longname']
+    dba.create_show(show_longname, show_name)
+    print("show_name: {}, show_long_name: {}".format(show_name, show_longname))
+    return redirect(redirect_url())
+
+
+@app.route('/create-seq', methods=['POST'])
+def create_seq():
+    show_name = request.form['show']
+    seq_name = request.form['seq-name']
+    print(show_name, seq_name)
+    dba.create_seq(show_name, seq_name)
+    return redirect(redirect_url())
+
+
+@app.route('/create-shot', methods=['POST'])
+def create_shot():
+    show_name = request.form['show']
+    seq_name = request.form['seq']
+    shot_name = request.form['shot-name']
+    frame_in = request.form['frame-in']
+    frame_out = request.form['frame-out']
+    target_date = request.form['date']
+    iso_target_date = utils.convert_datepicker_to_isotime(target_date)
+    dba.create_shot(show_name, seq_name, shot_name, frame_in=frame_in, frame_out=frame_out, target_date=iso_target_date)
+    return redirect(redirect_url())
+
+
+@app.route('/create-asset', methods=['POST'])
+def create_asset():
+    show_name = request.form['show']
+    asset_name = request.form['asset-name']
+    hero_type = request.form['asset-hero-type']
+    if hero_type == "Hero":
+        hero = True
+    else:
+        hero = False
+    asset_type = request.form['asset-type']
+    target_date = request.form['date-create-asset']
+    iso_target_date = utils.convert_datepicker_to_isotime(target_date)
+    dba.create_asset(show_name, asset_name, asset_type, hero, iso_target_date)
+    print(show_name, asset_name, hero, asset_type, iso_target_date)
+    return redirect(redirect_url())
+
+
+@app.route('/create-xls', methods=['GET', 'POST'])
+def create_xls():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            print("sorry sorry lah")
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            print("no file at filename")
+            return redirect(request.url)
+        if file and allowed_xls_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_full_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_full_path)
+            print(file_full_path)
+            Xls = utils.Xls_to_mongodb(file_full_path, mongo.db)
+            Xls.populate_all()
+            os.remove(file_full_path)
+            return redirect(redirect_url())
+    return redirect(redirect_url())
+
+
 @app.route("/process/<current_route>/<username>")
 def process(current_route, username):
     reset_notification.delay(username)
@@ -458,4 +579,4 @@ def process(current_route, username):
 
 if __name__ == "__main__":
     app.secret_key = cfg.FLASK_APP_SECRET_KEY
-    app.run(debug=True, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0", extra_files=dirs_to_watch("templates"))

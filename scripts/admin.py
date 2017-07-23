@@ -24,11 +24,11 @@ import os
 import sys
 import bcrypt
 
-from scripts import db_actions
+from scripts import connect_db as con
 
 
 def modify_shot(shot_name, status, task_type, task_assignee, task_status, iso_target_date, frame_in, frame_out):
-    db = db_actions.get_connection()
+    db = con.server.hydra
     if status != "NOT-STARTED":
         db.shots.update({"name": shot_name}, {"$set": {"status": status}})
     if task_type != "Choose...":
@@ -46,17 +46,26 @@ def modify_shot(shot_name, status, task_type, task_assignee, task_status, iso_ta
     if frame_out != "":
         db.shots.update({"name": shot_name}, {"$set": {"frame_out": frame_out}})
 
-            
+
+def modify_asset(asset_name, task_type, task_assignee, task_status, iso_target_date, hero):
+    db = con.server.hydra
+    if task_type != "Choose...":
+        if task_assignee != "Choose...":
+            db.assets.update(
+                {"name": asset_name},
+                {"$push":
+                 {"tasks": {"task": task_type, "assignee": task_assignee, "status": task_status}}
+                 }
+            )
+    if iso_target_date is not None:
+        db.assets.update({"name": asset_name}, {"$set": {"target_date": iso_target_date}})
+
+    if hero:
+        db.assets.update({"name": asset_name}, {"$set": {"hero": hero}})
+
+
 def modify_password(login_user, current_password, new_password):
-            db = db_actions.get_connection()
-            if bcrypt.hashpw(current_password.encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password'].encode('utf-8'):
-                hashpass = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
-                db.users.update({'name': login_user['name']}, {"$set": {'password': hashpass.decode('utf-8')}})
-            
-            
-            
-            
-            
-            
-            
-            
+    db = con.server.hydra
+    if bcrypt.hashpw(current_password.encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password'].encode('utf-8'):
+        hashpass = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+        db.users.update({'name': login_user['name']}, {"$set": {'password': hashpass.decode('utf-8')}})

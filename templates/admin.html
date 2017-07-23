@@ -90,7 +90,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for shot in shots %} {% set shot_target_date = utils.convert_isotime_to_datetime(shot.target_date) %} {% set pretty_target_date = shot_target_date.strftime(format) %}
+                                    {% for shot in shots %}
+                                    {% if shot.target_date != None %}
+                                    {% set shot_target_date = utils.convert_isotime_to_datetime(shot.target_date) %} 
+                                    {% set pretty_target_date = shot_target_date.strftime(format) %}
+                                    {% else %}
+                                    {% set shot_target_date = None %}
+                                    {% endif %}
                                     <tr>
                                         <td><a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}">{{shot.name}}</a></td>
                                         <td><a href="{{url_for('seq', show=shot.show, seq=shot.seq)}}">{{shot.seq}}</a></td>
@@ -105,7 +111,9 @@
                                             <span class="label label-default">{{asset.name}}</span>&nbsp; {% endfor %}
                                         </td>
                                         <td>
+                                            {% if shot_target_date != None %}
                                             <div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{shot.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div>
+                                            {% endif %}
                                         </td>
                                         <td><span class="label {{shot.status}}">{{shot.status}}</span></td>
                                         <td>
@@ -123,18 +131,33 @@
                                     <tr>
                                         <th>Name</th>
                                         <th>Show</th>
-                                        <th>Collaborators</th>
+                                        <th>Tasks</th>
+                                        <th>Hero</th>
                                         <th>Target date</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for asset in assets %} {% set asset_target_date = utils.convert_isotime_to_datetime(asset.target_date) %} {% set pretty_target_date = asset_target_date.strftime(format) %}
+                                    {% for asset in assets %}
+                                    {% if asset.target_date != None %}
+                                    {% set asset_target_date = utils.convert_isotime_to_datetime(asset.target_date) %}
+                                    {% set pretty_target_date = asset_target_date.strftime(format) %}
+                                    {% else %}
+                                    {% set asset_target_date = None %}
+                                    {% endif %}
                                     <tr class="odd gradeX">
                                         <td><a href="#">{{asset.name}}</a></td>
                                         <td><a href="{{url_for('show', show=asset.show)}}">{{asset.show}}</a></td>
-                                        <td>{% for task in asset.tasks %}<a href="{{url_for('user', user_name=task.assignee)}}">{{task.assignee}}</a>{% endfor %}</td>
+                                        <td>{% for task in asset.tasks %}<span class="label {{task.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{task.assignee}} - {{task.status}}">{{task.task}}</span>&nbsp;{% endfor %}</td>
+                                        <td>{% if asset.hero %}<span class="label label-default" >Hero asset</span>{% endif %}</td>
+
                                         <td>
+                                            {% if asset_target_date != None %}
                                             <div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{asset.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div style="text-align: right;"><a href="#modal-asset-modify-{{asset.name}}" class="btn btn-warning btn-xs m-r-5 modify-shot" data-id="{{asset.name}}" data-toggle="modal">Modify</a> <a href="#modal-delete-{{asset.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{asset.name}}">Delete</a></div>
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -164,7 +187,7 @@
                                         <td>{% for show in user.shows %}<a href="{{url_for('show', show=show)}}">{{show}}</a>&nbsp;|&nbsp;{% endfor %}</td>
                                         <td>
                                             {% for shot in shots %} {% for task in shot.tasks %} {% if task.assignee == user.name %}
-                                            <a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{task.task}}">{{shot.name}}</a>&nbsp;|&nbsp; 
+                                            <a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{task.task}}">{{shot.name}}</a>&nbsp;|&nbsp;
                                             {% endif %} {% endfor %} {% endfor %}
                                         </td>
                                         <td>
@@ -221,7 +244,30 @@
         <!-- end col-12 -->
     </div>
     <!-- end row -->
-    {% for show in shows %} {% include 'show-form.html' %} {% endfor %} {% for seq in seqs %} {% include 'seq-form.html' %} {% endfor %} {% for shot in shots %} {% include 'shot-form.html' %} {% endfor %} {% for user in users %} {% include 'user-form.html' %} {% endfor %} {% for sub in subs %} {% include 'sub-form.html' %} {% endfor %}
+    {% for show in shows %}
+    {% include 'show-form.html' %}
+    {% endfor %}
+
+    {% for seq in seqs %}
+    {% include 'seq-form.html' %}
+    {% endfor %}
+
+    {% for shot in shots %}
+    {% include 'shot-form.html' %}
+    {% endfor %}
+
+    {% for user in users %}
+    {% include 'user-form.html' %}
+    {% endfor %}
+
+    {% for sub in subs %}
+    {% include 'sub-form.html' %}
+    {% endfor %}
+
+    {% for asset in assets %}
+    {% include 'asset-form.html' %}
+    {% endfor %}
+
 </div>
 <!-- end #content -->
 <!-- begin scroll to top btn -->

@@ -22,11 +22,6 @@
 
 from scripts import connect_db as con
 
-def get_connection():
-    server = con.server
-    db = server.hydra
-    return db
-
 
 def create_show(long_name, code_name):
     """ Creation of a show entity.
@@ -36,12 +31,13 @@ def create_show(long_name, code_name):
     Example of use:
         create_show("RUBBISHBOY", "RBY")
     """
+    db = con.server.hydra
     db.shows.insert(
         {
             "name": code_name,
             "long_name": long_name,
             "sequences": [],
-            "active": True,
+            "active": False,
             "ptuid": 1
         }
     )
@@ -53,6 +49,7 @@ def create_seq(show_name, seq_name):
     Example of usage:
         create_seq("RBY", "MANOR")
     """
+    db = con.server.hydra
     db.seqs.insert(
         {
             "name": seq_name,
@@ -66,7 +63,7 @@ def create_seq(show_name, seq_name):
 
 
 def create_shot(show_name, seq_name, shot_name, frame_in=1001, frame_out=1001,
-                tasks=[], status="NOT STARTED", target_date=None):
+                tasks=[], status="NOT-STARTED", target_date=None):
     """ creates a shot entity within the show an the sequence.
     it takes some arguments like the show name, the sequence name, the shot name
     the first frame and the last frame.
@@ -75,6 +72,7 @@ def create_shot(show_name, seq_name, shot_name, frame_in=1001, frame_out=1001,
     Example of usage:
         create_shot("RBY", "MANOR", "MANOR_010", frame_in=1001, frame_out=1067)
     """
+    db = con.server.hydra
     db.shots.insert(
         {
             "name": shot_name,
@@ -98,9 +96,30 @@ def create_shot(show_name, seq_name, shot_name, frame_in=1001, frame_out=1001,
     )
 
 
-def add_task(shot_name, task_type, assignee, status="NOT_STARTED"):
+def create_asset(show_name, asset_name, asset_type, hero, target_date):
+    """Create asset entity within a show"""
+    db = con.server.hydra
+    db.assets.insert(
+        {
+            "name": asset_name,
+            "show": show_name,
+            "type": asset_type,
+            "hero": hero,
+            "target_date": target_date
+        }
+    )
+    db.shows.update(
+        {"name": show_name},
+        {"$push":
+         {"assets": {"name": asset_name}}
+         }
+    )
+
+
+def add_task(shot_name, task_type, assignee, status="NOT-STARTED"):
     """ This function is used only for adding tasks to shots."""
-    valid_statuses = ["NOT_STARTED", "IN_PROGRESS", "COMPLETED"]
+    db = con.server.hydra
+    valid_statuses = ["NOT-STARTED", "IN-PROGRESS", "COMPLETED"]
     for n in valid_statuses:
         if status in n:
             db.shots.update(
@@ -113,8 +132,9 @@ def add_task(shot_name, task_type, assignee, status="NOT_STARTED"):
 
 def update_shot_status(shot_name, status):
     """ update the status of the given shot."""
-    valid_statuses = ["NOT_STARTED", "IN_PROGRESS", "ON_HOLD", "CANCELLED",
-                      "CREATIVE_APPROVED", "FINAL_PENDING_TECH_CHECK", "FINAL"]
+    db = con.server.hydra
+    valid_statuses = ["NOT-STARTED", "IN-PROGRESS", "ON-HOLD", "CANCELLED",
+                      "CREATIVE-APPROVED", "FINAL-PENDING-TECH-CHECK", "FINAL"]
     for n in valid_statuses:
         if status in n:
             db.shots.update(
@@ -126,6 +146,7 @@ def update_shot_status(shot_name, status):
 
 
 def update_shot_target_date(shot_name, target_date):
+    db = con.server.hydra
     """ Update the target date of the shot"""
     db.shots.update(
         {"name": shot_name},
@@ -136,6 +157,7 @@ def update_shot_target_date(shot_name, target_date):
 
 
 def set_active_show(show_name, true_or_false):
+    db = con.server.hydra
     db.shows.update(
         {"name": show_name},
         {"$set":
@@ -145,6 +167,7 @@ def set_active_show(show_name, true_or_false):
 
 
 def link_asset_to_shot(asset_name, shot_name):
+    db = con.server.hydra
     db.shots.update(
         {"name": shot_name},
         {"$push":

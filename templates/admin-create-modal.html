@@ -1,0 +1,182 @@
+<iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
+<div class="modal fade" id="create-entities-modal-dialog" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Create Entities</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" method="post" action="{{url_for('create_show')}}" target="hiddenFrame">
+                    <div class="form-group form-group-create " style="margin: 5px;">
+                        <label class="col-md-12 control-labels">
+                            <h3>Create show:</h3></label>
+                        <label class="col-md-3 control-label">Short name</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="show-name" placeholder="Short name takes 3 letters only..." maxlength="3">
+                        </div>
+                        <label class="col-md-3 control-label">Long name</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="show-longname" placeholder="It can be as long as 10 characters" maxlength="20">
+                        </div>
+                        <div class="col-md-12">
+                            <input class="btn btn-info btn-block" type="submit" value="Create show" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')" />
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal" method="post" action="{{url_for('create_seq')}}" target="hiddenFrame">
+                    <div class="form-group form-group-create " style="margin: 5px;">
+                        <label class="col-md-12 control-labels">
+                            <h3>Create sequence:</h3></label>
+                        <label class="col-md-2 control-label">Show</label>
+                        <div class="col-md-3">
+                            <select name="show" class="form-control">
+                                {% for show in shows %}
+                                <option>{{show.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <label class="col-md-2 control-label">Name</label>
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" name="seq-name" placeholder="Sequence name">
+                        </div>
+                        <div class="col-md-12">
+                            <input class="btn btn-info btn-block" type="submit" value="Create sequence" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')" />
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal" method="post" action="{{url_for('create_shot')}}" target="hiddenFrame">
+                    <div class="form-group form-group-create " style="margin: 5px;">
+                        <label class="col-md-12 control-labels">
+                            <h3>Create shot</h3></label>
+                        <label class="col-md-3 control-label">Show</label>
+                        <div class="col-md-9">
+                            <select name="show" class="form-control">
+                                {% for show in shows %}
+                                <option>{{show.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <label class="col-md-3 control-label">Seq</label>
+                        <div class="col-md-9">
+                            <select name="seq" class="form-control">
+                                {% for seq in seqs %}
+                                <option>{{seq.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <label class="col-md-3 control-label">Shot name</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="shot-name" placeholder="Shot name">
+                        </div>
+                        <label class="col-md-3 control-label">Frame in</label>
+                        <div class="col-md-3">
+                            <input type="number" name="frame-in" class="form-control" placeholder="">
+                        </div>
+                        <label class="col-md-3 control-label">Frame out</label>
+                        <div class="col-md-3">
+                            <input type="number" name="frame-out" class="form-control" placeholder="">
+                        </div>
+                        {% include 'datepicker.html' %}
+                        <div class="col-md-12">
+                            <input class="btn btn-info btn-block" type="submit" value="Create shot" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')" />
+                        </div>
+                    </div>
+                </form>
+                <form id="create-asset" class="form-horizontal" method="post" action="{{url_for('create_asset')}}" target="hiddenFrame" data-parsley-validate="true">
+                    <div class="form-group form-group-create " style="margin: 5px;">
+                        <label class="col-md-12 control-labels">
+                            <h3>Create Asset</h3></label>
+                        <label class="col-md-3 control-label">Show</label>
+                        <div class="col-md-9">
+                            <select name="show" class="form-control">
+                                {% for show in shows %}
+                                <option>{{show.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <label class="col-md-3 control-label">Asset name*</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="asset-name" placeholder="Required" data-parsley-length="[4, 20]" data-parsley-required="true">
+                        </div>
+                        <label class="col-md-2 control-label">Hero type</label>
+                        <div class="col-md-3">
+                            <select name="asset-hero-type" class="form-control">
+                                <option>Non hero</option>
+                                <option>Hero</option>
+                            </select>
+                        </div>
+                        <label class="col-md-12 control-labels"></label>
+                        <label class="col-md-3 control-label">Asset type</label>
+                        <div class="col-md-9">
+                            <select name="asset-type" class="form-control">
+                                <option>2D</option>
+                                <option>model</option>
+                                <option>light</option>
+                                <option>texture</option>
+                                <option>rig</option>
+                                <option>fx</option>
+                            </select>
+                        </div>
+                        {% include 'datepicker-create-asset.html' %}
+                        <div class="col-md-12">
+                            <input class="btn btn-info btn-block" type="submit" value="Create asset" id="asset-submit" style="margin: 15px;" />
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal" id="uploadtemplate" enctype="multipart/form-data" target="hiddenFrame" method="post" action="{{url_for('create_xls')}}">
+                    <div class="form-group form-group-create " style="margin: 5px;">
+                        <label class="col-md-12 control-labels">Create entities from .xlsx?</label>
+                        <div class="col-md-12">
+                            <input id="fileupload" name="file" type="file" />
+                            <input class="btn btn-dl btn-block" type="submit" value="submit" id="submit" style="margin: 15px;" onclick="$('#create-entities-modal-dialog').modal('hide')"/>
+                        </div>
+                        <label class="col-md-12 control-labels"><small>Don't have any? Please choose our template and fill it with goodness! <br/> <a href="{{url_for('static', filename='polyphemus/assets/files/CyclopsVFX-Template.xlsx')}}">CyclopsVFX-Template.xlsx</a></small></label>
+                        <label><small>If you want to customize your entities fields, please read our <a href="#">guide</a>.</small></label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+$(function () {
+  $('#create-asset').parsley().on('field:validated', function() {
+    var ok = $('.parsley-error').length === 0;
+    $('.bs-callout-info').toggleClass('hidden', !ok);
+    $('.bs-callout-warning').toggleClass('hidden', ok);
+  })
+  .on('form:submit', function() {
+    $('#create-entities-modal-dialog').modal('hide');
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
