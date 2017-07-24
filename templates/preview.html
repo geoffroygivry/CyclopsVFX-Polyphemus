@@ -1,0 +1,67 @@
+{% extends 'base-view-asset.html' %}
+{% block content %}
+<div class="previewer responsive">
+  <img src="/static/polyphemus/assets/img/cyc_placeholder.png" class="img-responsive" alt="{{asset_details.name}}" width="100%" height="auto">
+</div>
+<div class="table-responsive">
+    <table class="table table-profile">
+        <tbody>
+          <tr class="highlight">
+        <div class="card-block">Asset details:</div>
+          </tr>
+          <tr class="highlight">
+              <td class="field">Asset name:</td>
+              <td>{{asset_details.name}}</td>
+          </tr>
+          <tr class="highlight">
+              <td class="field">Parent show:</td>
+              <td><a href="{{url_for('show', show=asset_details.show)}}">{{asset_details.show}}</a></td>
+          </tr>
+          {% if asset_details.hero %}
+          <tr class="highlight">
+              <td class="field">Hero asset:</td>
+              <td>{{asset_details.hero}}</td>
+          </tr>
+         {% else %}
+         {% endif %}
+          <tr class="highlight">
+              <td class="field">Asset type:</td>
+              <td>{{asset_details.type}}</td>
+          </tr>
+          <tr class="divider">
+          </tr>
+          <tr class="highlight">
+              <td class="field">Assignee:</td>
+              <td><a href="{{url_for('user', user_name=asset_details.tasks.0.assignee)}}">{{asset_details.tasks.0.assignee}}</a></td>
+          </tr>
+          <tr class="highlight">
+              <td class="field">Asset status:</td>
+              <td>    <span class="label {{asset_details.tasks.0.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{asset_details.tasks.0.assignee}} - {{asset_details.tasks.0.status}}">
+              {{asset_details.tasks.0.task}}</span> | {{asset_details.tasks.0.status}}
+            </br>
+          </br> {{overall_progress}}</td>
+          </tr>
+          <tr class="highlight">
+              <td class="field">Origin software:</td>
+              <td>Maya</td>
+          </tr>
+          <tr class="highlight">
+              <td class="field">Tags:</td>
+              <td>
+                {% for tag in tagz %}
+                  {{ tag }}
+                {% endfor %}
+              </td>
+          </tr>
+          <tr class="highlight">
+              <td class="field">File revisions:</td>
+              <td>
+                <a href="#">version 1</a></br>
+                <a href="#">version 2</a></br>
+                <a href="#">version 3</a></br>
+              </td>
+          </tr>
+        </tbody>
+    </table>
+  </div>
+  {% endblock %}

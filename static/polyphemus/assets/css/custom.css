@@ -214,3 +214,8 @@ blockquote {
   padding: .7em;
   background-color: #FFF;
 }
+.preview-assets{
+  background-color: #FFF;
+  border: none;
+  display: block;
+}

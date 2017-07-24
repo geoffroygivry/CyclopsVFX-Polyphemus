@@ -3,12 +3,25 @@
 {% block content %}
 <h1 class="page-header">Asset Library</h1> <!-- begin page-header -->
 
+<div class="col-md-4">
+  <div class="list-group">
+    {% for asset in assets %}
+    <button onClick='document.getElementById("viewer").src="/preview/{{asset._id}}";'type="button" class="list-group-item">{{asset.name}}</button>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="col-md-5">
+    <iframe class="preview-assets responsive" id="viewer" frameborder="0" scrolling="no" width="500" height="760">
+        <div class="load-asset">
+          <p>Click on any asset in the Asset List to load its info.</p>
+        </div>
+      </iframe>
+</div>
 
 <div class="col-md-12">
-
-
             {% for asset in assets %}
-            <div class="card col-md-2">
+            <div class="card col-md-1">
               <div class="previewer">
                 <img src="/static/polyphemus/assets/img/cyc_placeholder.png" class="img-responsive" alt="{{asset.name}}" width="100%" height="auto">
               </div>
@@ -24,9 +37,9 @@
                     {% endif %}
                     </small>
                   </p>
-                  {% for tag in tagz %}
-                  <small>{{ tag }}</small>
-                  {% endfor %}
+
+                  <small> {{ asset.name }} {% for tag in tagz %} {{ tag }}
+                  {% endfor %}</small>
                 </div>
 
               </div>

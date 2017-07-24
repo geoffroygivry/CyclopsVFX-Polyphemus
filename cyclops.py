@@ -245,7 +245,17 @@ def asset_view(asset_id):
 
     return render_template("asset.html", tagz=tagz, overall_progress=overall_progress, asset_tasks=asset_tasks, user_session=user_session, asset_details=asset_details, asset_view=asset_view)
 
-@app.route('/assets')
+@app.route('/preview/<asset_id>')
+def preview(asset_id):
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        asset_details = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
+        tages = "model_house/3d-walls*details#wall$piece mounted whitespace"
+        tagz = re.split("[, \-!?._:/*#$%&]+", tages)
+
+    return render_template("preview.html", user_session=user_session, asset_details=asset_details, tagz=tagz)
+
+@app.route('/assets/')
 def assets_view():
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
@@ -254,6 +264,7 @@ def assets_view():
         tagz = re.split("[, \-!?_:/.*#$%&]+", tages)
 
     return render_template("assets.html", tagz=tagz, assets=assets, user_session=user_session, assets_view=assets_view)
+
 
 
 @app.route('/polyphemus/users/<user_name>')
