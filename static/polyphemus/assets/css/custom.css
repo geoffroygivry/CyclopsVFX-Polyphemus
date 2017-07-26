@@ -219,3 +219,10 @@ blockquote {
   border: none;
   display: block;
 }
+.post-content {
+    background: none repeat scroll 0 0 #FFFFFF;
+    opacity: 0.5;
+    top:0;
+    left:0;
+    position: absolute;
+}

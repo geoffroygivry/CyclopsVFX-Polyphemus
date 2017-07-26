@@ -493,6 +493,27 @@ def process(current_route, username):
     reset_notification.delay(username)
     return redirect(url_for(current_route))
 
+@app.route('/3D/<model_id>')
+def model(model_id):
+    texture_name = "/static/polyphemus/assets/img/cyc_placeholder.png"
+    base_file_path = "/static/polyphemus/data/3D/poly/"
+    model_file = "poly2.obj"
+    material_file = "poly.mtl"
+    return render_template('model.html', base_file_path=base_file_path, texture_name=texture_name, model_id=model_id, model_file=model_file, material_file=material_file)
+
+@app.route('/2D/<model_id>')
+def texture(model_id):
+    texture_name = "/static/polyphemus/assets/img/small_NYC.jpg"
+    model_file = "file.osgjs"
+    return render_template('texture.html', texture_name=texture_name, model_id=model_id)
+
+@app.route('/camera/<model_id>')
+def camera(model_id):
+    model_file = "EiffelTower.osgjs"
+    texture_name = "/TMP/Folder.jpg"
+    return render_template('camera.html', texture_name=texture_name, model_id=model_id)
+
+
 
 if __name__ == "__main__":
     app.secret_key = cfg.FLASK_APP_SECRET_KEY

@@ -8,9 +8,10 @@
 
   <div class="col-md-6">
     <div class="card-block">Asset preview:</div>
-    <div id="preview" class="previewer">
-      <img src="/static/polyphemus/assets/img/cyc_placeholder.png" class="img-responsive" alt="{{asset_details.name}}" width="100%" height="auto">
-    </div>
+    <div id="View" class="previewer {{ asset_details.type }} ">
+      <iframe src="/{{ asset_details.type }}/{{ asset_details._id }}" class="preview-assets responsive" id="viewer" frameborder="0" scrolling="no" width="100%" height="500px">
+
+        </iframe>    </div>
     <div class="col"><!-- start post -->
       <div class="well">
          <form class="form-horizontal" role="form">

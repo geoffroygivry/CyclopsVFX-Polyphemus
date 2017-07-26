@@ -1,8 +1,11 @@
 {% extends 'base-view-asset.html' %}
 {% block content %}
-<div class="previewer responsive">
+
+<div class="previewer-{{ asset_details.type }} responsive">
   <img src="/static/polyphemus/assets/img/cyc_placeholder.png" class="img-responsive" alt="{{asset_details.name}}" width="100%" height="auto">
 </div>
+
+
 <div class="table-responsive">
     <table class="table table-profile">
         <tbody>
