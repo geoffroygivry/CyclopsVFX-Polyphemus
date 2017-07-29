@@ -179,3 +179,41 @@ class Xls_to_mongodb():
         self.populate_seqs()
         self.populate_shots()
         self.populate_assets()
+
+
+def join_show(user_name, show_name, db):
+    check_join = False
+    check_show = False
+    user = db.users.find_one({"name": user_name})
+    shows = [x['name'] for x in db.shows.find()]
+    print(shows)
+    for show in shows:
+        if show_name in shows:
+            print("The show {} exists. User is being added to it.".format(show_name))
+        else:
+            check_show = True
+    for show in user['shows']:
+        if show == show_name:
+            check_join = True
+            break
+
+    if check_join:
+        print("User already has joined the show {}".format(show_name))
+    else:
+        if check_show:
+            print("show {} does not exist".format(show_name))
+        else:
+            db.users.update(
+                {"name": user_name},
+                {"$push": {"shows": show_name}}
+            )
+
+
+def check_user_show(user_name, show_name, db):
+    check = False
+    user = db.users.find_one({"name": user_name})
+    for show in user['shows']:
+        if show_name == show:
+            check = True
+
+    return check

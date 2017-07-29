@@ -20,11 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
-import sys
 import bcrypt
 
 from scripts import connect_db as con
+from scripts import utils
 
 
 def modify_shot(shot_name, status, task_type, task_assignee, task_status, iso_target_date, frame_in, frame_out):
@@ -33,12 +32,17 @@ def modify_shot(shot_name, status, task_type, task_assignee, task_status, iso_ta
         db.shots.update({"name": shot_name}, {"$set": {"status": status}})
     if task_type != "Choose...":
         if task_assignee != "Choose...":
-            db.shots.update(
-                {"name": shot_name},
-                {"$push":
-                 {"tasks": {"task": task_type, "assignee": task_assignee, "status": task_status}}
-                 }
-            )
+            shot = db.shots.find_one({"name": shot_name})
+            check_show_on_user = utils.check_user_show(task_assignee, shot['show'], db)
+            if check_show_on_user:
+                db.shots.update(
+                    {"name": shot_name},
+                    {"$push":
+                     {"tasks": {"task": task_type, "assignee": task_assignee, "status": task_status}}
+                     }
+                )
+            else:
+                print("Sorry {} is not assigned to the show... Can't assign this artist on this shot.".format(task_assignee))
     if iso_target_date is not None:
         db.shots.update({"name": shot_name}, {"$set": {"target_date": iso_target_date}})
     if frame_in != "":

@@ -92,7 +92,7 @@
                                 <tbody>
                                     {% for shot in shots %}
                                     {% if shot.target_date != None %}
-                                    {% set shot_target_date = utils.convert_isotime_to_datetime(shot.target_date) %} 
+                                    {% set shot_target_date = utils.convert_isotime_to_datetime(shot.target_date) %}
                                     {% set pretty_target_date = shot_target_date.strftime(format) %}
                                     {% else %}
                                     {% set shot_target_date = None %}
@@ -191,7 +191,7 @@
                                             {% endif %} {% endfor %} {% endfor %}
                                         </td>
                                         <td>
-                                            <div style="text-align: right;"><a href="#modal-delete-{{user.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{user.name}}">Delete</a></div>
+                                            <div style="text-align: right;"><a href="#modal-user-modify-{{user.name}}" class="btn btn-warning btn-xs m-r-5 modify-shot" data-id="{{user.name}}" data-toggle="modal">Modify</a> <a href="#modal-delete-{{user.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{user.name}}">Delete</a></div>
                                         </td>
                                     </tr>
                                     {% endfor %}

@@ -170,9 +170,9 @@ def polyphemus():
             shows = [x for x in mongo.db.shows.find()]
         else:
             shows = []
-            shows_user_artist = user_session.get("shows")
+            shows_user_artist = user_session['shows']
             for n in shows_user_artist:
-                new_show = mongo.db.shows.find_one(n)
+                new_show = mongo.db.shows.find_one({"name": n})
                 shows.append(new_show)
 
         return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, shots=username_shotList, target_shots=target_shots, todolist=todolist, iso_time=iso_time, notifications=notifications, current_route=current_route)
@@ -325,9 +325,7 @@ def update_profile_detail():
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
         if request.method == 'POST':
-            #lets go!
-            name = mongo.db.users.find_one({"name": session['username']})
-
+            # lets go!
             details_url = request.form['url']
             mongo.db.users.update({"name": session['username']}, {"$set": {"url": details_url}})
 
@@ -419,6 +417,14 @@ def modify_show(show_name):
         print(show_name, "False")
     # print(show_is_active, show_name)
     return redirect(redirect_url())
+
+
+@app.route('/modify-user/<user_name>', methods=['POST'])
+def modify_user(user_name):
+    show_name = request.form['show-name']
+    print(show_name)
+    utils.join_show(user_name, show_name, mongo.db)
+    return "yup"
 
 
 def has_no_empty_params(rule):
