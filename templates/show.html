@@ -1,1 +1,158 @@
-<h1>This is the show page! for {{show}}</h1>
+{% extends 'base.html' %}
+
+{% block title %}{{show.name}}{% endblock %}
+
+{% block content %}
+
+
+<div class="jumbotron jumbotron-fluid show-banner" style="background-image: url({{ci.banner("MANOR_010")}}); background-color: #17234E; margin-bottom: 0; min-height: 75%; background-repeat: no-repeat; background-position: center; -webkit-background-size: cover; background-size: cover; min-height: 300px;">
+  <div class="container">
+    <h1 class="display-3" style="color:white;">{{show}}</h1>
+  </div>
+</div>
+
+<div class="row main-show-info">
+    <div class="col-md-8  col-sm-8 col-xs-8">
+        This is where you put the description of the show, with some useful names, dates and contact details about the show. Maybe some links too: imdb etc...<br>
+        <ul>
+            <li><a href="#">imdb</a></li>
+            <li><a href="#">link to director's imdb</a></li>
+        </ul>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-4" style="text-align: right;">
+        {{show}} Useful emails :
+        <ul>
+            <li>Admin: <a href="#">Geoffroy Givry</a></li>
+            <li>VFX Sup: <a href="#">Aleks katunar</a></li>
+            <li>Executive Producer: <a href="#">Someone important</a></li>
+            <li>CG Sup: <a href="#"> Geoff</a></li>
+            <li>Comp Sup:<a href="#">Aleks</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="row" style="margin: 10px;">
+
+<div class="col-md-6 col-sm-6 col-xs-6">
+    <div class="well">
+                 <form class="form-horizontal" role="form">
+                   <div class="form-group" style="padding:14px;">
+                    <textarea class="form-control" placeholder="Put your comment here..."></textarea>
+                  </div>
+                  <button class="btn btn-primary pull-right" type="button">Post</button><ul class="list-inline"><li><a href=""><i class="glyphicon glyphicon-upload"></i></a></li><li><a href=""><i class="glyphicon glyphicon-camera"></i></a></li><li><a href=""><i class="glyphicon glyphicon-map-marker"></i></a></li></ul>
+                </form>
+              </div>
+
+                {% for sub in subs %}
+                {% set datetime_sub_date = utils.convert_isotime_to_datetime(sub.Date) %}
+                {% set pretty_sub_date = datetime_sub_date.strftime(format) %}
+                {% for user in users %}
+                {% if user.name == sub.Username %}
+                {% if sub.Show == show %}
+              <div class="panel panel-white post panel-shadow {{sub._id}}" id="{{sub.type}}">
+                  <div class="post-heading">
+                      <div class="pull-left image">
+                          <img src="{{user.email | gravatar}}" class="img-rounded avatar" alt="user profile image">
+                      </div>
+                      <div class="pull-left meta">
+                          {% if sub.type == "dailies" %}
+                          <div class="title h5" >
+                              <a href="{{url_for('user', user_name=user.name)}}" class="post-user-name">{{user.name}}</a>
+                              Submitted <strong><a href="#" id="{{sub.ptuid}}">{{sub.ptuid}}</a></strong> for dailies. <a href="#"><span class="task-status label-task-status label-task-status-warning ">{{sub.status}}</span></a>
+                          </div>
+                          {% elif sub.type == "publish" %}
+                          <div class="title h5" >
+                              <a href="{{url_for('user', user_name=user.name)}}" class="post-user-name">{{user.name}}</a>
+                              New item published for <strong><a href="#">{{sub.AssetName}}</a></strong> - <strong><a href="#" id="{{sub.ptuid}}">{{sub.ptuid}}</a></strong> <a href="#"><span class="task-status label-task-status label-task-status-warning ">{{sub.status}}</span></a>
+                          </div>
+                          {% else %}
+                          <div class="title h5" >
+                              <a href="{{url_for('user', user_name=user.name)}}" class="post-user-name">{{user.name}}</a>
+                              Posted a new note.
+                          </div>
+                          {% endif %}
+                          <h6 class="text-muted time"><div class="date-sub"><a href=""><time class="pubdate" datetime="{{sub.Date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_sub_date}}"></time></a></div></h6>
+                      </div>
+                  </div>
+
+                  <div class="post-image">
+                      <a href="rvlink:// {{sub.Path}}"><img src="{{sub.thumbnail_s3}}" class="image show-in-modal" alt="image post"></a>
+                  </div>
+                  <div class="post-description">
+                      <p>{{sub.comment}}</p>
+                  </div>
+                  <div class="post-footer">
+                      <div class="input-group">
+                          <input class="form-control" placeholder="Add a comment" type="text">
+                          <span class="input-group-addon">
+                              <a href="#"><i class="fa fa-edit"></i></a>
+                          </span>
+                      </div>
+                      <ul class="comments-list">
+                          {% for comment in sub.comments %}
+                          {% set datetime_sub_date = utils.convert_isotime_to_datetime(comment.date) %}
+                          {% set pretty_comment_date = datetime_sub_date.strftime(format) %}
+                          <li class="comment">
+                              <a class="pull-left" href="{{url_for('user', user_name=comment.publisher.name)}}">
+                                  <img class="avatar" src="{{comment.publisher.email | gravatar}}" alt="avatar">
+                              </a>
+                              <div class="comment-body">
+                                  <div class="comment-heading">
+                                      <h4 class="comment-user-name"><a href="{{url_for('user', user_name=comment.publisher.name)}}">{{comment.publisher.name}}</a></h4>
+                                      <h5 class="time"><div class="date-sub"><a href=""><time class="pubdate" datetime="{{comment.date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_comment_date}}"></time></a></div></h5>
+                                  </div>
+                                  <p>{{comment.comment}}</p>
+                              </div>
+                          </li>
+                          {% endfor %}
+                      </ul>
+                  </div>
+              </div>
+              {% endif %}
+              {% endif %}
+              {% endfor %}
+              {% endfor %}
+
+    </div>
+
+    <div class="col-md-3 col-sm-3 col-xs-3 main-show-info">
+        <p>
+            <h3>Sequences - shots</h3>
+            <p style="margin-left: 40px;">
+                <ul>
+                {% for s in shows %}
+                {% if show == s.name %}
+                {% for sequence in s.sequences %}
+                    <li><h4><a href="{{url_for('seq', show=show, seq=sequence.name)}}"><strong>{{sequence.name}}</strong></a></h4>
+                        <ul>
+                            {% for shot in sequence.shots %}
+                            <li><a href="{{url_for('shot', show=show, seq=sequence.name, shot_name=shot.name)}}">{{shot.name}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+
+
+                </ul>
+            </p>
+        </p>
+    </div>
+
+    <div class="col-md-1 col-sm-1 col-xs-1"></div>
+
+    <div class="col-md-2 col-sm-2 col-xs-2 main-show-info">
+        <h3>Assets</h3>
+        <p style="margin-left: 40px;">
+                <ul>
+                {% for asset in assets %}
+                    <li><h6><a href="#"><strong>{{asset.name}}</strong></a></h6></li>
+                {% endfor %}
+                </ul>
+        </p>
+    </div>
+
+</div>
+
+{% endblock %}

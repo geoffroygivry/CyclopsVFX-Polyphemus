@@ -199,3 +199,23 @@ blockquote {
 	background: #634D8C;
 	color: white;
 }
+.show-banner {
+
+    background-color: #17234E;
+    margin-bottom: 0;`enter code here`
+    min-height: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+.main-show-info {
+  margin-top: 15px;
+  background-color: hsla(210, 23%, 82%, 1);
+  padding-top: 30px;
+  padding-bottom: 30px;
+
+}
+.main-show-info li{
+  list-style-type: none;
+}

@@ -247,7 +247,23 @@ def seq(show, seq):
 
 @app.route('/polyphemus/<show>')
 def show(show):
-    return render_template("show.html", show=show)
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        notifications = [x for x in mongo.db.notifications.find()]
+        subs = [x for x in mongo.db.submissions.find()]
+        assets = [x for x in mongo.db.assets.find() if x.get("show") == show]
+        users = [x for x in mongo.db.users.find() if show in x.get("shows")]
+        if user_session['role'] == 'admin':
+            shows = [x for x in mongo.db.shows.find()]
+        else:
+            shows = []
+            shows_user_artist = user_session.get("shows")
+            for n in shows_user_artist:
+                new_show = mongo.db.shows.find_one(n)
+                shows.append(new_show)
+        return render_template("show.html", show=show, user_session=user_session, shows=shows, notifications=notifications, subs=subs, assets=assets, users=users)
+    else:
+        return render_template("login.html")
 
 
 @app.route('/polyphemus/users/<user_name>')
