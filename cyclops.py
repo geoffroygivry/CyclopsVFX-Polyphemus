@@ -238,12 +238,15 @@ def asset_view(asset_id):
         asset_tasks = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
         tages = "model_house/3d-walls*details#wall$piece mounted whitespace"
         tagz = re.split("[, \-!?._:/*#$%&]+", tages)
+        pathtofile = "R:/projects/showname/sequence/shot/assets/3d/assetname.ma"
+        filevers = ["assetname_1.ma","assetname_2.ma","assetname_3.ma"]
+
         #progress WIP asset_details.tasks.0.status
         progstat = "Being worked on"
         print(progstat)
         overall_progress = progstat
 
-    return render_template("asset.html", tagz=tagz, overall_progress=overall_progress, asset_tasks=asset_tasks, user_session=user_session, asset_details=asset_details, asset_view=asset_view)
+    return render_template("asset.html", tagz=tagz, pathtofile=pathtofile, filevers=filevers, overall_progress=overall_progress, asset_tasks=asset_tasks, user_session=user_session, asset_details=asset_details, asset_view=asset_view)
 
 @app.route('/preview/<asset_id>')
 def preview(asset_id):

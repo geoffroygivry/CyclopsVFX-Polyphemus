@@ -76,8 +76,8 @@
                 {% endif %}
               </tr>
               <tr class="highlight">
-                  <td class="field">Origin software:</td>
-                  <td>Maya</td>
+                  <td class="field">Path:</td>
+                  <td><a href="{{ pathtofile }}">Copy link to clipboard</a></td>
               </tr>
               <tr class="highlight">
                   <td class="field">Tags:</td>
@@ -90,9 +90,15 @@
               <tr class="highlight">
                   <td class="field">File revisions:</td>
                   <td>
-                    <a href="#">version 1</a></br>
-                    <a href="#">version 2</a></br>
-                    <a href="#">version 3</a></br>
+                    <div class="dropdown">
+                      <button class="btn-xs btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Download versions
+                      </button>
+                      <ul class="dropdown-menu">
+                        {% for version in filevers %}
+                        <li><a href="{{ pathtofile }}">{{ version }}</a></li>
+                        {% endfor %}
+                      </ul>
+                    </div>
                   </td>
               </tr>
             </tbody>
