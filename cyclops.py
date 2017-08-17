@@ -230,45 +230,6 @@ def seq(show, seq):
 def show(show):
     return render_template("show.html", show=show)
 
-@app.route('/asset/<asset_id>')
-def asset_view(asset_id):
-    if 'username' in session:
-        user_session = mongo.db.users.find_one({"name": session['username']})
-        asset_details = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
-        asset_tasks = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
-        tages = "model_house/3d-walls*details#wall$piece mounted whitespace"
-        tagz = re.split("[, \-!?._:/*#$%&]+", tages)
-        pathtofile = "R:/projects/showname/sequence/shot/assets/3d/assetname.ma"
-        filevers = ["assetname_1.ma","assetname_2.ma","assetname_3.ma"]
-
-        #progress WIP asset_details.tasks.0.status
-        progstat = "Being worked on"
-        print(progstat)
-        overall_progress = progstat
-
-    return render_template("asset.html", tagz=tagz, pathtofile=pathtofile, filevers=filevers, overall_progress=overall_progress, asset_tasks=asset_tasks, user_session=user_session, asset_details=asset_details, asset_view=asset_view)
-
-@app.route('/preview/<asset_id>')
-def preview(asset_id):
-    if 'username' in session:
-        user_session = mongo.db.users.find_one({"name": session['username']})
-        asset_details = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
-        tages = "model_house/3d-walls*details#wall$piece mounted whitespace"
-        tagz = re.split("[, \-!?._:/*#$%&]+", tages)
-
-    return render_template("preview.html", user_session=user_session, asset_details=asset_details, tagz=tagz)
-
-@app.route('/assets/')
-def assets_view():
-    if 'username' in session:
-        user_session = mongo.db.users.find_one({"name": session['username']})
-        assets = [x for x in mongo.db.assets.find()]
-        tages = "model_house/3d-walls*details#wall$piece mounted whitespace"
-        tagz = re.split("[, \-!?_:/.*#$%&]+", tages)
-
-    return render_template("assets.html", tagz=tagz, assets=assets, user_session=user_session, assets_view=assets_view)
-
-
 
 @app.route('/polyphemus/users/<user_name>')
 def user(user_name):
@@ -496,23 +457,80 @@ def process(current_route, username):
     reset_notification.delay(username)
     return redirect(url_for(current_route))
 
+@app.route('/asset/<asset_id>')
+def asset_view(asset_id):
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        asset_details = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
+        asset_tasks = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
+        tages = "model_house/3d-walls*details#wall$piece mounted whitespace"
+        tagz = re.split("[, \-!?._:/*#$%&]+", tages)
+        pathtofile = "R:/projects/showname/sequence/shot/assets/3d/assetname.ma"
+        filevers = ["assetname_1.ma","assetname_2.ma","assetname_3.ma"]
+
+        #progress WIP asset_details.tasks.0.status
+        progstat = "Being worked on"
+        print(progstat)
+        overall_progress = progstat
+
+    return render_template("asset.html", tagz=tagz, pathtofile=pathtofile, filevers=filevers, overall_progress=overall_progress, asset_tasks=asset_tasks, user_session=user_session, asset_details=asset_details, asset_view=asset_view)
+
+@app.route('/preview/<asset_id>')
+def preview(asset_id):
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        asset_details = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
+        tages = "model_house/3d-walls*details#wall$piece mounted whitespace"
+        tagz = re.split("[, \-!?._:/*#$%&]+", tages)
+
+    return render_template("preview.html", user_session=user_session, asset_details=asset_details, tagz=tagz)
+
+@app.route('/assets/')
+def assets_view():
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        assets = [x for x in mongo.db.assets.find()]
+        tages = "model_house/3d-walls*details#wall$piece mounted whitespace"
+        tagz = re.split("[, \-!?_:/.*#$%&]+", tages)
+
+    return render_template("assets.html", tagz=tagz, assets=assets, user_session=user_session, assets_view=assets_view)
+
+
 @app.route('/3D/<model_id>')
 def model(model_id):
     texture_name = "/static/polyphemus/assets/img/cyc_placeholder.png"
     base_file_path = "/static/polyphemus/data/3D/poly/"
-    model_file = "poly2.obj"
+    model_file = "poly.obj"
     material_file = "poly.mtl"
     return render_template('model.html', base_file_path=base_file_path, texture_name=texture_name, model_id=model_id, model_file=model_file, material_file=material_file)
 
 @app.route('/2D/<model_id>')
 def texture(model_id):
-    texture_name = "/static/polyphemus/assets/img/small_NYC.jpg"
-    model_file = "file.osgjs"
-    return render_template('texture.html', texture_name=texture_name, model_id=model_id)
+    tex_name = "Random Tex name"
+    texture_name = "/static/polyphemus/assets/img/rubishboy.jpg"
+    base_file_path = "/static/polyphemus/data/3D/poly/"
+    details = ["RGBA", "roto", "mask with alpha"]
+    tages = "RGBA-model_house/3d-walls*details#wall$piece mounted whitespace"
+    tagz = re.split("[, \-!?_:/.*#$%&]+", tages)
+    return render_template('texture.html', details=details, tagz=tagz, tex_name=tex_name, texture_name=texture_name, base_file_path=base_file_path)
+
+@app.route('/video/<video_id>')
+def video(video_id):
+    video_file = "/static/polyphemus/data/video/video.mp4"
+    video_poster_frame = "/static/polyphemus/data/video/poster.jpg"
+    video_name = "test_video_name"
+    return render_template('video.html', video_file=video_file, video_poster_frame=video_poster_frame, video_name=video_name, video_id=video_id)
+
+@app.route('/sound/<sound_id>')
+def sound(sound_id):
+    sound_file = "/static/polyphemus/data/sounds/sound.mp3"
+    sound_name = "test sound name"
+    return render_template('sound.html', sound_file=sound_file, sound_name=sound_name, sound_id=sound_id)
+
 
 @app.route('/camera/<model_id>')
 def camera(model_id):
-    model_file = "EiffelTower.osgjs"
+    model_file = "sphere.obj"
     texture_name = "/TMP/Folder.jpg"
     return render_template('camera.html', texture_name=texture_name, model_id=model_id)
 
