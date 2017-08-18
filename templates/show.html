@@ -115,42 +115,47 @@
 
     </div>
 
-    <div class="col-md-3 col-sm-3 col-xs-3 main-show-info">
-        <p>
-            <h3>Sequences - shots</h3>
-            <p style="margin-left: 40px;">
-                <ul>
-                {% for s in shows %}
-                {% if show == s.name %}
-                {% for sequence in s.sequences %}
-                    <li><h4><a href="{{url_for('seq', show=show, seq=sequence.name)}}"><strong>{{sequence.name}}</strong></a></h4>
-                        <ul>
-                            {% for shot in sequence.shots %}
-                            <li><a href="{{url_for('shot', show=show, seq=sequence.name, shot_name=shot.name)}}">{{shot.name}}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                {% endfor %}
-                {% endif %}
-                {% endfor %}
+    <div class="col-md-6 col-sm-6 col-xs-6 main-show-info">
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Sequences</label>
+                        <div class="col-md-2">
+                            <select name="seq-status" class="form-control" id="firstmenu">
+                                <option>-- --</option>
+                                {% for s in shows %}
+                                {% if show == s.name %}
+                                {% for sequence in s.sequences %}
+                                <span> class="hidden-seq-shots" hidden>{{s.sequences}}</span>
+                                <option>{{sequence.name}}</option>
+                                {% endfor %}
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Shots</label>
+                        <div class="col-md-2">
+                            <select name="shot-status" class="form-control" id="secondmenu">
+                                <option>-- --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Assets</label>
+                        <div class="col-md-2">
+                            <select name="asset-status" class="form-control">
+                                <option>-- --</option>
+                                {% for asset in assets %}
+                                <option value="">{{asset.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
 
 
-                </ul>
-            </p>
-        </p>
-    </div>
-
-    <div class="col-md-1 col-sm-1 col-xs-1"></div>
-
-    <div class="col-md-2 col-sm-2 col-xs-2 main-show-info">
-        <h3>Assets</h3>
-        <p style="margin-left: 40px;">
-                <ul>
-                {% for asset in assets %}
-                    <li><h6><a href="#"><strong>{{asset.name}}</strong></a></h6></li>
-                {% endfor %}
-                </ul>
-        </p>
     </div>
 
 </div>

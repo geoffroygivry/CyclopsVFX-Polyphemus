@@ -249,19 +249,29 @@ def seq(show, seq):
 def show(show):
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
-        notifications = [x for x in mongo.db.notifications.find()]
-        subs = [x for x in mongo.db.submissions.find()]
-        assets = [x for x in mongo.db.assets.find() if x.get("show") == show]
-        users = [x for x in mongo.db.users.find() if show in x.get("shows")]
-        if user_session['role'] == 'admin':
-            shows = [x for x in mongo.db.shows.find()]
+        if show in [x for x in user_session.get("shows")]:
+            notifications = [x for x in mongo.db.notifications.find()]
+            subs = [x for x in mongo.db.submissions.find()]
+            assets = [x for x in mongo.db.assets.find() if x.get("show") == show]
+            users = [x for x in mongo.db.users.find() if show in x.get("shows")]
+            if user_session['role'] == 'admin':
+                shows = [x for x in mongo.db.shows.find()]
+            else:
+                shows = []
+                shows_user_artist = user_session.get("shows")
+                for n in shows_user_artist:
+                    new_show = mongo.db.shows.find_one(n)
+                    shows.append(new_show)
+            return render_template("show.html", show=show, user_session=user_session, shows=shows, notifications=notifications, subs=subs, assets=assets, users=users)
         else:
-            shows = []
-            shows_user_artist = user_session.get("shows")
-            for n in shows_user_artist:
-                new_show = mongo.db.shows.find_one(n)
-                shows.append(new_show)
-        return render_template("show.html", show=show, user_session=user_session, shows=shows, notifications=notifications, subs=subs, assets=assets, users=users)
+            shows = [x for x in mongo.db.shows.find()]
+            if show in [show.get('name') for show in shows]:
+                warning_header = " {} Restricted access.".format(show)
+                warning_msg = "It seems you are not working on this show. Contact your Admin for more information"
+            else:
+                warning_header = " {} Does not exists!".format(show)
+                warning_msg = "We suggest you to contact your Admin to get the list of the existing shows you are assigned in."
+            return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
     else:
         return render_template("login.html")
 
