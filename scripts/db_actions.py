@@ -87,11 +87,10 @@ def create_shot(show_name, seq_name, shot_name, frame_in=1001, frame_out=1001,
             "latest_ptuid_comment": None
         }
     )
-    shot_id = db.shots.find_one({"name": shot_name}).get("_id")
     db.shows.update(
         {'name': show_name, 'sequences.name': seq_name},
         {'$push':
-         {'sequences.$.shots': {"name": shot_name, "shot_id": shot_id}}
+         {'sequences.$.shots': {"name": shot_name}}
          }
     )
 

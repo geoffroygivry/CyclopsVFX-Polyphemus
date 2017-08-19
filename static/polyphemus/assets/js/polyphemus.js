@@ -27,6 +27,7 @@ $(document).ready(function () {
             });
 
 var items = $(".hidden-seq-shots").text();
+console.log(items);
 
 
 // $(function(){
@@ -34,12 +35,12 @@ var items = $(".hidden-seq-shots").text();
 
 //     $.each(items, function(){
 //         $("<option />")
-//         .attr("value", this.value)
+//         .attr("name", this.value)
 //         .html(this.name)
 //         .appendTo("#firstmenu");
-//         temp[this.value] = this.subitems;
+//         temp[this.value] = this.shots;
 //     });
-
+//     console.log(temp);
 //     $("#firstmenu").change(function(){
 //         var value = $(this).val();
 //         var menu = $("#secondmenu");
@@ -47,7 +48,7 @@ var items = $(".hidden-seq-shots").text();
 //         menu.empty();
 //         $.each(temp[value], function(){
 //             $("<option />")
-//             .attr("value", this.value)
+//             .attr("name", this.value)
 //             .html(this.name)
 //             .appendTo(menu);
 //         });

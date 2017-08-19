@@ -252,6 +252,7 @@ def show(show):
         if show in [x for x in user_session.get("shows")]:
             notifications = [x for x in mongo.db.notifications.find()]
             subs = [x for x in mongo.db.submissions.find()]
+            shots = [x for x in mongo.db.shots.find()]
             assets = [x for x in mongo.db.assets.find() if x.get("show") == show]
             users = [x for x in mongo.db.users.find() if show in x.get("shows")]
             if user_session['role'] == 'admin':
@@ -262,7 +263,7 @@ def show(show):
                 for n in shows_user_artist:
                     new_show = mongo.db.shows.find_one(n)
                     shows.append(new_show)
-            return render_template("show.html", show=show, user_session=user_session, shows=shows, notifications=notifications, subs=subs, assets=assets, users=users)
+            return render_template("show.html", show=show, user_session=user_session, shows=shows, shots=shots, notifications=notifications, subs=subs, assets=assets, users=users)
         else:
             shows = [x for x in mongo.db.shows.find()]
             if show in [show.get('name') for show in shows]:

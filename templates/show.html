@@ -33,7 +33,7 @@
 
 <div class="row" style="margin: 10px;">
 
-<div class="col-md-6 col-sm-6 col-xs-6">
+<div class="col-md-5 col-sm-5 col-xs-5">
     <div class="well">
                  <form class="form-horizontal" role="form">
                    <div class="form-group" style="padding:14px;">
@@ -115,45 +115,87 @@
 
     </div>
 
-    <div class="col-md-6 col-sm-6 col-xs-6 main-show-info">
+    <div class="col-md-7 col-sm-7 col-xs-7">
 
-                    <div class="form-group">
-                        <label class="col-md-2 control-label">Sequences</label>
-                        <div class="col-md-2">
-                            <select name="seq-status" class="form-control" id="firstmenu">
-                                <option>-- --</option>
-                                {% for s in shows %}
-                                {% if show == s.name %}
-                                {% for sequence in s.sequences %}
-                                <span> class="hidden-seq-shots" hidden>{{s.sequences}}</span>
-                                <option>{{sequence.name}}</option>
-                                {% endfor %}
-                                {% endif %}
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
+            <div class="panel-body2">
+                <!-- begin col-6 -->
+                <div>
+                <h2>Sequences</h2>
+                    <ul class="nav nav-pills">
+                    {% for s in shows %}
+                    {% if show == s.name %}
+                    {% for sequence in s.sequences %}
+                    <li><a href="#nav-pills-tab-{{sequence.name}}" data-toggle="tab">{{sequence.name}}</a></li>
+                    {% endfor %}
+                    {% endif %}
+                    {% endfor %}
 
-                    <div class="form-group">
-                        <label class="col-md-2 control-label">Shots</label>
-                        <div class="col-md-2">
-                            <select name="shot-status" class="form-control" id="secondmenu">
-                                <option>-- --</option>
-                            </select>
+                    </ul>
+                    <div class="tab-content">
+                    {% for s in shows %}
+                    {% if show == s.name %}
+                    {% for sequence in s.sequences %}
+                        <div class="tab-pane fade" id="nav-pills-tab-{{sequence.name}}">
+                            <h3 class="m-t-10">Shots</h3>
+                            <table id="" class="table display table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <!-- <th>Sequence</th> -->
+                                        <!-- <th>Show</th> -->
+                                        <th>Frame Range</th>
+                                        <th>tasks</th>
+                                        <th>Assets</th>
+                                        <th>Target date</th>
+                                        <th>Status</th>
+                                        <!-- <th>Actions</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for seq_shots in sequence.shots %}
+                                    {% for shot in shots %}
+                                    {% if seq_shots.name == shot.name %}
+                                    {% if shot.target_date != None %}
+                                    {% set shot_target_date = utils.convert_isotime_to_datetime(shot.target_date) %}
+                                    {% set pretty_target_date = shot_target_date.strftime(format) %}
+                                    {% else %}
+                                    {% set shot_target_date = None %}
+                                    {% endif %}
+                                    <tr>
+                                        <td><a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}">{{shot.name}}</a></td>
+                                        <!-- <td><a href="{{url_for('seq', show=shot.show, seq=shot.seq)}}">{{shot.seq}}</a></td> -->
+                                        <!-- <td><a href="{{url_for('show', show=shot.show)}}">{{shot.show}}</a></td> -->
+                                        <td>{{shot.frame_in}} - {{shot.frame_out}}</td>
+                                        <td>
+                                            {% for task in shot.tasks %}
+                                            <span class="label {{task.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{task.assignee}} - {{task.status}}">{{task.task}}</span>&nbsp; {% endfor %}
+                                        </td>
+                                        <td>
+                                            {% for asset in shot.assets %}
+                                            <span class="label label-default">{{asset.name}}</span>&nbsp; {% endfor %}
+                                        </td>
+                                        <td>
+                                            {% if shot_target_date != None %}
+                                            <div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{shot.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div>
+                                            {% endif %}
+                                        </td>
+                                        <td><span class="label {{shot.status}}">{{shot.status}}</span></td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endfor %}
 
-                    <div class="form-group">
-                        <label class="col-md-2 control-label">Assets</label>
-                        <div class="col-md-2">
-                            <select name="asset-status" class="form-control">
-                                <option>-- --</option>
-                                {% for asset in assets %}
-                                <option value="">{{asset.name}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
+
                     </div>
+                </div>
+                <!-- end col-6 -->
+            </div>
 
 
     </div>
