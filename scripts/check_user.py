@@ -8,51 +8,48 @@ class Check_user():
         self.show_name = show_name
         self.DB = DB
         self.user_session = self.DB.users.find_one({"name": self.user_name})
-        self.is_admin = self.user_session.get("role")
+        if self.user_session.get("role") == "admin":
+            self.is_admin = True
+        else:
+            self.is_admin = False
 
     def check_show(self):
-        if self.is_admin != "admin":
+        if self.is_admin:
+            return True
+        else:
             if self.show_name in [x for x in self.user_session.get("shows")]:
                 return True
             else:
                 return False
-        else:
-            return True
 
     def check_seq(self, seq_name):
-        if self.is_admin != "admin":
+        if self.is_admin:
+            return True
+        else:
             seq = db.seqs.find_one({"name": seq_name})
             if seq is not None:
-                try:
-                    if seq.get("show") in [x for x in self.user_session.get("shows")]:
-                        return True
-                    else:
-                        return False
-                except AttributeError:
+                if seq.get("show") in [x for x in self.user_session.get("shows")]:
+                    return True
+                else:
                     return False
             else:
                 return False
-        else:
-            return True
 
     def check_shot(self, shot_name):
-        if self.is_admin != "admin":
+        if self.is_admin:
+            return True
+        else:
             shot = db.shots.find_one({"name": shot_name})
             if shot is not None:
-                try:
-                    if shot.get("show") in [x for x in self.user_session.get("shows")]:
-                        return True
-                    else:
-                        return False
-                except AttributeError:
+                if shot.get("show") in [x for x in self.user_session.get("shows")]:
+                    return True
+                else:
                     return False
             else:
                 return False
-        else:
-            return True
 
 
-testq = Check_user("Geoffroy", "RBY", db)
+testq = Check_user("user1", "RBY", db)
 print(testq.check_show())
-print(testq.check_seq("MANORs"))
-print(testq.check_shot("MANOR_018"))
+print(testq.check_seq("MANOR"))
+print(testq.check_shot("MANOR_010"))

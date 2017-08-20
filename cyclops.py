@@ -185,7 +185,7 @@ def polyphemus():
 def shot(show, seq, shot_name):
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
-        check = check_user.Check_user(user_session, show, mongo.db)
+        check = check_user.Check_user(user_session.get("name"), show, mongo.db)
         check_for_shot = check.check_shot(shot_name)
         if check_for_shot:
             shot = mongo.db.shots.find_one({"name": shot_name})
@@ -236,7 +236,7 @@ def shot(show, seq, shot_name):
 def seq(show, seq):
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
-        check = check_user.Check_user(user_session, show, mongo.db)
+        check = check_user.Check_user(user_session.get("name"), show, mongo.db)
         check_for_seq = check.check_seq(seq)
         if check_for_seq:
             notifications = [x for x in mongo.db.notifications.find()]
@@ -266,7 +266,9 @@ def seq(show, seq):
 def show(show):
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
-        if show in [x for x in user_session.get("shows")]:
+        check = check_user.Check_user(user_session.get("name"), show, mongo.db)
+        check_for_shot = check.check_show()
+        if check_for_shot:
             notifications = [x for x in mongo.db.notifications.find()]
             subs = [x for x in mongo.db.submissions.find()]
             shots = [x for x in mongo.db.shots.find()]
