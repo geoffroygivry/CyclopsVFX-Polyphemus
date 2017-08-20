@@ -280,8 +280,9 @@ def show(show):
                 shows = []
                 shows_user_artist = user_session.get("shows")
                 for n in shows_user_artist:
-                    new_show = mongo.db.shows.find_one(n)
+                    new_show = mongo.db.shows.find_one({"name": n})
                     shows.append(new_show)
+            print(shows)
             return render_template("show.html", show=show, user_session=user_session, shows=shows, shots=shots, notifications=notifications, subs=subs, assets=assets, users=users)
         else:
             shows = [x for x in mongo.db.shows.find()]

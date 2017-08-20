@@ -47,9 +47,3 @@ class Check_user():
                     return False
             else:
                 return False
-
-
-testq = Check_user("user1", "RBY", db)
-print(testq.check_show())
-print(testq.check_seq("MANOR"))
-print(testq.check_shot("MANOR_010"))
