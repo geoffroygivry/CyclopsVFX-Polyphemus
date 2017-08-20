@@ -10,6 +10,7 @@ from scripts import generate_images
 from scripts import admin as ad
 from scripts import check_img as ci
 from scripts import db_actions as dba
+from scripts import check_user
 import bcrypt
 import json
 
@@ -183,41 +184,50 @@ def polyphemus():
 @app.route('/polyphemus/<show>/<seq>/<shot_name>', methods=['GET', 'POST'])
 def shot(show, seq, shot_name):
     if 'username' in session:
-        shot = mongo.db.shots.find_one({"name": shot_name})
-        users = [x for x in mongo.db.users.find()]
-        subs = [x for x in mongo.db.submissions.find()]
         user_session = mongo.db.users.find_one({"name": session['username']})
-        notifications = [x for x in mongo.db.notifications.find()]
-        iso_time = datetime.utcnow()
-        collaborators = [x for x in shot.get('tasks', [])]
-        current_route = get_current_route()
-        assets = [x for x in shot.get('assets', [])]
-        if user_session['role'] == 'admin':
-            shows = [x for x in mongo.db.shows.find()]
+        check = check_user.Check_user(user_session, show, mongo.db)
+        check_for_shot = check.check_shot(shot_name)
+        if check_for_shot:
+            shot = mongo.db.shots.find_one({"name": shot_name})
+            users = [x for x in mongo.db.users.find()]
+            subs = [x for x in mongo.db.submissions.find()]
+            notifications = [x for x in mongo.db.notifications.find()]
+            iso_time = datetime.utcnow()
+            collaborators = [x for x in shot.get('tasks', [])]
+            current_route = get_current_route()
+            assets = [x for x in shot.get('assets', [])]
+            if user_session['role'] == 'admin':
+                shows = [x for x in mongo.db.shows.find()]
+            else:
+                shows = []
+                shows_user_artist = user_session.get("shows")
+                for n in shows_user_artist:
+                    new_show = mongo.db.shows.find_one(n)
+                    shows.append(new_show)
+
+            if request.method == 'POST':
+                    # check if the post request has the file part
+                if 'file' not in request.files:
+                    flash('No file part')
+                    return redirect(request.url)
+                file = request.files['file']
+                # if user does not select file, browser also
+                # submit a empty part without filename
+                if file.filename == '':
+                    flash('No selected file')
+                    return redirect(request.url)
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    generate_images.banner_and_thumb(filename, shot)
+
+            return render_template("shot.html", show=show, seq=seq, subs=subs, user_session=user_session, shows=shows, iso_time=iso_time, notifications=notifications, current_route=current_route, shot=shot, collaborators=collaborators, users=users, assets=assets)
+
         else:
-            shows = []
-            shows_user_artist = user_session.get("shows")
-            for n in shows_user_artist:
-                new_show = mongo.db.shows.find_one(n)
-                shows.append(new_show)
+            warning_header = " Sorry this is a restricted area!".format(show)
+            warning_msg = "We suggest you to contact your Admin if you think you can access to this page."
+            return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
 
-        if request.method == 'POST':
-                # check if the post request has the file part
-            if 'file' not in request.files:
-                flash('No file part')
-                return redirect(request.url)
-            file = request.files['file']
-            # if user does not select file, browser also
-            # submit a empty part without filename
-            if file.filename == '':
-                flash('No selected file')
-                return redirect(request.url)
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                generate_images.banner_and_thumb(filename, shot)
-
-        return render_template("shot.html", show=show, seq=seq, subs=subs, user_session=user_session, shows=shows, iso_time=iso_time, notifications=notifications, current_route=current_route, shot=shot, collaborators=collaborators, users=users, assets=assets)
     else:
         return render_template("login.html")
 
@@ -226,21 +236,28 @@ def shot(show, seq, shot_name):
 def seq(show, seq):
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
-        notifications = [x for x in mongo.db.notifications.find()]
-        if user_session['role'] == 'admin':
-            shows = [x for x in mongo.db.shows.find()]
+        check = check_user.Check_user(user_session, show, mongo.db)
+        check_for_seq = check.check_seq(seq)
+        if check_for_seq:
+            notifications = [x for x in mongo.db.notifications.find()]
+            if user_session['role'] == 'admin':
+                shows = [x for x in mongo.db.shows.find()]
+            else:
+                shows = []
+                shows_user_artist = user_session.get("shows")
+                for n in shows_user_artist:
+                    new_show = mongo.db.shows.find_one(n)
+                    shows.append(new_show)
+
+            seq = mongo.db.seqs.find_one({"name": seq})
+            shots = [x for x in mongo.db.shots.find() if x.get('seq') == seq.get('name')]
+            subs = [x for x in mongo.db.submissions.find()]
+
+            return render_template("sequence.html", show=show, seq=seq, user_session=user_session, shows=shows, notifications=notifications, shots=shots, subs=subs)
         else:
-            shows = []
-            shows_user_artist = user_session.get("shows")
-            for n in shows_user_artist:
-                new_show = mongo.db.shows.find_one(n)
-                shows.append(new_show)
-
-        seq = mongo.db.seqs.find_one({"name": seq})
-        shots = [x for x in mongo.db.shots.find() if x.get('seq') == seq.get('name')]
-        subs = [x for x in mongo.db.submissions.find()]
-
-        return render_template("sequence.html", show=show, seq=seq, user_session=user_session, shows=shows, notifications=notifications, shots=shots, subs=subs)
+            warning_header = " Sorry this is a restricted area!".format(show)
+            warning_msg = "We suggest you to contact your Admin if you think you can access to this page."
+            return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
     else:
         return render_template("login.html")
 
@@ -267,7 +284,7 @@ def show(show):
         else:
             shows = [x for x in mongo.db.shows.find()]
             if show in [show.get('name') for show in shows]:
-                warning_header = " {} Restricted access.".format(show)
+                warning_header = " {} page is a restricted access.".format(show)
                 warning_msg = "It seems you are not working on this show. Contact your Admin for more information"
             else:
                 warning_header = " {} Does not exists!".format(show)

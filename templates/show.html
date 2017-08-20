@@ -125,7 +125,7 @@
                     {% for s in shows %}
                     {% if show == s.name %}
                     {% for sequence in s.sequences %}
-                    <li><a href="#nav-pills-tab-{{sequence.name}}" data-toggle="tab">{{sequence.name}}</a></li>
+                    <li id="{{loop.index}}"><a href="#nav-pills-tab-{{sequence.name}}-{{loop.index}}" data-toggle="tab">{{sequence.name}}</a></li>
                     {% endfor %}
                     {% endif %}
                     {% endfor %}
@@ -135,20 +135,17 @@
                     {% for s in shows %}
                     {% if show == s.name %}
                     {% for sequence in s.sequences %}
-                        <div class="tab-pane fade" id="nav-pills-tab-{{sequence.name}}">
+                        <div class="tab-pane fade {{loop.index}}" id="nav-pills-tab-{{sequence.name}}-{{loop.index}}">
                             <h3 class="m-t-10">Shots</h3>
                             <table id="" class="table display table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <!-- <th>Sequence</th> -->
-                                        <!-- <th>Show</th> -->
                                         <th>Frame Range</th>
                                         <th>tasks</th>
                                         <th>Assets</th>
                                         <th>Target date</th>
                                         <th>Status</th>
-                                        <!-- <th>Actions</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -163,8 +160,6 @@
                                     {% endif %}
                                     <tr>
                                         <td><a href="{{url_for('shot', show=shot.show, seq=shot.seq, shot_name=shot.name)}}">{{shot.name}}</a></td>
-                                        <!-- <td><a href="{{url_for('seq', show=shot.show, seq=shot.seq)}}">{{shot.seq}}</a></td> -->
-                                        <!-- <td><a href="{{url_for('show', show=shot.show)}}">{{shot.show}}</a></td> -->
                                         <td>{{shot.frame_in}} - {{shot.frame_out}}</td>
                                         <td>
                                             {% for task in shot.tasks %}
@@ -196,6 +191,43 @@
                 </div>
                 <!-- end col-6 -->
             </div>
+
+                        <div>
+                            <h3 class="m-t-10">Assets</h3>
+                            <table id="" class="table display table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Tasks</th>
+                                        <th>Hero</th>
+                                        <th>Target date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for asset in assets %}
+                                    {% if asset.show == show %}
+                                    {% if asset.target_date != None %}
+                                    {% set asset_target_date = utils.convert_isotime_to_datetime(asset.target_date) %}
+                                    {% set pretty_target_date = asset_target_date.strftime(format) %}
+                                    {% else %}
+                                    {% set asset_target_date = None %}
+                                    {% endif %}
+                                    <tr class="odd gradeX">
+                                        <td><a href="#">{{asset.name}}</a></td>
+                                        <td>{% for task in asset.tasks %}<span class="label {{task.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{task.assignee}} - {{task.status}}">{{task.task}}</span>&nbsp;{% endfor %}</td>
+                                        <td>{% if asset.hero %}<span class="label label-default" >Hero asset</span>{% endif %}</td>
+
+                                        <td>
+                                            {% if asset_target_date != None %}
+                                            <div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{asset.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
 
 
     </div>
