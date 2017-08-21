@@ -387,7 +387,7 @@ def update_profile_detail():
             return redirect(redirect_url())
 
         user_session = mongo.db.users.find_one({"name": session['username']})
-        return render_template("user.html", user_name=user_name, subs=subs, user_session=user_session, notifications=notifications, shows=shows, shots=shots)
+        return render_template("user.html", subs=subs, user_session=user_session, notifications=notifications, shows=shows, shots=shots)
     else:
         return render_template("login.html")
 
