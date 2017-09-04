@@ -3,9 +3,16 @@
 {% block content %}
 <h1 class="page-header">Asset Library</h1> <!-- begin page-header -->
 <div class="container-fluid">
-  <div class="row">
+<div class="col-md-18">
+<div class="row">
 <div class="col col-lg-2">
+
 {{side_lib}}
+<br>
+ {% for tag in side_lib %}
+{{tag}}
+ {% endfor %}
+ <br>
   <div class="list-group">
     {% for asset in assets %}
     <button onClick='document.getElementById("viewer").src="/{{asset.type}}/{{asset._id}}";'type="button" class="list-group-item">{{asset.name}}</button>
@@ -48,6 +55,7 @@
             </div>
             {% endfor %}
   </div>
+</div>
 </div>
 </div>
 

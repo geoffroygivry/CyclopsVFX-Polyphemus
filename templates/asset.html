@@ -3,7 +3,21 @@
 {% block title %}CyclopsVFX | Polyphemus{% endblock %}
 
 {% block content %}
+<div class="col-md-18">
+<div class="row">
+{{libs}}
+{{side_lib}}
+<br>
+ {% for tag in libs %}
+{{tag}}
+ {% endfor %}
+ <br>
+{{asset_bundle}}
 
+                    {% for tag in filevers %}
+                      {{ tag }}
+                    {% endfor %}
+                    {{current_filever}}
 <h1 class="page-header">{{asset_details.name}}</h1> <!-- begin page-header -->
 
   <div class="col-md-6">
@@ -24,45 +38,46 @@
     </div><!-- end post -->
   </div>
   <div class="col-md-4">
-      <div class="table-responsive">
-        <table class="table table-profile">
+      <div class="responsive">
+        <table class="table table-asset-details">
             <tbody>
               <tr class="highlight">
-            <div class="card-block">Asset details:</div>
+              <div class="card-block"><h5>Asset details:</h5></div>
               </tr>
-              <tr class="highlight">
+              <tr class="field">
                   <td class="field">Asset name:</td>
                   <td>{{asset_details.name}}</td>
               </tr>
-              <tr class="highlight">
+              <tr class="field">
+                  <td class="field">Assignee:</td>
+                  <td><a href="{{url_for('user', user_name=asset_details.tasks.0.assignee)}}">{{ asset_details.tasks.0.assignee }}</a>
+                  </td>
+              </tr>
+              <tr class="field">
                   <td class="field">Parent show:</td>
                   <td><a href="{{url_for('show', show=asset_details.show)}}">{{asset_details.show}}</a></td>
               </tr>
               {% if asset_details.hero %}
-              <tr class="highlight">
+              <tr class="field">
                   <td class="field">Hero asset:</td>
                   <td>{{asset_details.hero}}</td>
               </tr>
              {% else %}
              {% endif %}
-              <tr class="highlight">
+              <tr class="field">
                   <td class="field">Asset type:</td>
                   <td>{{asset_details.type}}</td>
               </tr>
               <tr class="divider">
               </tr>
-              <tr class="highlight">
-                  <td class="field">Assignee:</td>
-                  <td><a href="{{url_for('user', user_name=asset_details.tasks.0.assignee)}}">{{asset_details.tasks.0.assignee}}</a></td>
-              </tr>
-              <tr class="highlight">
+              <tr class="field">
                   <td class="field">Asset status:</td>
                   <td>    <span class="label {{asset_details.tasks.0.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{asset_details.tasks.0.assignee}} - {{asset_details.tasks.0.status}}">
-                  {{asset_details.tasks.0.task}}</span> | {{asset_details.tasks.0.status}}
+                  {{asset_details.tasks.0.task}}</span>
                 </br>
               </br> {{overall_progress}}</td>
               </tr>
-              <tr class="highlight">
+              <tr class="field">
                 {% if asset_details.target_date != None %}
                 {% set asset_target_date = utils.convert_isotime_to_datetime(asset_details.target_date) %}
                 {% set pretty_target_date = asset_target_date.strftime(format) %}
@@ -75,30 +90,47 @@
                 </td>
                 {% endif %}
               </tr>
-              <tr class="highlight">
+              <tr class="field">
                   <td class="field">Path:</td>
-                  <td><a href="{{ pathtofile }}">Copy link to clipboard</a></td>
+                  <td><a href="{{ pathtofile }}">Copy to clipboard</a></td>
+              </tr>              
+              <tr class="field">
+                  <td class="field">Downloads:</td>
+                  <td>
+                  Download Asset Bundle: <a href="{{ pathtofile }}{{asset_bundle}}">{{asset_bundle}}</a>
+                  </td>
+              </tr>
+              <tr class="field">
+                  <td class="field">Asset versions
+                  </td>
+                  <td>
+                  <div class="group">
+
+                        <div class="col-md-2">
+                            <select style="width: auto;" name="task-select" class="form-control" id="asset-task">
+                                <option>Choose...</option>
+                                {% for version in filevers  %}
+                                <option>{{version}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    </td>
               </tr>
               <tr class="highlight">
+                  <td class="field">In Library:</td>
+                  <td>
+                    {% for lib in libs %}
+                      {{ lib }}
+                    {% endfor %}
+                  </td>
+              </tr>
+               <tr class="highlight">
                   <td class="field">Tags:</td>
                   <td>
                     {% for tag in tagz %}
                       {{ tag }}
                     {% endfor %}
-                  </td>
-              </tr>
-              <tr class="highlight">
-                  <td class="field">File revisions:</td>
-                  <td>
-                    <div class="dropdown">
-                      <button class="btn-xs btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Download versions
-                      </button>
-                      <ul class="dropdown-menu">
-                        {% for version in filevers %}
-                        <li><a href="{{ pathtofile }}">{{ version }}</a></li>
-                        {% endfor %}
-                      </ul>
-                    </div>
                   </td>
               </tr>
             </tbody>
@@ -120,5 +152,6 @@
 
 
     </br>
-
+</div>
+</div>
 {% endblock %}

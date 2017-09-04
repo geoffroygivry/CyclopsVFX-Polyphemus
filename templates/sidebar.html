@@ -24,9 +24,14 @@
                         <span>Asset Library</span>
                         </a>
                         <ul class="sub-menu">
-                          <a href="{{url_for('assets_view')}}">
-                          All assets
-                          </a>
+                            {% for library in side_lib %}
+                            <li class="has-sub">
+                                <a href="{{url_for('libraries_view', lib_name=library.lib_name)}}">
+                                    {{library.lib_name}}
+                                </a>
+                                
+                            </li>
+                            {% endfor %}
                         </ul>
                     </li>
                     <li class="has-sub">

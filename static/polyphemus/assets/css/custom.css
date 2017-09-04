@@ -226,3 +226,39 @@ blockquote {
     left:0;
     position: absolute;
 }
+
+
+.table.table-asset-details > thead > tr > th {
+    border-bottom: none !important;
+}
+.table.table-asset-details > thead > tr > th h4 {
+    font-size: 20px;
+    margin-top: 0;
+}
+.table.table-asset-details > thead > tr > th h4 small {
+    display: block;
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 5px;
+}
+.table.table-asset-details > thead > tr > th,
+.table.table-asset-details > tbody > tr > td {
+    border: none;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    color: #242a30;
+}
+.table.table-asset-details > tbody > tr > td.field {
+    width: 120px;
+    text-align: right;
+    font-weight: 600;
+    color: #777;
+}
+.table.table-asset-details > tbody > tr.highlight > td {
+    border-top: 1px solid #e2e7eb;
+    border-bottom: 1px solid #e2e7eb;
+}
+.table.table-asset-details > tbody > tr.divider > td {
+    padding: 0 !important;
+    height: 10px;
+}
