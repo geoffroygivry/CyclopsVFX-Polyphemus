@@ -5,19 +5,7 @@
 {% block content %}
 <div class="col-md-18">
 <div class="row">
-{{libs}}
-{{side_lib}}
-<br>
- {% for tag in libs %}
-{{tag}}
- {% endfor %}
- <br>
-{{asset_bundle}}
 
-                    {% for tag in filevers %}
-                      {{ tag }}
-                    {% endfor %}
-                    {{current_filever}}
 <h1 class="page-header">{{asset_details.name}}</h1> <!-- begin page-header -->
 
   <div class="col-md-6">
@@ -121,7 +109,7 @@
                   <td class="field">In Library:</td>
                   <td>
                     {% for lib in libs %}
-                      {{ lib }}
+                      <a href="{{url_for('libraries_view', lib_name=lib)}}">{{ lib }}</a>
                     {% endfor %}
                   </td>
               </tr>

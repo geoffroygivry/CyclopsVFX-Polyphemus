@@ -17,21 +17,31 @@
                 <!-- begin sidebar nav -->
 
                 <ul class="nav">
-                  <li class="has-sub">
-                    <a href="javascript:;">
-                        <b class="caret pull-right"></b>
-                        <i class="fa fa-th-list"></i>
-                        <span>Asset Library</span>
+
+                    <li class="has-sub">
+                        <a href="javascript:;">
+                            <b class="caret pull-right"></b>
+                            <i class="fa fa-align-left"></i>
+                            <span>Libraries</span>
                         </a>
-                        <ul class="sub-menu">
-                            {% for library in side_lib %}
+                          <ul class="sub-menu">
+                    
                             <li class="has-sub">
-                                <a href="{{url_for('libraries_view', lib_name=library.lib_name)}}">
-                                    {{library.lib_name}}
+                                <a href="javascript:;">
+                                    <b class="caret pull-right"></b>
+                                    Şystem Libraries
                                 </a>
-                                
+                                <ul class="sub-menu">
+                                    {% for lib in side_lib %}
+                                    <li class="has-sub">
+                                        <a href="{{url_for('libraries_view',lib_name=lib.lib_name)}}">
+                                            {{lib.lib_name}}
+                                            </a>                                      
+                                    </li>
+                                    {% endfor %}
+                                </ul>
                             </li>
-                            {% endfor %}
+                            
                         </ul>
                     </li>
                     <li class="has-sub">
