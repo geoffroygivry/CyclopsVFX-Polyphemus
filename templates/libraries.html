@@ -2,54 +2,47 @@
 {% block title %}Asset library{% endblock %}
 {% block content %}
 <h1 class="page-header">Asset Library: {% if lib_name: %}{{lib_name}}{% endif %}</h1> <!-- begin page-header -->
+<p>{{get_lib.comment}}. This library was created by <a href="#">{{get_lib.lib_created_by}}</a></p>
 <div class="container-fluid">
-<div class="col-md-18">
 <div class="row">
-<div class="col col-lg-2">
-  <div class="list-group">
-    {% for asset in filtered_assets %}
-    <button onClick='document.getElementById("viewer").src="/{{asset.type}}/{{asset._id}}";'type="button" class="list-group-item">{{asset.name}}</button>
-    {% endfor %}
-  </div>
-</div>
-
-<div class="col col-lg-9">
-    <iframe src="" class="preview-assets responsive" id="viewer" frameborder="0" scrolling="no" width="100%" height="500px">
-
-      </iframe>
-</div>
-</br>
-</br>
-<div class="col">
+<div class="col-md-18">
             {% for asset in filtered_assets %}
-            <div class="card col-md-3">
+            <div class="card-outer col-md-4">
+              <div class="card-lib">
               <div class="previewer">
                 <img src="/static/polyphemus/assets/img/cyc_placeholder.png" class="img-responsive" alt="{{asset.name}}" width="100%" height="auto">
-              </div>
-              <div class="card-block">
-                <a href="/asset/{{asset._id}}"><h5 class="title">{{asset.name}}</h5></a>
-                <div class="desc">
-                  <p>
-                    <small>
-                    Type: {{asset.type}} | Show: {{asset.show}}
-                    {% if asset.hero %}
-                     | Hero asset
-                    {% else %}
-                    {% endif %}
-                    </small>
-                  </p>
-
-                  <small> {{ asset.name }} {% for tag in tagz %} {{ tag }}
-                  {% endfor %}</small>
+              </div>            
                 </div>
 
-              </div>
-            </br>
+                <div class="card-lib-block">
+                <div class="desc">
+                <a href="/asset/{{asset._id}}"><h5 class="title">{{asset.name}}</h5></a>
+                </div>
+
+                  <p>
+                    <small>
+                    Type: {{asset.type}}<br>
+                    Show: {{asset.show}}<br>
+                    {% if asset.hero %}
+                    Hero asset<br>
+                    {% else %}
+                    {% endif %}
+                    
+                  </p>
+                   Tags:</br>
+                  {% for tag in asset.tags %} {{ tag }} {% endfor %}
+                   <div class="social-favs">
+                  <a href="#" aria-label="Like">
+                    <small>{{asset.favs}}  <i class="fa fa-star-o" aria-hidden="true"></i></small>
+                  </a></small>
+                </div>
+
+                </div>
+               
             </div>
             {% endfor %}
-  </div>
-</div>
-</div>
-</div>
 
+</div>
+</div>
+</div>
 {% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Asset library{% endblock %}
+{% block content %}
+<!-- Modal -->
+<div id="lib_create" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Create Library</h4>
+      </div>
+      <div class="modal-body">
+                <form id="create-library" class="form-horizontal" method="post" action="{{url_for('library_create')}}" target="hiddenFrame" data-parsley-validate="true">
+                    <div class="form-group form-group-create " style="margin: 5px;">
+                        <label class="col-md-3 control-label">Library name*</label>
+                          <div class="col-md-4">
+                              <input type="text" class="form-control" name="library-name" placeholder="Required" data-parsley-length="[4, 20]" data-parsley-required="true">
+                          </div>
+                          
+                        <div class="col-md-12">
+                            <input class="btn btn-info" type="submit" value="Create Library" id="asset-submit" style="margin: 15px;" />
+                        </div>
+                    </div>
+                </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<h1 class="page-header">Libraries</h1> <!-- begin page-header -->
+<a href="#lib_create" class="btn btn-primary m-r-3" data-toggle="modal">Create</a>
+<a href="#lib_edit" class="btn btn-primary m-r-3" data-toggle="modal">Edit</a>
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-18">
+            {% for lib in lib_list %}
+                <div class="card-outer col-md-4">
+                        <div class="card-lib">
+                            <div class="previewer">
+                              <a href="/libraries/{{lib.lib_name}}"><img src="{{ lib.thumbnail_s3}}" class="img-responsive" alt="{{lib.lib_name}} - {{ lib.thumbnail_s3 }}" width="100%" height="auto"></a>
+                            </div>
+                        </div>
+                        <div class="card-lib-block">
+                          <div class="desc">
+                            <a href="/libraries/{{lib.lib_name}}"><h5 class="title">{{lib.lib_name}}</h5></a>
+                          </div>
+                          <small>{{ lib.comment }}</small>
+                                    </br>
+                          <small>
+                          Tags: </br>
+                           {% for tag in lib.tags %} {{ tag }} {% endfor %}
+                          <div class="social-favs">
+                            <a href="javascript:void(0);" id="{{lib.lib_name}}" class="favclick" aria-label="Like">
+                            <small>{{lib.lib_favs}}<i class="fa fa-star-o" aria-hidden="true"></i></small>
+                            </a>
+                            </small>
+                          </div>
+
+
+                        </div>
+
+                </div>       
+            {% endfor %}
+</div>
+</div>
+</div>
+<script type="text/javascript">
+</script>
+{% endblock %}

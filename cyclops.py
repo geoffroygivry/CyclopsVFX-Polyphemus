@@ -10,9 +10,7 @@ from scripts import generate_images
 from scripts import admin as ad
 from scripts import check_img as ci
 from scripts.forms import ShotForm
-import bcrypt
-import json
-import re
+import bcrypt, json, uuid, re
 from bson.objectid import ObjectId
 
 from cyc_config import cyc_config as cfg
@@ -131,6 +129,7 @@ def polyphemus():
         show_infos = [x for x in mongo.db.show_infos.find()]
         shots = [x for x in mongo.db.shots.find()]
         username_shotList = []
+        side_lib = mongo.db.libraries.find()
         notifications = [x for x in mongo.db.notifications.find()]
         for n in shots:
             for task in n['tasks']:
@@ -155,7 +154,7 @@ def polyphemus():
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
 
-        return render_template("polyphemus.html", subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, shots=username_shotList, target_shots=target_shots, todolist=todolist, iso_time=iso_time, notifications=notifications, current_route=current_route)
+        return render_template("polyphemus.html", side_lib=side_lib, subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, shots=username_shotList, target_shots=target_shots, todolist=todolist, iso_time=iso_time, notifications=notifications, current_route=current_route)
     else:
         return render_template("login.html")
 
@@ -342,7 +341,8 @@ def admin():
             assets = [x for x in mongo.db.assets.find()]
             utilz = [x for x in mongo.db.utils.find()]
             iso_time = datetime.utcnow()
-            return render_template("admin.html", user_session=user_session, shows=shows, subs=subs,
+            side_lib = mongo.db.libraries.find()
+            return render_template("admin.html", user_session=user_session, shows=shows, subs=subs, side_lib=side_lib,
                                    users=users, seqs=seqs, shots=shots, assets=assets, notifications=notifications, utilz=utilz)
         else:
             warning_header = "Restricted Area. Toxic!"
@@ -475,7 +475,6 @@ def asset_view(asset_id):
         asset_bundle = "AB_asetbudle_name_created_by_function.zip"
         #progress WIP asset_details.tasks.0.status
         progstat = "Being worked on"
-        print(progstat)
         overall_progress = progstat
 
     return render_template("asset.html", side_lib=side_lib, asset_bundle=asset_bundle, libs=libs, current_filever=current_filever, cols=cols, colabs=colabs,tagz=tagz, pathtofile=pathtofile, filevers=filevers, overall_progress=overall_progress, user_session=user_session, asset_details=asset_details, asset_view=asset_view)
@@ -485,10 +484,11 @@ def preview(asset_id):
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
         asset_details = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
+        side_lib = mongo.db.libraries.find()
         tages = "model_house/3d-walls*details#wall$piece mounted whitespace"
         tagz = re.split("[, \-!?._:/*#$%&]+", tages)
 
-    return render_template("preview.html", user_session=user_session, asset_details=asset_details, tagz=tagz)
+    return render_template("preview.html", user_session=user_session, asset_details=asset_details, side_lib=side_lib, tagz=tagz)
 
 @app.route('/assets/')
 def assets_view():
@@ -505,12 +505,11 @@ def assets_view():
 def libraries():
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
-        assets = [x for x in mongo.db.assets.find()]
-        side_lib = mongo.db.libraries.find()
-        tages = "RGBA-model_house/3d-walls*details#wall$piece mounted whitespace"
-        tagz = re.split("[, \-!?_:/.*#$%&]+", tages)
-
-    return render_template("libraries.html", side_lib=side_lib, tagz=tagz, assets=assets, user_session=user_session,)
+        system_libs = mongo.db.libraries.find()
+        user_lib =  mongo.db.libraries.find()
+        lib_list = [x for x in mongo.db.libraries.find()]
+        
+    return render_template("library.html", lib_list=lib_list, user_lib=user_lib, system_libs=system_libs, user_session=user_session)
 
 @app.route('/libraries/<lib_name>')
 def libraries_view(lib_name):
@@ -519,43 +518,73 @@ def libraries_view(lib_name):
         get_lib = mongo.db.libraries.find_one({"lib_name": lib_name})
         side_lib = mongo.db.libraries.find()
         filtered_assets = [x for x in mongo.db.assets.find({ "in_library":  lib_name })]
-        tages = "RGBA-model_house/3d-walls*details#wall$piece mounted whitespace"
-        tagz = re.split("[, \-!?_:/.*#$%&]+", tages)
 
-    return render_template("libraries.html", lib_name=lib_name, filtered_assets=filtered_assets, side_lib=side_lib, tagz=tagz, user_session=user_session)
+    return render_template("libraries.html", get_lib=get_lib, lib_name=lib_name, filtered_assets=filtered_assets, side_lib=side_lib, user_session=user_session)
 
-def libraries_create():
-    return render_template()
+def library_edit(lib_name):
+    return
 
-def library_create(name, creator, shows, comment, tags):
+def library_add_asset(lib_name, asset):
+    return
+
+@app.route('/libraries/create/', methods=['GET', 'POST'])
+def library_create():
     """ Creation of a lib entity.
         We have many inputs to get to fill the library mongo entry.
         creator can be system if its autogenerated.
-        shows, coments assets and tags are optional.
+        coments and tags are optional.
     """
+    lib_creator = session['username']
+    lib_name = request.form['library-name']
+    lib_comment = 'No entered comments.'
     lib_date = datetime.utcnow()
     lib_timestamp = datetime.utcnow()
     lib_created = datetime.utcnow()
     lib_changed = datetime.utcnow()
     lib_uid = uuid.uuid4().hex
-    db.libraries.insert(
+    lib_tags = 'Empty library'
+    mongo.db.libraries.insert(
         {
-            "lib_name" : name,
-            "lib_created_by" : creator,
+            "lib_name" : lib_name,
+            "lib_created_by" : lib_creator,
             "lib_created" : lib_created,
             "lib_changed" : lib_changed,
             "timestamp" : lib_timestamp,
-            "comment" : comment,
+            "comment" : lib_comment,
             "thumbnail_s3" : "https://s3.amazonaws.com/cyclopsvfx/.MANOR_010_v001_comp.thumbnail.jpg",
             "lib_uid" : lib_uid,
             "tags" : [ 
-            tags
-            ]
+            lib_tags
+            ],
+            "lib_favs" : 0
         }
     )
+    return json.dumps({'status':'OK','Library created:':lib_name});
 
-def library_edit(lib_name):
-    return
+
+
+@app.route('/lib_add_fav/<lib_name>', methods=['GET', 'POST']) 
+def lib_add_fav(lib_name):
+    get_lib = mongo.db.libraries.find_one({"lib_name": lib_name})
+    favs_num = get_lib.get('lib_favs')
+    favs_num = favs_num+1
+    print(favs_num, get_lib)
+    mongo.db.libraries.update({"lib_name": lib_name},
+                                  {"$set": {"lib_favs": favs_num}})
+    # do db stuff jsonify
+
+    return json.dumps({'status':'OK','library':lib_name,'favs':favs_num});
+
+@app.route('/asset_add_fav/<asset_id>') 
+def asset_add_fav(asset_id):
+    get_asset = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
+    favs_num = get_asset.get('favs')
+    favs_num = favs_num+1
+    print(favs_num, get_asset)
+    mongo.db.assets.update({'_id': ObjectId(asset_id)},
+                                  {"$set": {"favs": favs_num}})
+    # do db stuff
+    return json.dumps({'status':'OK','asset':asset_id,'favs':favs_num});
 
 @app.route('/3D/<model_id>')
 def model(model_id):

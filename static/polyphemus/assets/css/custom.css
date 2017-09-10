@@ -189,36 +189,6 @@ blockquote {
   background: inherit;
   left: 20px; }
 
-.card-block{
-    padding: 0.7em;
-    margin:0;
-    background-color: #FFF;
-    height:auto;
-  }
-.card-reference{
-    padding: 0.7em;
-    background-color: #FFF;
-    height:auto;
-    }
-.card-block-ref{
-    padding: 0.7em;
-    background-color: #FFF;
-      }
-.references{
-  display: block;
-}
-.card-asset-img{
-  width: auto;
-  height: auto;
-  display: block;
-  padding: .7em;
-  background-color: #FFF;
-}
-.preview-assets{
-  background-color: #FFF;
-  border: none;
-  display: block;
-}
 .post-content {
     background: none repeat scroll 0 0 #FFFFFF;
     opacity: 0.5;
@@ -226,7 +196,6 @@ blockquote {
     left:0;
     position: absolute;
 }
-
 
 .table.table-asset-details > thead > tr > th {
     border-bottom: none !important;
@@ -262,3 +231,70 @@ blockquote {
     padding: 0 !important;
     height: 10px;
 }
+
+.card-block{
+    padding: 0.7em;
+    margin:0;
+    background-color: #FFF;
+    height:auto;
+    }
+
+.card-reference{
+    padding: 0.7em;
+    background-color: #FFF;
+    height:auto;
+    }
+
+.card-block-ref{
+    padding: 0.7em;
+    background-color: #FFF;
+    }
+.references{
+  display: block;
+  }
+.card-asset-img{
+  width: auto;
+  height: auto;
+  display: block;
+  padding: .7em;
+  background-color: #FFF;
+  }
+.preview-assets{
+  background-color: #FFF;
+  border: none;
+  display: block;
+  }
+
+.card-outer{
+    padding: 0em;
+    margin:0.35em;
+    background-color: #FFF;
+    height:auto;
+    width:31%;
+    height: auto;
+    }
+
+.card-lib{
+    float:left;
+    padding: 0;
+    margin:0.35em;
+    background-color: #FFF;
+    width: 64%;
+    height:auto;
+    }
+
+.card-lib-block{
+    padding-left: 0.35em;
+    float:left;
+    margin:0;
+    background-color: #FFF;
+    width: 31%;
+    height:auto;
+    }
+
+.social-favs{
+  position: absolute;
+  float: left;
+  bottom: 0.35em;
+  font-size: inherit;
+  }

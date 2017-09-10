@@ -24,26 +24,53 @@
                             <i class="fa fa-align-left"></i>
                             <span>Libraries</span>
                         </a>
-                          <ul class="sub-menu">
+
+                            <ul class="sub-menu">
                     
                             <li class="has-sub">
                                 <a href="javascript:;">
                                     <b class="caret pull-right"></b>
-                                    Şystem Libraries
+                                    User Libraries
                                 </a>
                                 <ul class="sub-menu">
-                                    {% for lib in side_lib %}
+                                    {% for ulib in user_lib %}
+                                    {% if ulib.lib_created_by !='system' %}
+                                    <li class="has-sub">
+                                        <a href="{{url_for('libraries_view',lib_name=ulib.lib_name)}}">
+                                            {{ulib.lib_name}}
+                                            </a>                                      
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </li>
+
+                       
+                    
+                            <li class="has-sub">
+                                <a href="javascript:;">
+                                    <b class="caret pull-right"></b>
+                                    System Libraries
+                                </a>
+                                <ul class="sub-menu">
+                                    {% for lib in system_libs %}
+                                    {% if lib.lib_created_by =='system' %}
                                     <li class="has-sub">
                                         <a href="{{url_for('libraries_view',lib_name=lib.lib_name)}}">
                                             {{lib.lib_name}}
                                             </a>                                      
                                     </li>
+                                    {% endif %}
                                     {% endfor %}
                                 </ul>
                             </li>
-                            
+
+                                                        
                         </ul>
+       
+                          
                     </li>
+
                     <li class="has-sub">
                         <a href="javascript:;">
                             <b class="caret pull-right"></b>
