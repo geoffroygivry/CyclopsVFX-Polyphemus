@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, url_for, request, session, redirect, Response
+from flask import Flask, render_template, url_for, request, session, redirect, Response, jsonify
 from flask_pymongo import PyMongo
 from flask_gravatar import Gravatar
 from datetime import datetime
@@ -140,6 +140,10 @@ def polyphemus():
         todo_coll = [x for x in mongo.db.todolist.find()]
         iso_time = datetime.utcnow()
         current_route = get_current_route()
+         #libraries load into sidebar
+        system_libs = mongo.db.libraries.find()
+        user_lib =  mongo.db.libraries.find()
+        shared_libs = mongo.db.libraries.find()
         for n in todo_coll:
             if n['name'] == session['username']:
                 todolist = n['todo']
@@ -154,7 +158,9 @@ def polyphemus():
                 new_show = mongo.db.shows.find_one(n)
                 shows.append(new_show)
 
-        return render_template("polyphemus.html", side_lib=side_lib, subs=subs, user_session=user_session, shows=shows, show_infos=show_infos, shots=username_shotList, target_shots=target_shots, todolist=todolist, iso_time=iso_time, notifications=notifications, current_route=current_route)
+        return render_template("polyphemus.html", system_libs=system_libs, user_lib=user_lib, shared_libs=shared_libs, subs=subs,
+                                user_session=user_session, shows=shows, show_infos=show_infos, shots=username_shotList, target_shots=target_shots,
+                                todolist=todolist, iso_time=iso_time, notifications=notifications, current_route=current_route)
     else:
         return render_template("login.html")
 
@@ -341,8 +347,11 @@ def admin():
             assets = [x for x in mongo.db.assets.find()]
             utilz = [x for x in mongo.db.utils.find()]
             iso_time = datetime.utcnow()
-            side_lib = mongo.db.libraries.find()
-            return render_template("admin.html", user_session=user_session, shows=shows, subs=subs, side_lib=side_lib,
+             #libraries load into sidebar
+            system_libs = mongo.db.libraries.find()
+            user_lib =  mongo.db.libraries.find()
+            shared_libs = mongo.db.libraries.find()
+            return render_template("admin.html", user_session=user_session, shows=shows, subs=subs, system_libs=system_libs, user_lib=user_lib, shared_libs=shared_libs,
                                    users=users, seqs=seqs, shots=shots, assets=assets, notifications=notifications, utilz=utilz)
         else:
             warning_header = "Restricted Area. Toxic!"
@@ -505,27 +514,26 @@ def assets_view():
 def libraries():
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
+        #libraries load into sidebar
         system_libs = mongo.db.libraries.find()
         user_lib =  mongo.db.libraries.find()
+        shared_libs = mongo.db.libraries.find()
         lib_list = [x for x in mongo.db.libraries.find()]
         
-    return render_template("library.html", lib_list=lib_list, user_lib=user_lib, system_libs=system_libs, user_session=user_session)
+    return render_template("library.html", lib_list=lib_list, user_lib=user_lib, system_libs=system_libs, shared_libs=shared_libs, user_session=user_session)
 
 @app.route('/libraries/<lib_name>')
 def libraries_view(lib_name):
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
         get_lib = mongo.db.libraries.find_one({"lib_name": lib_name})
-        side_lib = mongo.db.libraries.find()
+        #libraries load into sidebar
+        system_libs = mongo.db.libraries.find()
+        user_lib =  mongo.db.libraries.find()
+        shared_libs = mongo.db.libraries.find()
         filtered_assets = [x for x in mongo.db.assets.find({ "in_library":  lib_name })]
 
-    return render_template("libraries.html", get_lib=get_lib, lib_name=lib_name, filtered_assets=filtered_assets, side_lib=side_lib, user_session=user_session)
-
-def library_edit(lib_name):
-    return
-
-def library_add_asset(lib_name, asset):
-    return
+    return render_template("libraries.html",  user_lib=user_lib, shared_libs=shared_libs, system_libs=system_libs, get_lib=get_lib, lib_name=lib_name, filtered_assets=filtered_assets, user_session=user_session)
 
 @app.route('/libraries/create/', methods=['GET', 'POST'])
 def library_create():
@@ -559,23 +567,54 @@ def library_create():
             "lib_favs" : 0
         }
     )
-    return json.dumps({'status':'OK','Library created:':lib_name});
+    #return json.dumps({'status':'OK','Library created:':lib_name});
+    #return jsonify(libname=lib_name)
+    return redirect(redirect_url(jsonify(libname=lib_name)))
 
+@app.route('/libraries/delete/<lib_uid>', methods=['GET', 'POST'])
+def library_remove(lib_uid):
+    if 'username' in session:
+        get_lib = mongo.db.libraries.find_one({'_id': ObjectId(lib_uid)})
+        if get_lib.get('lib_created_by') == session['username']:
+            remove_library = mongo.db.libraries.delete_one({'_id': ObjectId(lib_uid)})
+            return redirect(redirect_url())
+        else:
+            return redirect(redirect_url())
 
+@app.route('/libraries/edit/', methods=['GET', 'POST'])
+def library_edit():
+    return
 
-@app.route('/lib_add_fav/<lib_name>', methods=['GET', 'POST']) 
-def lib_add_fav(lib_name):
-    get_lib = mongo.db.libraries.find_one({"lib_name": lib_name})
+@app.route('/libraries/add/asset/', methods=['GET', 'POST'])
+def library_add_asset():
+    return
+
+@app.route('/libraries/add_fav/<lib_id>', methods=['GET', 'POST']) 
+def lib_add_fav(lib_id):
+    get_lib = mongo.db.libraries.find_one({'_id': ObjectId(lib_id)})
     favs_num = get_lib.get('lib_favs')
     favs_num = favs_num+1
     print(favs_num, get_lib)
-    mongo.db.libraries.update({"lib_name": lib_name},
+    mongo.db.libraries.update({'_id': ObjectId(lib_id)},
                                   {"$set": {"lib_favs": favs_num}})
     # do db stuff jsonify
 
-    return json.dumps({'status':'OK','library':lib_name,'favs':favs_num});
+    return redirect(redirect_url(json.dumps({'status':'OK','library':lib_id,'favs':favs_num})));
 
-@app.route('/asset_add_fav/<asset_id>') 
+@app.route('/libraries/remove_asset/<asset_id>/<lib_id>', methods=['GET', 'POST']) 
+def lib_rem_asset(asset_id, lib_id):
+    if 'username' in session:
+        get_lib = mongo.db.libraries.find_one({'_id': ObjectId(lib_id)})
+        lib_name = get_lib.get('lib_name')
+        if get_lib.get('lib_created_by') == session['username']:
+            mongo.db.assets.update({'_id': ObjectId(asset_id)},
+                                          {"$pull": {"in_library": lib_name}})
+            # do db stuff jsonify
+            return redirect(redirect_url(json.dumps({'status':'OK','asset removed':asset_id})));
+        else:
+            return redirect(redirect_url())
+
+@app.route('/assets/add_fav/<asset_id>') 
 def asset_add_fav(asset_id):
     get_asset = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
     favs_num = get_asset.get('favs')
@@ -584,7 +623,7 @@ def asset_add_fav(asset_id):
     mongo.db.assets.update({'_id': ObjectId(asset_id)},
                                   {"$set": {"favs": favs_num}})
     # do db stuff
-    return json.dumps({'status':'OK','asset':asset_id,'favs':favs_num});
+    return redirect(redirect_url(json.dumps({'status':'OK','asset':asset_id,'favs':favs_num})));
 
 @app.route('/3D/<model_id>')
 def model(model_id):

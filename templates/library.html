@@ -2,6 +2,22 @@
 {% block title %}Asset library{% endblock %}
 {% block content %}
 <!-- Modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
 <div id="lib_create" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
@@ -19,14 +35,14 @@
                               <input type="text" class="form-control" name="library-name" placeholder="Required" data-parsley-length="[4, 20]" data-parsley-required="true">
                           </div>
                           
-                        <div class="col-md-12">
-                            <input class="btn btn-info" type="submit" value="Create Library" id="asset-submit" style="margin: 15px;" />
+                       <div class="col-md-12">
+                            <input class="btn btn-info btn-block" type="submit" value="Create library" id="lib-submit" style="margin: 15px;" />
                         </div>
                     </div>
                 </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
       </div>
     </div>
 
@@ -36,6 +52,7 @@
 <h1 class="page-header">Libraries</h1> <!-- begin page-header -->
 <a href="#lib_create" class="btn btn-primary m-r-3" data-toggle="modal">Create</a>
 <a href="#lib_edit" class="btn btn-primary m-r-3" data-toggle="modal">Edit</a>
+
 <div class="container-fluid">
 <div class="row">
 <div class="col-md-18">
@@ -56,10 +73,11 @@
                           Tags: </br>
                            {% for tag in lib.tags %} {{ tag }} {% endfor %}
                           <div class="social-favs">
-                            <a href="javascript:void(0);" id="{{lib.lib_name}}" class="favclick" aria-label="Like">
+                            <a href="/libraries/add_fav/{{lib._id}}" id="{{lib.lib_name}}" class="favclick" aria-label="Like">
                             <small>{{lib.lib_favs}}<i class="fa fa-star-o" aria-hidden="true"></i></small>
                             </a>
                             </small>
+                            <p align="right"><a href="/libraries/delete/{{lib._id}}" class="remove-library">Remove</p>
                           </div>
 
 
@@ -70,6 +88,8 @@
 </div>
 </div>
 </div>
+
 <script type="text/javascript">
+
 </script>
 {% endblock %}

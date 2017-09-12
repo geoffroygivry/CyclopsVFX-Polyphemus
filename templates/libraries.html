@@ -2,7 +2,7 @@
 {% block title %}Asset library{% endblock %}
 {% block content %}
 <h1 class="page-header">Asset Library: {% if lib_name: %}{{lib_name}}{% endif %}</h1> <!-- begin page-header -->
-<p>{{get_lib.comment}}. This library was created by <a href="#">{{get_lib.lib_created_by}}</a></p>
+<p>{{get_lib.comment}}. This library was created by <a href="/polyphemus/users/{{get_lib.lib_created_by}}">{{get_lib.lib_created_by}}</a></p>
 <div class="container-fluid">
 <div class="row">
 <div class="col-md-18">
@@ -32,9 +32,10 @@
                    Tags:</br>
                   {% for tag in asset.tags %} {{ tag }} {% endfor %}
                    <div class="social-favs">
-                  <a href="#" aria-label="Like">
+                  <a href="/assets/add_fav/{{asset._id}}" aria-label="Like">
                     <small>{{asset.favs}}  <i class="fa fa-star-o" aria-hidden="true"></i></small>
                   </a></small>
+                   <p align="right"><a href="{{url_for('lib_rem_asset', asset_id=asset._id, lib_id=get_lib._id)}}" class="remove-from-library">Remove</p>
                 </div>
 
                 </div>

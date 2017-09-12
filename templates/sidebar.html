@@ -17,20 +17,17 @@
                 <!-- begin sidebar nav -->
 
                 <ul class="nav">
-
                     <li class="has-sub">
                         <a href="javascript:;">
                             <b class="caret pull-right"></b>
                             <i class="fa fa-align-left"></i>
                             <span>Libraries</span>
                         </a>
-
-                            <ul class="sub-menu">
-                    
+                            <ul class="sub-menu">                 
                             <li class="has-sub">
                                 <a href="javascript:;">
                                     <b class="caret pull-right"></b>
-                                    User Libraries
+                                    My Libraries
                                 </a>
                                 <ul class="sub-menu">
                                     {% for ulib in user_lib %}
@@ -44,10 +41,24 @@
                                     {% endfor %}
                                 </ul>
                             </li>
-
-                       
-                    
                             <li class="has-sub">
+                                <a href="javascript:;">
+                                    <b class="caret pull-right"></b>
+                                    Shared Libraries
+                                </a>
+                                <ul class="sub-menu">
+                                    {% for slib in shared_libs %}
+                                    {% if slib.lib_created_by =='shared' %}
+                                    <li class="has-sub">
+                                        <a href="{{url_for('libraries_view',lib_name=slib.lib_name)}}">
+                                            {{slib.lib_name}}
+                                            </a>                                      
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                             <li class="has-sub">
                                 <a href="javascript:;">
                                     <b class="caret pull-right"></b>
                                     System Libraries
@@ -63,14 +74,9 @@
                                     {% endif %}
                                     {% endfor %}
                                 </ul>
-                            </li>
-
-                                                        
-                        </ul>
-       
-                          
+                            </li>                                                                 
+                        </ul>    
                     </li>
-
                     <li class="has-sub">
                         <a href="javascript:;">
                             <b class="caret pull-right"></b>

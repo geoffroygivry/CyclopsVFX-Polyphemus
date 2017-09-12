@@ -82,12 +82,7 @@
                   <td class="field">Path:</td>
                   <td><a href="{{ pathtofile }}">Copy to clipboard</a></td>
               </tr>              
-              <tr class="field">
-                  <td class="field">Downloads:</td>
-                  <td>
-                  Download Asset Bundle: <a href="{{ pathtofile }}{{asset_bundle}}">{{asset_bundle}}</a>
-                  </td>
-              </tr>
+              
               <tr class="field">
                   <td class="field">Asset versions
                   </td>
@@ -105,12 +100,22 @@
                     </div>
                     </td>
               </tr>
+              
+              <tr class="field">
+                  <td class="field">Downloads:</td>
+                  <td>
+                  Download Asset Bundle: <a href="{{ pathtofile }}{{asset_bundle}}">{{asset_bundle}}</a>
+                  </td>
+              </tr>
+
               <tr class="highlight">
                   <td class="field">In Library:</td>
                   <td>
                     {% for lib in libs %}
                       <a href="{{url_for('libraries_view', lib_name=lib)}}">{{ lib }}</a>
                     {% endfor %}
+              <br>
+              
                   </td>
               </tr>
                <tr class="highlight">
