@@ -127,12 +127,13 @@ def register():
         existing_user = users.find_one({'name': request.form['username']})
 
         if existing_user is None:
-            first_run_notifications = str(1)
-            first_run_notifs = str('ObjectId("592ae232282a560d6090a124")')
+            first_run_notifications = 1
+            first_run_notifs = ["592ae232282a560d6090a124"]
             first_run_role = 'artist'
             first_run_tasks = 'Intro'
+            first_run_show = ['DES']
             hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
-            users.insert({'name': request.form['username'], 'password': hashpass, 'email': request.form['email'], 'role': first_run_role, 'shows':'', 'notifications': first_run_notifications, 'tasks':first_run_tasks, 'notifications_msg':first_run_notifs})
+            users.insert({'name': request.form['username'], 'password': hashpass, 'email': request.form['email'], 'role': first_run_role, 'shows':first_run_show, 'notifications': first_run_notifications, 'tasks':first_run_tasks, 'notifications_msg':first_run_notifs})
             session['username'] = request.form['username']
             return redirect(url_for('index'))
 

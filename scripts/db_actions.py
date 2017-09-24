@@ -173,3 +173,28 @@ def link_asset_to_shot(asset_name, shot_name):
          {"assets": asset_name}
          }
     )
+
+def setup_user(name, password, email, pubtime):
+    db = con.server.hydra
+    db.users.insert(
+        { 
+            "password" : password,
+            "name" : name,
+            "email" : email, 
+            "role" : "admin", 
+            "shows" : [
+                "DES"
+            ], 
+            "tasks" : [
+                "LYT"
+            ], 
+            "notifications_msg" : [
+                "59c77e9b710e0e2d4ffdb3a9"
+            ], 
+            "notifications" : 'NumberInt(1)',
+            "url" : "http://empty", 
+            "phone" : "empty", 
+            "skype" : "empty", 
+            "localtimezone" : "0"
+        }
+        )
