@@ -623,6 +623,39 @@ def create_xls():
             return redirect(redirect_url())
     return redirect(redirect_url())
 
+@app.route('/polyphemus/staff/<user_name>')
+def staff(user_name):
+    if 'username' in session:
+        user_name = mongo.db.users.find_one({"name": user_name})
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        subs = [x for x in mongo.db.submissions.find()]
+        notifications = [x for x in mongo.db.notifications.find()]
+        shots = [x for x in mongo.db.shots.find()]
+        if user_session['role'] == 'admin':
+            shows = [x for x in mongo.db.shows.find()]
+        else:
+            shows = []
+            shows_user_artist = user_session.get("shows")
+            for n in shows_user_artist:
+                new_show = mongo.db.shows.find_one(n)
+                shows.append(new_show)
+
+    return render_template("user.html", user_name=user_name, subs=subs, user_session=user_session,
+                           notifications=notifications, shows=shows, shots=shots)
+
+@app.route('/polyphemus/staff-directory')
+def staff_directory():
+    if 'username' in session:
+        user_name = session['username']
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        subs = [x for x in mongo.db.submissions.find()]
+        notifications = [x for x in mongo.db.notifications.find()]
+        staff_all = mongo.db.users.find()       
+
+    return render_template("staff-directory.html", user_name=user_name, subs=subs, user_session=user_session,
+                           notifications=notifications, staff_all=staff_all)
+
+
 
 @app.route("/process/<current_route>/<username>")
 def process(current_route, username):
