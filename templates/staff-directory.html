@@ -30,7 +30,7 @@
                             {% for worker in staff_all %}
                             <tr>
                                 <td>
-                                    <div class="circle-avatar" style="background-image:url({{worker.email | gravatar}})"></div>
+                                    <div class="circle-avatar" style="background-image:url({{worker.email | gravatar}}&s=45)"></div>
                                 </td>
                                 <td>{{worker.name}}</td>
                                 <td><a href="{{url_for('staff', user_name=worker.name)}}">{{worker.name}}</a></td>
