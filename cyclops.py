@@ -133,8 +133,9 @@ def register():
             first_run_tasks = 'Intro'
             first_run_show = ['DES']
             hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
-            users.insert({'name': request.form['username'], 'password': hashpass, 'email': request.form['email'], 'role': first_run_role, 'shows':first_run_show, 'notifications': first_run_notifications, 'tasks':first_run_tasks, 'notifications_msg':first_run_notifs})
+            #users.insert({'name': request.form['username'], 'password': hashpass, 'email': request.form['email'], 'role': first_run_role, 'shows':first_run_show, 'notifications': first_run_notifications, 'tasks':first_run_tasks, 'notifications_msg':first_run_notifs})
             session['username'] = request.form['username']
+            dba.setup_user(request.form['username'],hashpass,request.form['email'])
             return redirect(url_for('index'))
 
         warning_header = "That username already exists!"
@@ -412,7 +413,6 @@ def admin():
             shots = [x for x in mongo.db.shots.find()]
             assets = [x for x in mongo.db.assets.find()]
             utilz = [x for x in mongo.db.utils.find()]
-
             return render_template("admin.html", user_session=user_session, shows=shows, subs=subs,
                                    users=users, seqs=seqs, shots=shots, assets=assets, notifications=notifications, utilz=utilz)
         else:
@@ -480,6 +480,12 @@ def modify_user(user_name):
     utils.join_show(user_name, show_name, mongo.db)
     return "yup"
 
+@app.route('/modify-user-role/<user_name>', methods=['POST'])
+def modify_user_role(user_name):
+    new_role = request.form['new-role']
+    mongo.db.users.update({"name": user_name}, {"$set": {"role": new_role}})
+    print(new_role, user_name)
+    return redirect(redirect_url())
 
 def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()

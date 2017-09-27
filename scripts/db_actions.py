@@ -174,14 +174,14 @@ def link_asset_to_shot(asset_name, shot_name):
          }
     )
 
-def setup_user(name, password, email, pubtime):
+def setup_user(name, password, email):
     db = con.server.hydra
     db.users.insert(
         { 
             "password" : password,
             "name" : name,
             "email" : email, 
-            "role" : "admin", 
+            "role" : "Artist", 
             "shows" : [
                 "DES"
             ], 

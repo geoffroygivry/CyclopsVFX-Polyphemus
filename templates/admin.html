@@ -170,10 +170,10 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>email</th>
-                                        <th>role</th>
-                                        <th>shows</th>
-                                        <th>shots or assets</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Shows</th>
+                                        <th>Shots or assets</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -191,7 +191,9 @@
                                             {% endif %} {% endfor %} {% endfor %}
                                         </td>
                                         <td>
-                                            <div style="text-align: right;"><a href="#modal-user-modify-{{user.name}}" class="btn btn-warning btn-xs m-r-5 modify-shot" data-id="{{user.name}}" data-toggle="modal">Modify</a> <a href="#modal-delete-{{user.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{user.name}}">Delete</a></div>
+                                            <div style="text-align: right;">
+                                                <a href="#modal-user-role-{{user.name}}" class="btn btn-warning btn-xs m-r-5 modify-role" data-id="{{user.name}}" data-toggle="modal">Set Role</a>
+                                                <a href="#modal-user-modify-{{user.name}}" class="btn btn-warning btn-xs m-r-5 modify-shot" data-id="{{user.name}}" data-toggle="modal">Modify</a> <a href="#modal-delete-{{user.name}}" class="btn btn-danger btn-xs m-r-5 delete-shot" data-toggle="modal" data-id="{{user.name}}">Delete</a></div>
                                         </td>
                                     </tr>
                                     {% endfor %}
