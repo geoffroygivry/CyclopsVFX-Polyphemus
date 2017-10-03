@@ -470,16 +470,16 @@ def process(current_route, username):
 def asset_view(asset_id):
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
-        asset_details = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
-        asigns = [x for x in  asset_details]
-        colabs = asset_details.get('tasks')
+        asset_details = mongo.db.submissions.find_one({'_id': ObjectId(asset_id)})
+        asigns = []
+        colabs = ""
         cols = colabs
         side_lib = mongo.db.libraries.find()
-        libs = asset_details.get('in_library')
-        tages = asset_details.get('tagz')
+        libs = "general"
+        tages = ""
         tagz = re.split("[, \-!?._:/*#$%&]+", str(tages))
-        filevers = [x for x in asset_details.get('version')]
-        current_filever  = asset_details.get('current_version')
+        filevers = [asset_details.get('version')]
+        current_filever  = ""
         pathtofile = asset_details.get('path')
         asset_bundle = "AB_asetbudle_name_created_by_function.zip"
         #progress WIP asset_details.tasks.0.status
@@ -633,8 +633,9 @@ def model(model_id):
     material_file = "poly.mtl"
     return render_template('type-model.html', base_file_path=base_file_path, texture_name=texture_name, model_id=model_id, model_file=model_file, material_file=material_file)
 
-@app.route('/2D/<model_id>')
-def texture(model_id):
+@app.route('/2D/<texture_id>')
+def texture(texture_id):
+    texture_details = mongo.db.submissions.find_one({'_id': ObjectId(texture_id)})
     tex_name = "Random Tex name"
     texture_name = "/static/polyphemus/assets/img/rubishboy.jpg"
     base_file_path = "/static/polyphemus/data/3D/poly/"

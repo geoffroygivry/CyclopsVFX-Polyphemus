@@ -34,21 +34,25 @@
               </tr>
               <tr class="field">
                   <td class="field">Asset name:</td>
-                  <td>{{asset_details.name}}</td>
+                  <td>{{asset_details.type}}</td>
+              </tr>
+              <tr class="field">
+                  <td class="field">Asset UUID:</td>
+                  <td>{{asset_details.UUID}}</td>
               </tr>
               <tr class="field">
                   <td class="field">Assignee:</td>
-                  <td><a href="{{url_for('user', user_name=asset_details.tasks.0.assignee)}}">{{ asset_details.tasks.0.assignee }}</a>
+                  <td><a href="{{url_for('user', user_name=asset_details.username)}}">{{ asset_details.username}}</a>
                   </td>
               </tr>
               <tr class="field">
                   <td class="field">Parent show:</td>
-                  <td><a href="{{url_for('show', show=asset_details.show)}}">{{asset_details.show}}</a></td>
+                  <td><a href="{{url_for('show', show=asset_details.tag.0)}}">{{asset_details.tag.0}}</a></td>
               </tr>
               {% if asset_details.hero %}
               <tr class="field">
                   <td class="field">Hero asset:</td>
-                  <td>{{asset_details.hero}}</td>
+                  <td>{{asset_details.type}}</td>
               </tr>
              {% else %}
              {% endif %}
@@ -60,21 +64,21 @@
               </tr>
               <tr class="field">
                   <td class="field">Asset status:</td>
-                  <td>    <span class="label {{asset_details.tasks.0.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{asset_details.tasks.0.assignee}} - {{asset_details.tasks.0.status}}">
-                  {{asset_details.tasks.0.task}}</span>
+                  <td>    <span class="label {{asset_details.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{asset_details.task}} - {{asset_details.status}}">
+                  {{asset_details.task}} - {{asset_details.status}}</span>
                 </br>
               </br> {{overall_progress}}</td>
               </tr>
               <tr class="field">
-                {% if asset_details.target_date != None %}
-                {% set asset_target_date = utils.convert_isotime_to_datetime(asset_details.target_date) %}
+                {% if asset_details.pub_date != None %}
+                {% set asset_target_date = utils.convert_isotime_to_datetime(asset_details.pub_date) %}
                 {% set pretty_target_date = asset_target_date.strftime(format) %}
                 {% else %}
                 {% set asset_target_date = None %}
                 {% endif %}
                 {% if asset_target_date != None %}
                 <td class="field">Target date:</td>
-                <td><time class="pubdate" datetime="{{asset_details.target_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time>
+                <td><time class="pubdate" datetime="{{asset_details.pub_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time>
                 </td>
                 {% endif %}
               </tr>
@@ -133,13 +137,13 @@
   <div class="col-md-2">
       <div class="card-reference">References:</div>
       <div class="card-asset-img">
-          <img src="/static/polyphemus/assets/img/cyc_placeholder.png" class="img-responsive" alt="{{asset_details.name}}">
+          <img src="/static/polyphemus/assets/img/cyc_placeholder.png" class="img-responsive" alt="{{asset_details.type}}">
         </div>
         <div class="card-asset-img">
-            <img src="/static/polyphemus/assets/img/small_NYC.jpg" class="img-responsive" alt="{{asset_details.name}}">
+            <img src="/static/polyphemus/assets/img/small_NYC.jpg" class="img-responsive" alt="{{asset_details.type}}">
           </div>
           <div class="card-asset-img">
-              <img src="/static/polyphemus/assets/img/cyc_placeholder.png" class="img-responsive" alt="{{asset_details.name}}">
+              <img src="/static/polyphemus/assets/img/cyc_placeholder.png" class="img-responsive" alt="{{asset_details.type}}">
             </div>
       </div>
 
