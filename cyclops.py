@@ -13,6 +13,7 @@ from scripts import db_actions as dba
 from scripts import check_user
 import bcrypt
 import json
+import jsonify
 
 from cyc_config import cyc_config as cfg
 
@@ -450,7 +451,7 @@ def modify_asset(asset_name):
     target_date = request.form['date-{}'.format(asset_name)]
     iso_target_date = utils.convert_datepicker_to_isotime(target_date)
     ad.modify_asset(asset_name, task_type, task_assignee, task_status, iso_target_date, hero)
-    print("The asset you want to modify is: {}, the task is {}, the target date is {} and the assignee is {}. frame in: {}, frame out: {}".format(asset_name, task_type, task_assignee, task_status, iso_target_date, hero))
+    print("The asset you want to modify is: {}, the task is {}, the target date is {} and the assignee is {}.".format(asset_name, task_type, iso_target_date, task_assignee, task_status))
     return redirect(redirect_url())
 
 
@@ -628,6 +629,21 @@ def create_xls():
 def process(current_route, username):
     reset_notification.delay(username)
     return redirect(url_for(current_route))
+
+
+@app.route("/api/unity/<show>/assets")
+def fetch_asset_api(show):
+    assets_db = [x for x in mongo.db.assets.find()]
+    publish_db = [x for x in mongo.db.publish.find()]
+    name = request.args.get('name')
+    published = request.args.get('published')
+    print(published)
+    for asset in assets_db:
+        if asset.get('name') == name:
+            if published == "latest":
+                for task in asset.get('tasks'):
+                    latest_pub = task.get('published').get('latest')
+                return Response(json.dumps(latest_pub), mimetype='application/json')
 
 
 if __name__ == "__main__":

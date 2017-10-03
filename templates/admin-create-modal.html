@@ -110,12 +110,11 @@
                         <label class="col-md-3 control-label">Asset type</label>
                         <div class="col-md-9">
                             <select name="asset-type" class="form-control">
-                                <option>2D</option>
-                                <option>model</option>
-                                <option>light</option>
-                                <option>texture</option>
-                                <option>rig</option>
-                                <option>fx</option>
+                                {% for util in utilz %}
+                                {% for asset_type in util.asset_types %}
+                                <option>{{asset_type}}</option>
+                                {% endfor %}
+                                {% endfor %}
                             </select>
                         </div>
                         {% include 'datepicker-create-asset.html' %}
