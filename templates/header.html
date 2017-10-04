@@ -19,9 +19,20 @@
         <!-- end mobile sidebar expand / collapse button -->
         {% if user_session.role == "admin" %} {% if adminMode %}
         <!-- begin navbar-collapse -->
-        <div class="collapse navbar-collapse pull-left" id="top-navbar">
-            <a href="#create-entities-modal-dialog" class="btn btn-primary m-r-5" style="margin-top: 9px;" data-toggle="modal">Create</a>
+        <div class="btn-group show-on-hover">
+          <button type="button" class="btn btn-primary m-r-5 dropdown-toggle" style="margin-top: 9px;" data-toggle="dropdown">
+            Create <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#create-entities-modal-dialog-show" data-toggle="modal">Show</a></li>
+            <li><a href="#create-entities-modal-dialog-sequence" data-toggle="modal">Sequence</a></li>
+            <li><a href="#create-entities-modal-dialog-shot" data-toggle="modal">Shot</a></li>
+            <li><a href="#create-entities-modal-dialog-asset" data-toggle="modal">Asset</a></li>
+            <li class="divider"></li>
+            <li><a href="#create-entities-modal-dialog-import" data-toggle="modal">Import</a></li>
+          </ul>
         </div>
+                
         <!-- end navbar-collapse -->
         {% include 'admin-create-modal.html' %} {% endif %} {% endif %}
         <!-- begin header navigation right -->

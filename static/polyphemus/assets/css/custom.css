@@ -219,3 +219,6 @@ blockquote {
 .main-show-info li{
   list-style-type: none;
 }
+.show-on-hover:hover > ul.dropdown-menu {
+    display: block;    
+}
