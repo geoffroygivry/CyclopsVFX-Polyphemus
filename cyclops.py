@@ -11,9 +11,9 @@ from scripts import admin as ad
 from scripts import check_img as ci
 from scripts import db_actions as dba
 from scripts import check_user
+from bson import json_util
 import bcrypt
 import json
-import jsonify
 
 from cyc_config import cyc_config as cfg
 
@@ -484,14 +484,16 @@ def has_no_empty_params(rule):
 @app.route("/get-users/<task>")
 def get_user_by_task(task):
     assignee = []
+    dict_users = {}
+    dict_users['users'] = assignee
     users = [x for x in mongo.db.users.find()]
     for user in users:
-        for task_user in user.get('tasks'):
-            print(user.get('tasks'))
-            if task_user == task:
-                assignee.append(user.get('name'))
+        if user.get('tasks') is not None:
+            for task_user in user.get('tasks'):
+                if task_user == task:
+                    assignee.append(user.get('name'))
 
-    return Response(json.dumps(assignee), mimetype='application/json')
+    return Response(json.dumps(dict_users), mimetype='application/json')
 
 
 @app.route('/delete-shot/<shot_name>', methods=['POST'])
@@ -637,13 +639,30 @@ def fetch_asset_api(show):
     publish_db = [x for x in mongo.db.publish.find()]
     name = request.args.get('name')
     published = request.args.get('published')
-    print(published)
     for asset in assets_db:
         if asset.get('name') == name:
             if published == "latest":
                 for task in asset.get('tasks'):
-                    latest_pub = task.get('published').get('latest')
-                return Response(json.dumps(latest_pub), mimetype='application/json')
+                    if task.get('published').get('latest') is not None:
+                        latest_pub_uuid = task.get('published').get('latest')
+                        for pub in publish_db:
+                            if pub.get('UUID') == latest_pub_uuid:
+                                return Response(json_util.dumps(pub, indent=4), mimetype='application/json')
+                                break
+                    else:
+                        return "sorry something went wrong...."
+        else:
+            if published == "latest":
+                print("published query string if latest")
+                for task in asset.get('tasks'):
+                    print("task:", task)
+                    if task.get('published').get('latest') is not None:
+                        print("published and latest are not none")
+                        latest_pub_uuid = task.get('published').get('latest')
+                        for pub in publish_db:
+                            if pub.get('UUID') == latest_pub_uuid:
+                                return Response(json_util.dumps(pub, indent=4), mimetype='application/json')
+                                break
 
 
 if __name__ == "__main__":
