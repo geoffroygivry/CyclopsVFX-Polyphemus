@@ -639,30 +639,38 @@ def fetch_asset_api(show):
     publish_db = [x for x in mongo.db.publish.find()]
     name = request.args.get('name')
     published = request.args.get('published')
+    latest_pub_list = []
     for asset in assets_db:
-        if asset.get('name') == name:
-            if published == "latest":
-                for task in asset.get('tasks'):
-                    if task.get('published').get('latest') is not None:
-                        latest_pub_uuid = task.get('published').get('latest')
-                        for pub in publish_db:
-                            if pub.get('UUID') == latest_pub_uuid:
-                                return Response(json_util.dumps(pub, indent=4), mimetype='application/json')
-                                break
-                    else:
-                        return "sorry something went wrong...."
-        else:
-            if published == "latest":
-                print("published query string if latest")
-                for task in asset.get('tasks'):
-                    print("task:", task)
-                    if task.get('published').get('latest') is not None:
-                        print("published and latest are not none")
-                        latest_pub_uuid = task.get('published').get('latest')
-                        for pub in publish_db:
-                            if pub.get('UUID') == latest_pub_uuid:
-                                return Response(json_util.dumps(pub, indent=4), mimetype='application/json')
-                                break
+        if published == "latest" and name is None:
+            tasks = asset.get('tasks')
+            if tasks is not None:
+                for task in tasks:
+                    published_items = task.get("published")
+                    if published_items is not None:
+                        lastest_pubs_uuid = published_items.get("latest")
+                        if lastest_pubs_uuid is not None:
+                            for pub in publish_db:
+                                if pub.get("UUID") == lastest_pubs_uuid:
+                                    latest_pub_list.append(pub)
+        if published == "latest" and name is not None:
+            if asset.get('name') == name:
+                tasks = asset.get('tasks')
+                if tasks is not None:
+                    for task in tasks:
+                        published_items = task.get("published")
+                        if published_items is not None:
+                            lastest_pubs_uuid = published_items.get("latest")
+                            if lastest_pubs_uuid is not None:
+                                for pub in publish_db:
+                                    if pub.get("UUID") == lastest_pubs_uuid:
+                                        pub_item = pub
+    if latest_pub_list != []:
+        return Response(json_util.dumps(latest_pub_list, indent=4), mimetype='application/json')
+    else:
+        try:
+            return Response(json_util.dumps(pub_item, indent=4), mimetype='application/json')
+        except UnboundLocalError:
+            return Response(json_util.dumps("Name is not matching... Sorry.", indent=4), mimetype='application/json')
 
 
 if __name__ == "__main__":
