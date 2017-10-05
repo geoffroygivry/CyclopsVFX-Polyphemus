@@ -217,3 +217,27 @@ def check_user_show(user_name, show_name, db):
             check = True
 
     return check
+
+
+def find(key, dictionary):
+    for ky, val in dictionary.items():
+        if ky == key:
+            yield val
+        elif isinstance(val, dict):
+            for result in find(key, val):
+                yield result
+        elif isinstance(val, list):
+            for dd in val:
+                if isinstance(dd, dict):
+                    for result2 in find(key, dd):
+                        yield result2
+
+
+def find_keyDict(key, dictionary):
+    final_result = list(find(key, dictionary))
+    if len(final_result) == 1:
+        return final_result[0]
+    elif len(final_result) == 0:
+        return None
+    else:
+        return final_result

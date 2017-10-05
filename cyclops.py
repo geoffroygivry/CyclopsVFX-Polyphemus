@@ -642,28 +642,18 @@ def fetch_asset_api(show):
     latest_pub_list = []
     for asset in assets_db:
         if published == "latest" and name is None:
-            tasks = asset.get('tasks')
-            if tasks is not None:
-                for task in tasks:
-                    published_items = task.get("published")
-                    if published_items is not None:
-                        lastest_pubs_uuid = published_items.get("latest")
-                        if lastest_pubs_uuid is not None:
-                            for pub in publish_db:
-                                if pub.get("UUID") == lastest_pubs_uuid:
-                                    latest_pub_list.append(pub)
+            lastest_pubs_uuid = utils.find_keyDict("latest", asset)
+            if lastest_pubs_uuid is not None:
+                for pub in publish_db:
+                    if pub.get("UUID") == lastest_pubs_uuid:
+                        latest_pub_list.append(pub)
         if published == "latest" and name is not None:
             if asset.get('name') == name:
-                tasks = asset.get('tasks')
-                if tasks is not None:
-                    for task in tasks:
-                        published_items = task.get("published")
-                        if published_items is not None:
-                            lastest_pubs_uuid = published_items.get("latest")
-                            if lastest_pubs_uuid is not None:
-                                for pub in publish_db:
-                                    if pub.get("UUID") == lastest_pubs_uuid:
-                                        pub_item = pub
+                lastest_pubs_uuid = utils.find_keyDict("latest", asset)
+                if lastest_pubs_uuid is not None:
+                    for pub in publish_db:
+                        if pub.get("UUID") == lastest_pubs_uuid:
+                            pub_item = pub
     if latest_pub_list != []:
         return Response(json_util.dumps(latest_pub_list, indent=4), mimetype='application/json')
     else:
