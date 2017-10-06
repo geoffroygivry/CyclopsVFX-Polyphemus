@@ -647,6 +647,16 @@ def fetch_asset_api(show):
                 for pub in publish_db:
                     if pub.get("UUID") == lastest_pubs_uuid:
                         latest_pub_list.append(pub)
+        if published == "all" and name is None:
+            for pub in publish_db:
+                latest_pub_list.append(pub)
+        if published == "all" and name is not None:
+            if asset.get('name') == name:
+                lastest_pubs_uuid = utils.find_keyDict("latest", asset)
+                if lastest_pubs_uuid is not None:
+                    for pub in publish_db:
+                        if pub.get("UUID") == lastest_pubs_uuid:
+                            latest_pub_list.append(pub)
         if published == "latest" and name is not None:
             if asset.get('name') == name:
                 lastest_pubs_uuid = utils.find_keyDict("latest", asset)
