@@ -215,7 +215,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for sub in subs %} {% set sub_target_date = utils.convert_isotime_to_datetime(sub.Date) %} {% set pretty_target_date = sub_target_date.strftime(format) %}
+                                    {% for sub in subs %}
+                                    {% set sub_target_date = utils.convert_isotime_to_datetime(sub.Date) %} {% set pretty_target_date = sub_target_date.strftime(format) %}
                                     <tr class="odd gradeX">
                                         <td><a href="{{url_for('user', user_name=sub.Username)}}">{{sub.Username}}</a></td>
                                         <td><a href="{{url_for('shot', show=sub.Show, seq=sub.seq, shot_name=sub.Shot)}}">{{sub.Shot}}</a></td>
@@ -223,6 +224,7 @@
                                         <td><a href="{{url_for('show', show=sub.Show)}}">{{sub.Show}}</a></td>
                                         <td>{{sub.type}}</td>
                                         <td><a href="{{url_for('shot', show=sub.Show, seq=sub.seq, shot_name=sub.Shot, _anchor=sub.ptuid)}}">{{sub.ptuid}}</a></td>
+                                        
                                         <td>
                                             <div class="date-sub"><a href=""><small><time class="pubdate" datetime="{{sub.Date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time></small></a></div>
                                         </td>
