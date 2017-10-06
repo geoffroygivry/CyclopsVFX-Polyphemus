@@ -639,24 +639,49 @@ def fetch_asset_api(show):
     publish_db = [x for x in mongo.db.publish.find()]
     name = request.args.get('name')
     published = request.args.get('published')
+    version = request.args.get('version')
     latest_pub_list = []
+
+    if published == "all" and name is None:
+        for pub in publish_db:
+            latest_pub_list.append(pub)
+
+    if published == "all" and name is not None:
+        for pub in publish_db:
+            if name in pub.get('UUID'):
+                latest_pub_list.append(pub)
+
     for asset in assets_db:
+
+        if published == "not_latest" and version is None:
+            prev_pubs_uuid = utils.find_keyDict("previous", asset)
+            if prev_pubs_uuid is not None:
+                for pub in publish_db:
+                    if isinstance(prev_pubs_uuid, list):
+                        for uuid in prev_pubs_uuid:
+                            if pub.get("UUID") == uuid:
+                                latest_pub_list.append(pub)
+                    else:
+                        if pub.get("UUID") == prev_pubs_uuid:
+                            latest_pub_list.append(pub)
+
+        if published == "not_latest" and version is not None:
+            prev_pubs_uuid = utils.find_keyDict("previous", asset)
+            if prev_pubs_uuid is not None:
+                for pub in publish_db:
+                    if isinstance(prev_pubs_uuid, list):
+                        for uuid in prev_pubs_uuid:
+                            if pub.get("UUID") == uuid:
+                                if pub.get('version') == float(version):
+                                    latest_pub_list.append(pub)
+
         if published == "latest" and name is None:
             lastest_pubs_uuid = utils.find_keyDict("latest", asset)
             if lastest_pubs_uuid is not None:
                 for pub in publish_db:
                     if pub.get("UUID") == lastest_pubs_uuid:
                         latest_pub_list.append(pub)
-        if published == "all" and name is None:
-            for pub in publish_db:
-                latest_pub_list.append(pub)
-        if published == "all" and name is not None:
-            if asset.get('name') == name:
-                lastest_pubs_uuid = utils.find_keyDict("latest", asset)
-                if lastest_pubs_uuid is not None:
-                    for pub in publish_db:
-                        if pub.get("UUID") == lastest_pubs_uuid:
-                            latest_pub_list.append(pub)
+
         if published == "latest" and name is not None:
             if asset.get('name') == name:
                 lastest_pubs_uuid = utils.find_keyDict("latest", asset)
@@ -664,13 +689,14 @@ def fetch_asset_api(show):
                     for pub in publish_db:
                         if pub.get("UUID") == lastest_pubs_uuid:
                             pub_item = pub
+
     if latest_pub_list != []:
         return Response(json_util.dumps(latest_pub_list, indent=4), mimetype='application/json')
     else:
         try:
             return Response(json_util.dumps(pub_item, indent=4), mimetype='application/json')
         except UnboundLocalError:
-            return Response(json_util.dumps("Name is not matching... Sorry.", indent=4), mimetype='application/json')
+            return Response(json_util.dumps("Not matching... Sorry.", indent=4), mimetype='application/json')
 
 
 if __name__ == "__main__":
