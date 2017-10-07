@@ -653,7 +653,7 @@ def fetch_asset_api(show):
 
     for asset in assets_db:
 
-        if published == "not_latest" and version is None:
+        if published == "not_latest" and version is None and name is None:
             prev_pubs_uuid = utils.find_keyDict("previous", asset)
             if prev_pubs_uuid is not None:
                 for pub in publish_db:
@@ -665,7 +665,7 @@ def fetch_asset_api(show):
                         if pub.get("UUID") == prev_pubs_uuid:
                             latest_pub_list.append(pub)
 
-        if published == "not_latest" and version is not None:
+        if published == "not_latest" and version is not None and name is None:
             prev_pubs_uuid = utils.find_keyDict("previous", asset)
             if prev_pubs_uuid is not None:
                 for pub in publish_db:
@@ -674,6 +674,17 @@ def fetch_asset_api(show):
                             if pub.get("UUID") == uuid:
                                 if pub.get('version') == float(version):
                                     latest_pub_list.append(pub)
+
+        if published == "not_latest" and version is not None and name is not None:
+            if asset.get("name") == name:
+                prev_pubs_uuid = utils.find_keyDict("previous", asset)
+                if prev_pubs_uuid is not None:
+                    for pub in publish_db:
+                        if isinstance(prev_pubs_uuid, list):
+                            for uuid in prev_pubs_uuid:
+                                if pub.get("UUID") == uuid:
+                                    if pub.get('version') == float(version):
+                                        latest_pub_list.append(pub)
 
         if published == "latest" and name is None:
             lastest_pubs_uuid = utils.find_keyDict("latest", asset)
