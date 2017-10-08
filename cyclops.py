@@ -2,7 +2,7 @@ import os, re
 from flask import Flask, render_template, url_for, request, session, redirect, Response, flash
 from flask_pymongo import PyMongo
 from flask_gravatar import Gravatar
-from datetime import *
+from datetime import datetime
 from scripts import utils
 from scripts.flask_celery import make_celery
 from scripts import aws_s3
@@ -687,9 +687,7 @@ def submit_comment(ptuid):
         print('LOG: found hashtag: ',find_hashtag)
     else:
         print('No hashtags.')
-    comment_date = datetime.utcnow()
-    print(comment_date)
-    iso_target_date =('2017-06-07T13:12:16.865587')
+    comment_date = datetime.utcnow().isoformat()
     mongo.db.submissions.update(
             {"ptuid": sub_id},
             {"$push":
@@ -699,7 +697,7 @@ def submit_comment(ptuid):
                 "email" : user_email.get('email')
             }, 
             "comment" : comment_payload, 
-            "date" : iso_target_date
+            "date" : comment_date
             }}
             }
             )
@@ -735,9 +733,7 @@ def submit_comment_shot(shot_name):
         print('LOG: found hashtag: ',find_hashtag)
     else:
         print('No hashtags.')
-    comment_date = datetime.utcnow()
-    print(comment_date)
-    iso_target_date =('2017-06-07T13:12:16.865587')
+    comment_date = datetime.utcnow().isoformat()
     mongo.db.shots.update(
             {"name": shot_name},
             {"$push":
@@ -747,7 +743,7 @@ def submit_comment_shot(shot_name):
                 "email" : user_email.get('email')
             }, 
             "comment" : comment_payload, 
-            "date" : iso_target_date
+            "date" : comment_date
             }}
             }
             )
@@ -774,9 +770,7 @@ def submit_comment_show(show_name):
     else:
         print('No hashtags.')
     
-    comment_date = datetime.utcnow()
-    print(comment_date)
-    iso_target_date =('2017-06-07T13:12:16.865587')
+    comment_date = datetime.utcnow().isoformat()
     mongo.db.shows.update(
             {"name": show_name},
             {"$push":
