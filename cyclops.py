@@ -12,6 +12,7 @@ from scripts import check_img as ci
 from scripts import db_actions as dba
 from scripts import check_user
 from bson import json_util
+import re
 import bcrypt
 import json
 
@@ -635,79 +636,118 @@ def process(current_route, username):
 
 @app.route("/api/unity/<show>/assets")
 def fetch_asset_api(show):
-    assets_db = [x for x in mongo.db.assets.find()]
+    assets_db = [x for x in mongo.db.assets.find() if x.get('show') == show]
     publish_db = [x for x in mongo.db.publish.find()]
     name = request.args.get('name')
     published = request.args.get('published')
+    tag = request.args.get('tag')
     version = request.args.get('version')
     latest_pub_list = []
 
     if published == "all" and name is None:
         for pub in publish_db:
-            latest_pub_list.append(pub)
+            searchObj = re.search(r"%s" % show, pub.get('UUID'), re.M | re.I)
+            if searchObj:
+                latest_pub_list.append(pub)
 
     if published == "all" and name is not None:
         for pub in publish_db:
-            if name in pub.get('UUID'):
+            searchObj = re.search(r"%s" % name, pub.get('UUID'), re.M | re.I)
+            if searchObj:
                 latest_pub_list.append(pub)
+
+    if published == "latest" and tag is not None and name is None and version is None:
+        for pub in publish_db:
+            for t in pub.get("tag"):
+                print(t)
+                if tag == t:
+                    print("yes!")
+                    latest_pub_list.append(pub)
+
+    pub_uuid_list_not_latest_all = []
+    pub_uuid_list_not_latest_name = []
+    pub_uuid_list_not_latest_version = []
+    pub_uuid_list_not_latest_name_version = []
 
     for asset in assets_db:
 
-        if published == "not_latest" and version is None and name is None:
-            prev_pubs_uuid = utils.find_keyDict("previous", asset)
-            if prev_pubs_uuid is not None:
+        if published == "latest" and name is None and tag is None:
+            for x in utils.find("latest", asset):
                 for pub in publish_db:
-                    if isinstance(prev_pubs_uuid, list):
-                        for uuid in prev_pubs_uuid:
-                            if pub.get("UUID") == uuid:
-                                latest_pub_list.append(pub)
-                    else:
-                        if pub.get("UUID") == prev_pubs_uuid:
-                            latest_pub_list.append(pub)
-
-        if published == "not_latest" and version is not None and name is None:
-            prev_pubs_uuid = utils.find_keyDict("previous", asset)
-            if prev_pubs_uuid is not None:
-                for pub in publish_db:
-                    if isinstance(prev_pubs_uuid, list):
-                        for uuid in prev_pubs_uuid:
-                            if pub.get("UUID") == uuid:
-                                if pub.get('version') == float(version):
-                                    latest_pub_list.append(pub)
-
-        if published == "not_latest" and version is not None and name is not None:
-            if asset.get("name") == name:
-                prev_pubs_uuid = utils.find_keyDict("previous", asset)
-                if prev_pubs_uuid is not None:
-                    for pub in publish_db:
-                        if isinstance(prev_pubs_uuid, list):
-                            for uuid in prev_pubs_uuid:
-                                if pub.get("UUID") == uuid:
-                                    if pub.get('version') == float(version):
-                                        latest_pub_list.append(pub)
-
-        if published == "latest" and name is None:
-            lastest_pubs_uuid = utils.find_keyDict("latest", asset)
-            if lastest_pubs_uuid is not None:
-                for pub in publish_db:
-                    if pub.get("UUID") == lastest_pubs_uuid:
+                    if pub.get('UUID') == x:
                         latest_pub_list.append(pub)
 
-        if published == "latest" and name is not None:
+        if published == "latest" and name is not None and tag is None:
             if asset.get('name') == name:
-                lastest_pubs_uuid = utils.find_keyDict("latest", asset)
-                if lastest_pubs_uuid is not None:
+                for x in utils.find("latest", asset):
                     for pub in publish_db:
-                        if pub.get("UUID") == lastest_pubs_uuid:
-                            pub_item = pub
+                        if pub.get('UUID') == x:
+                            latest_pub_list.append(pub)
+
+        if published == "not_latest" and version is None and name is None:
+            for x in utils.find("previous", asset):
+                if not isinstance(x, list):
+                    pub_uuid_list_not_latest_all.append(x)
+                else:
+                    for y in x:
+                        pub_uuid_list_not_latest_all.append(y)
+
+        if published == "not_latest" and version is None and name is not None:
+            if asset.get('name') == name:
+                for x in utils.find("previous", asset):
+                    if not isinstance(x, list):
+                        pub_uuid_list_not_latest_name.append(x)
+                    else:
+                        for y in x:
+                            pub_uuid_list_not_latest_name.append(y)
+
+        if published == "not_latest" and version is not None and name is None:
+            for x in utils.find("previous", asset):
+                if not isinstance(x, list):
+                    pub_uuid_list_not_latest_version.append(x)
+                else:
+                    for y in x:
+                        pub_uuid_list_not_latest_version.append(y)
+
+        if published == "not_latest" and version is not None and name is not None:
+            if asset.get('name') == name:
+                for x in utils.find("previous", asset):
+                    if not isinstance(x, list):
+                        pub_uuid_list_not_latest_name_version.append(x)
+                    else:
+                        for y in x:
+                            pub_uuid_list_not_latest_name_version.append(y)
+
+    if pub_uuid_list_not_latest_all != []:
+        for pub in publish_db:
+            for uuid in pub_uuid_list_not_latest_all:
+                if pub.get('UUID') == uuid:
+                    latest_pub_list.append(pub)
+
+    if pub_uuid_list_not_latest_name != []:
+        for pub in publish_db:
+            for uuid in pub_uuid_list_not_latest_name:
+                if pub.get('UUID') == uuid:
+                    latest_pub_list.append(pub)
+
+    if pub_uuid_list_not_latest_version != []:
+        for pub in publish_db:
+            for uuid in pub_uuid_list_not_latest_version:
+                if pub.get('UUID') == uuid:
+                    if pub.get('version') == float(version):
+                        latest_pub_list.append(pub)
+
+    if pub_uuid_list_not_latest_name_version != []:
+        for pub in publish_db:
+            for uuid in pub_uuid_list_not_latest_name_version:
+                if pub.get('UUID') == uuid:
+                    if pub.get('version') == float(version):
+                        latest_pub_list.append(pub)
 
     if latest_pub_list != []:
         return Response(json_util.dumps(latest_pub_list, indent=4), mimetype='application/json')
     else:
-        try:
-            return Response(json_util.dumps(pub_item, indent=4), mimetype='application/json')
-        except UnboundLocalError:
-            return Response(json_util.dumps("Not matching... Sorry.", indent=4), mimetype='application/json')
+        return Response(json_util.dumps("Not matching... Sorry.", indent=4), mimetype='application/json')
 
 
 if __name__ == "__main__":

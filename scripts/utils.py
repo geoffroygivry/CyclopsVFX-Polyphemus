@@ -1,4 +1,5 @@
 import datetime
+import re
 import xlrd
 from scripts import db_actions as dba
 
@@ -241,3 +242,44 @@ def find_keyDict(key, dictionary):
         return None
     else:
         return final_result
+
+
+class UUID():
+    def __init__(self, uuid_pattern):
+        self.uuid = uuid_pattern
+        self.match_pattern = self.match()
+
+    def compiled_uuid(self):
+        return re.compile('^(?P<show_name>\w+)_(?P<asset_name>\w+)_(?P<task_name>\w+)_(?P<version>\w+)_(?P<year>\w+)-(?P<month>\w+)-(?P<day>\w+)T(?P<hour>\w+).(?P<min>\w+).(?P<sec>\w+).(?P<milsec>\w+)')
+
+    def match(self):
+        compiled_uuid_pattern = self.compiled_uuid()
+        match = compiled_uuid_pattern.match(self.uuid)
+        return match
+
+    def check_uuid(self):
+        if self.match_pattern:
+            return True
+        else:
+            return False
+
+    def show(self):
+        if self.check_uuid():
+            return self.match_pattern.group('show_name')
+
+    def asset(self):
+        if self.check_uuid():
+            return self.match_pattern.group('asset_name')
+
+    def task(self):
+        if self.check_uuid():
+            return self.match_pattern.group('task_name')
+
+    def version(self):
+        if self.check_uuid():
+            return self.match_pattern.group('version')
+
+    def date(self):
+        if self.check_uuid():
+            date_format = "{}-{}-{} at {}:{}:{}".format(self.match_pattern.group('year'), self.match_pattern.group('month'), self.match_pattern.group('day'), self.match_pattern.group('hour'), self.match_pattern.group('min'), self.match_pattern.group('sec'))
+            return date_format
