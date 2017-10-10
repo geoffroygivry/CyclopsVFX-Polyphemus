@@ -1,5 +1,5 @@
 import os, re
-from flask import Flask, render_template, url_for, request, session, redirect, Response, flash
+from flask import Flask, render_template, url_for, request, session, redirect, Response, flash, jsonify
 from flask_pymongo import PyMongo
 from flask_gravatar import Gravatar
 from datetime import datetime
@@ -787,6 +787,38 @@ def submit_comment_show(show_name):
     print('Comment  submited to db.')
     return redirect(redirect_url())
 
+@app.route('/polyphemus/mentions/get-mentions-names.json', methods=['GET', 'POST'])
+def mentions_get_names():
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        mentions_names = []
+        for name_for_mention in mongo.db.users.find({}, {'name':1, 'email':1, '_id':0}):
+            mentions_names.append(name_for_mention)      
+        return Response(json_util.dumps(mentions_names), mimetype='application/json')
+    else:
+        warning_header = "No rights.!"
+        warning_msg = "Please login to query data."
+        return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
+
+@app.route('/polyphemus/mentions/get-mentions-hashes.json', methods=['GET', 'POST'])
+def mentions_get_hashes():
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        mentions_hashes = []
+        for show in mongo.db.shows.find({}, {'name':1, '_id':0}):
+            mentions_hashes.append(show['name'])
+        
+        for sub in mongo.db.submissions.find({}, {'ptuid':1, '_id':0}):
+            mentions_hashes.append(sub['ptuid'])
+
+        for publish in mongo.db.publish.find({}, {'UUID':1, '_id':0}):
+            mentions_hashes.append(publish['UUID'])
+
+        return Response(json_util.dumps(mentions_hashes), mimetype='application/json')
+    else:
+        warning_header = "No rights.!"
+        warning_msg = "Please login to query data."
+        return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
 
 
 if __name__ == "__main__":

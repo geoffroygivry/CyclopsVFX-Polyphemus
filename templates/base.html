@@ -95,7 +95,6 @@
     <script src="{{url_for('static', filename='polyphemus/assets/plugins/bootstrap-calendar/js/bootstrap_calendar.min.js')}}"></script>
     <script src="{{url_for('static', filename='polyphemus/assets/plugins/sparkline/jquery.sparkline.js')}}"></script>
     <script src="{{url_for('static', filename='polyphemus/assets/js/moment.js')}}"></script>
-
     <!--[if lt IE 9]>
         <script src="static/polyphemus/assets/crossbrowserjs/html5shiv.js"></script>
         <script src="static/polyphemus/assets/crossbrowserjs/respond.min.js"></script>
@@ -109,6 +108,14 @@
     <script src="{{url_for('static', filename='polyphemus/assets/js/apps.js')}}"></script>
     <script src="{{url_for('static', filename='polyphemus/assets/js/dashboard.min.js')}}"></script>
     <script src="{{url_for('static', filename='polyphemus/assets/js/polyphemus.js')}}"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.1/select2.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/rangy/1.2.3/rangy-core.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.1/select2.min.js"></script>
+    <script type="text/javascript" src="http://ichord.github.io/Caret.js/src/jquery.caret.js"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/js/bootstrap-typeahead.js')}}"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/js/jquery.atwho.js')}}"></script>
+    <script src="{{url_for('static', filename='polyphemus/assets/js/linky.js')}}"></script>>
     <!-- ================== END PAGE LEVEL JS ================== -->
 
     <script>
@@ -118,5 +125,34 @@
             $(".1").addClass("active in");
         });
     </script>
+
+    <script type="text/javascript">
+    $('textarea').atwho({
+            at: "@", 
+            data: "{{url_for('mentions_get_names')}}",
+            limit: 25
+        });
+
+    $('textarea').atwho({
+            at: "#", 
+            data: "{{url_for('mentions_get_hashes')}}",
+            limit: 25
+        });
+
+    $('.comment-body').linky({
+        mentions: true,
+        hashtags: false,
+        urls: true,
+        linkTo: "polyphemus"
+        });
+
+    $('.comment-body').linky({
+        mentions: false,
+        hashtags: true,
+        urls: false,
+        linkTo: "polyphemus_hash"
+        });
+
+     </script>
 </body>
 </html>

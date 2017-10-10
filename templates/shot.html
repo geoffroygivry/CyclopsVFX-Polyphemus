@@ -89,7 +89,7 @@
                 <div class="well">
                     <form id="comment-shot-form" class="form-horizontal" role="form" method="post" action="{{url_for('submit_comment_shot', shot_name=shot.name)}}">
                    <div class="form-group" style="padding:14px;">
-                    <textarea name="comment_pl" class="form-control" placeholder="Put your comment here..."></textarea>
+                    <textarea id="for_mention" name="comment_pl" class="form-control multiple" placeholder="Put your comment here..."></textarea>
                   </div>
                   <button type="submit" form="comment-shot-form" value="Submit" class="btn btn-primary pull-right">Post</button><ul class="list-inline"><li><a href=""><i class="glyphicon glyphicon-upload"></i></a></li><li><a href=""><i class="glyphicon glyphicon-camera"></i></a></li><li><a href=""><i class="glyphicon glyphicon-map-marker"></i></a></li></ul>
                 </form>
@@ -138,7 +138,7 @@
                       
                   <form id="comment-sub-form-{{sub.ptuid}}" class="form-horizontal" role="form" method="post" action="{{url_for('submit_comment', ptuid=sub.ptuid)}}">
                    <div class="form-group" style="padding:14px;">
-                    <textarea name="comment_pl" class="form-control" placeholder="Put your comment here..."></textarea>
+                    <textarea id="for_mention" name="comment_pl" class="form-control" placeholder="Put your comment here..."></textarea>
                   </div>
                   <button type="submit" form="comment-sub-form-{{sub.ptuid}}" value="Submit" class="btn btn-primary pull-right">Post</button><ul class="list-inline"><li><a href=""><i class="glyphicon glyphicon-upload"></i></a></li><li><a href=""><i class="glyphicon glyphicon-camera"></i></a></li><li><a href=""><i class="glyphicon glyphicon-map-marker"></i></a></li></ul>
                 </form>
@@ -219,4 +219,6 @@
         </div>
       </div><!-- end user details -->
     </div><!-- end timeline content-->
+
+
 {% endblock %}
