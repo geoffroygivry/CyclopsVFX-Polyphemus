@@ -279,7 +279,20 @@ class UUID():
         if self.check_uuid():
             return self.match_pattern.group('version')
 
+    @property
     def date(self):
         if self.check_uuid():
             date_format = "{}-{}-{} at {}:{}:{}".format(self.match_pattern.group('year'), self.match_pattern.group('month'), self.match_pattern.group('day'), self.match_pattern.group('hour'), self.match_pattern.group('min'), self.match_pattern.group('sec'))
             return date_format
+
+
+def get_uuids(kw, db_col):
+    uid_list = []
+    for db in db_col:
+        for x in find(kw, db):
+            if isinstance(x, list):
+                for y in x:
+                    uid_list.append(y)
+            else:
+                uid_list.append(x)
+    return uid_list

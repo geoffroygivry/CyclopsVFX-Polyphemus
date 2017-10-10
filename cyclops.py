@@ -641,27 +641,81 @@ def fetch_asset_api(show):
     name = request.args.get('name')
     published = request.args.get('published')
     tag = request.args.get('tag')
+    task = request.args.get('task')
     version = request.args.get('version')
     latest_pub_list = []
 
-    if published == "all" and name is None:
+    # published all
+    if published == "all" and task is None and tag is None and name is None and version is None:
         for pub in publish_db:
             searchObj = re.search(r"%s" % show, pub.get('UUID'), re.M | re.I)
             if searchObj:
                 latest_pub_list.append(pub)
 
-    if published == "all" and name is not None:
+    # published all, name
+    if published == "all" and task is None and tag is None and name is not None and version is None:
         for pub in publish_db:
             searchObj = re.search(r"%s" % name, pub.get('UUID'), re.M | re.I)
             if searchObj:
                 latest_pub_list.append(pub)
 
-    if published == "latest" and tag is not None and name is None and version is None:
+    # published all, version
+    if published == "all" and task is None and tag is None and name is None and version is not None:
         for pub in publish_db:
-            for t in pub.get("tag"):
-                print(t)
-                if tag == t:
-                    print("yes!")
+            if pub.get('version') == float(version):
+                latest_pub_list.append(pub)
+
+    # published all, task
+    if published == "all" and task is not None and tag is None and name is None and version is None:
+        for pub in publish_db:
+            uuid_obj = utils.UUID(pub.get('UUID'))
+            if uuid_obj.task() == task:
+                latest_pub_list.append(pub)
+
+    # published latest, tag
+    if published == "latest" and tag is not None and name is None and version is None and task is None:
+        uuids = utils.get_uuids("latest", assets_db)
+        for pub in publish_db:
+            for uuid in uuids:
+                if pub.get("UUID") == uuid:
+                    for t in pub.get("tag"):
+                        if t == tag:
+                            latest_pub_list.append(pub)
+
+    # published not_latest, tag
+    if published == "not_latest" and tag is not None and name is None and version is None and task is None:
+        uuids = utils.get_uuids("previous", assets_db)
+        for pub in publish_db:
+            for uuid in uuids:
+                if pub.get("UUID") == uuid:
+                    for t in pub.get("tag"):
+                        if t == tag:
+                            latest_pub_list.append(pub)
+
+    # published latest, task
+    if published == "latest" and task is not None and tag is None and name is None and version is None:
+        task_list = []
+        uuids = utils.get_uuids("latest", assets_db)
+        for uuid in uuids:
+            uuid_obj = utils.UUID(uuid)
+            if uuid_obj.task() == task:
+                task_list.append(uuid)
+        for pub in publish_db:
+            for uuid in task_list:
+                if pub.get('UUID') == uuid:
+                    latest_pub_list.append(pub)
+
+    # published not_latest, task
+    if published == "not_latest" and task is not None and tag is None and name is None and version is None:
+        task_list = []
+        uuids = utils.get_uuids("previous", assets_db)
+        for uuid in uuids:
+            uuid_obj = utils.UUID(uuid)
+            if uuid_obj.task() == task:
+                task_list.append(uuid)
+        for pub in publish_db:
+            for uuid in task_list:
+                if pub.get('UUID') == uuid:
                     latest_pub_list.append(pub)
 
     pub_uuid_list_not_latest_all = []
@@ -671,20 +725,23 @@ def fetch_asset_api(show):
 
     for asset in assets_db:
 
-        if published == "latest" and name is None and tag is None:
+        # published latest
+        if published == "latest" and task is None and tag is None and name is None and version is None:
             for x in utils.find("latest", asset):
                 for pub in publish_db:
                     if pub.get('UUID') == x:
                         latest_pub_list.append(pub)
 
-        if published == "latest" and name is not None and tag is None:
+        # published latest, name
+        if published == "latest" and task is None and tag is None and name is not None and version is None:
             if asset.get('name') == name:
                 for x in utils.find("latest", asset):
                     for pub in publish_db:
                         if pub.get('UUID') == x:
                             latest_pub_list.append(pub)
 
-        if published == "not_latest" and version is None and name is None:
+        # published not_latest
+        if published == "not_latest" and task is None and tag is None and name is None and version is None:
             for x in utils.find("previous", asset):
                 if not isinstance(x, list):
                     pub_uuid_list_not_latest_all.append(x)
@@ -692,7 +749,8 @@ def fetch_asset_api(show):
                     for y in x:
                         pub_uuid_list_not_latest_all.append(y)
 
-        if published == "not_latest" and version is None and name is not None:
+        # published not_latest, name
+        if published == "not_latest" and task is None and tag is None and name is not None and version is None:
             if asset.get('name') == name:
                 for x in utils.find("previous", asset):
                     if not isinstance(x, list):
@@ -701,7 +759,8 @@ def fetch_asset_api(show):
                         for y in x:
                             pub_uuid_list_not_latest_name.append(y)
 
-        if published == "not_latest" and version is not None and name is None:
+        # published not_latest, version
+        if published == "not_latest" and task is None and tag is None and name is None and version is not None:
             for x in utils.find("previous", asset):
                 if not isinstance(x, list):
                     pub_uuid_list_not_latest_version.append(x)
@@ -709,7 +768,8 @@ def fetch_asset_api(show):
                     for y in x:
                         pub_uuid_list_not_latest_version.append(y)
 
-        if published == "not_latest" and version is not None and name is not None:
+        # published not_latest, name, version
+        if published == "not_latest" and task is None and tag is None and name is not None and version is not None:
             if asset.get('name') == name:
                 for x in utils.find("previous", asset):
                     if not isinstance(x, list):
