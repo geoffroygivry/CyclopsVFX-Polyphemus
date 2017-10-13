@@ -668,7 +668,7 @@ def fetch_asset_api(show):
     # published all, task
     if published == "all" and task is not None and tag is None and name is None and version is None:
         for pub in publish_db:
-            uuid_obj = utils.UUID(pub.get('UUID'))
+            uuid_obj = utils.UUID(pub.get('UUID'), "asset")
             if uuid_obj.task() == task:
                 latest_pub_list.append(pub)
 
@@ -697,7 +697,7 @@ def fetch_asset_api(show):
         task_list = []
         uuids = utils.get_uuids("latest", assets_db)
         for uuid in uuids:
-            uuid_obj = utils.UUID(uuid)
+            uuid_obj = utils.UUID(uuid, "asset")
             if uuid_obj.task() == task:
                 task_list.append(uuid)
         for pub in publish_db:
@@ -710,7 +710,7 @@ def fetch_asset_api(show):
         task_list = []
         uuids = utils.get_uuids("previous", assets_db)
         for uuid in uuids:
-            uuid_obj = utils.UUID(uuid)
+            uuid_obj = utils.UUID(uuid, "asset")
             if uuid_obj.task() == task:
                 task_list.append(uuid)
         for pub in publish_db:
@@ -808,7 +808,16 @@ def fetch_asset_api(show):
         return Response(json_util.dumps(latest_pub_list, indent=4), mimetype='application/json')
     else:
         return Response(json_util.dumps("Not matching... Sorry.", indent=4), mimetype='application/json')
-
+    
+@app.route("/api/unity/<show_name>/<shot_name>")
+def fetch_shot_api(show_name, shot_name):
+    shot_entity = mongo.db.find_one({"name": shot})
+    latest_pub_list = []
+    if latest_pub_list != []:
+        return Response(json_util.dumps(latest_pub_list, indent=4), mimetype='application/json')
+    else:
+        return Response(json_util.dumps("Couldn't get your request. Sorry.", indent=4), mimetype='application/json')
+    
 
 if __name__ == "__main__":
     app.secret_key = cfg.FLASK_APP_SECRET_KEY

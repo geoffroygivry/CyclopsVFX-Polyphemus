@@ -234,56 +234,77 @@ def find(key, dictionary):
                         yield result2
 
 
-def find_keyDict(key, dictionary):
-    final_result = list(find(key, dictionary))
-    if len(final_result) == 1:
-        return final_result[0]
-    elif len(final_result) == 0:
-        return None
-    else:
-        return final_result
-
-
 class UUID():
-    def __init__(self, uuid_pattern):
+    """
+    Direction of use:
+    publish_uuid_pattern_asset = "RBY_awning01_for_me-I-think_MOD_v03_2017-10-06T23:05:47.17900"
+    publish_uuid_pattern_shot = "RBY_MANOR_010_rubbishboy_Final_09_CMP_v04_2017-10-03T22:43:43.17900"
+
+    pub_uuid_asset = UUID(publish_uuid_pattern_asset, "asset")
+    pub_uuid_shot = UUID(publish_uuid_pattern_shot, "shot")
+    """
+    def __init__(self, uuid_pattern, uuid_type):
         self.uuid = uuid_pattern
+        self.uuid_type = uuid_type
         self.match_pattern = self.match()
 
-    def compiled_uuid(self):
-        return re.compile('^(?P<show_name>\w+)_(?P<asset_name>\w+)_(?P<task_name>\w+)_(?P<version>\w+)_(?P<year>\w+)-(?P<month>\w+)-(?P<day>\w+)T(?P<hour>\w+).(?P<min>\w+).(?P<sec>\w+).(?P<milsec>\w+)')
+    def compiled_uuid_asset(self):
+        return re.compile('^(?P<show_name>[A-Za-z0-9]+)_(?P<asset_name>[A-Za-z0-9_\-]+)_(?P<task_name>[A-Z]{3})_(?P<version>[Vv]\d+)_(?P<iso_date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{5})')
 
+    def compiled_uuid_shot(self):
+        return re.compile('^(?P<show_name>[A-Z0-9]{3})_(?P<shot_name>[a-zA-Z]+_[0-9]{3})_(?P<description>[A-Za-z_0-9]+)_(?P<task_name>[A-Z]{3})_(?P<version>[vV]\d{2})_(?P<iso_date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{5})')
+
+    
     def match(self):
-        compiled_uuid_pattern = self.compiled_uuid()
+        if self.uuid_type == "asset":
+            compiled_uuid_pattern = self.compiled_uuid_asset()
+        else:
+            compiled_uuid_pattern = self.compiled_uuid_shot()
         match = compiled_uuid_pattern.match(self.uuid)
         return match
-
+        
     def check_uuid(self):
         if self.match_pattern:
             return True
         else:
             return False
-
+        
     def show(self):
         if self.check_uuid():
             return self.match_pattern.group('show_name')
-
+        
+    def shot(self):
+        if self.check_uuid():
+            if self.uuid_type == 'shot':
+                return self.match_pattern.group('shot_name')
+            else:
+                return None
+            
+    def description(self):
+        if self.check_uuid():
+            if self.uuid_type == 'shot':
+                return self.match_pattern.group('description')
+            else:
+                return None
+        
     def asset(self):
         if self.check_uuid():
-            return self.match_pattern.group('asset_name')
-
+            if self.uuid_type == 'asset':
+                return self.match_pattern.group('asset_name')
+            else:
+                return None
+        
     def task(self):
         if self.check_uuid():
             return self.match_pattern.group('task_name')
-
+        
     def version(self):
         if self.check_uuid():
             return self.match_pattern.group('version')
-
-    @property
+        
     def date(self):
         if self.check_uuid():
-            date_format = "{}-{}-{} at {}:{}:{}".format(self.match_pattern.group('year'), self.match_pattern.group('month'), self.match_pattern.group('day'), self.match_pattern.group('hour'), self.match_pattern.group('min'), self.match_pattern.group('sec'))
-            return date_format
+            return self.match_pattern.group('iso_date')
 
 
 def get_uuids(kw, db_col):
