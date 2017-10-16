@@ -243,6 +243,7 @@ class UUID():
     pub_uuid_asset = UUID(publish_uuid_pattern_asset, "asset")
     pub_uuid_shot = UUID(publish_uuid_pattern_shot, "shot")
     """
+
     def __init__(self, uuid_pattern, uuid_type):
         self.uuid = uuid_pattern
         self.uuid_type = uuid_type
@@ -254,7 +255,6 @@ class UUID():
     def compiled_uuid_shot(self):
         return re.compile('^(?P<show_name>[A-Z0-9]{3})_(?P<shot_name>[a-zA-Z]+_[0-9]{3})_(?P<description>[A-Za-z_0-9]+)_(?P<task_name>[A-Z]{3})_(?P<version>[vV]\d{2})_(?P<iso_date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{5})')
 
-    
     def match(self):
         if self.uuid_type == "asset":
             compiled_uuid_pattern = self.compiled_uuid_asset()
@@ -262,46 +262,46 @@ class UUID():
             compiled_uuid_pattern = self.compiled_uuid_shot()
         match = compiled_uuid_pattern.match(self.uuid)
         return match
-        
+
     def check_uuid(self):
         if self.match_pattern:
             return True
         else:
             return False
-        
+
     def show(self):
         if self.check_uuid():
             return self.match_pattern.group('show_name')
-        
+
     def shot(self):
         if self.check_uuid():
             if self.uuid_type == 'shot':
                 return self.match_pattern.group('shot_name')
             else:
                 return None
-            
+
     def description(self):
         if self.check_uuid():
             if self.uuid_type == 'shot':
                 return self.match_pattern.group('description')
             else:
                 return None
-        
+
     def asset(self):
         if self.check_uuid():
             if self.uuid_type == 'asset':
                 return self.match_pattern.group('asset_name')
             else:
                 return None
-        
+
     def task(self):
         if self.check_uuid():
             return self.match_pattern.group('task_name')
-        
+
     def version(self):
         if self.check_uuid():
             return self.match_pattern.group('version')
-        
+
     def date(self):
         if self.check_uuid():
             return self.match_pattern.group('iso_date')

@@ -808,16 +808,38 @@ def fetch_asset_api(show):
         return Response(json_util.dumps(latest_pub_list, indent=4), mimetype='application/json')
     else:
         return Response(json_util.dumps("Not matching... Sorry.", indent=4), mimetype='application/json')
-    
+
+
 @app.route("/api/unity/<show_name>/<shot_name>")
 def fetch_shot_api(show_name, shot_name):
-    shot_entity = mongo.db.find_one({"name": shot})
-    latest_pub_list = []
-    if latest_pub_list != []:
-        return Response(json_util.dumps(latest_pub_list, indent=4), mimetype='application/json')
+    published = request.args.get('published')
+    tag = request.args.get('tag')
+    task = request.args.get('task')
+    version = request.args.get('version')
+
+    shot_entity = mongo.db.shots.find_one({"name": shot_name})
+    published_db = [x for x in mongo.db.publish.find()]
+    pub_list = []
+
+    if published == "latest" and tag is None and task is None and version is None:
+        latest_pub = utils.find("latest", shot_entity)
+        uuids_list = []
+        for x in latest_pub:
+            if isinstance(x, list):
+                for y in x:
+                    uuids_list.append(y)
+            else:
+                uuids_list.append(x)
+
+        for pub in published_db:
+            for uuid in uuids_list:
+                if pub.get('UUID') == uuid:
+                    pub_list.append(pub)
+    if pub_list != []:
+        return Response(json_util.dumps(pub_list, indent=4), mimetype='application/json')
     else:
         return Response(json_util.dumps("Couldn't get your request. Sorry.", indent=4), mimetype='application/json')
-    
+
 
 if __name__ == "__main__":
     app.secret_key = cfg.FLASK_APP_SECRET_KEY
