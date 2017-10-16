@@ -816,25 +816,213 @@ def fetch_shot_api(show_name, shot_name):
     tag = request.args.get('tag')
     task = request.args.get('task')
     version = request.args.get('version')
+    name = request.args.get('name')
 
     shot_entity = mongo.db.shots.find_one({"name": shot_name})
     published_db = [x for x in mongo.db.publish.find()]
+    latest_uuids = utils.get_uuids("latest", shot_entity)
+    not_latest_uuids = utils.get_uuids("previous", shot_entity)
+    all_uuids = latest_uuids + not_latest_uuids
     pub_list = []
 
-    if published == "latest" and tag is None and task is None and version is None:
-        latest_pub = utils.find("latest", shot_entity)
-        uuids_list = []
-        for x in latest_pub:
-            if isinstance(x, list):
-                for y in x:
-                    uuids_list.append(y)
-            else:
-                uuids_list.append(x)
-
+    # latest
+    if published == "latest" and tag is None and task is None and version is None and name is None:
         for pub in published_db:
-            for uuid in uuids_list:
+            for uuid in latest_uuids:
                 if pub.get('UUID') == uuid:
                     pub_list.append(pub)
+                
+    # all
+    if published == "all" and tag is None and task is None and version is None and name is None:
+        for pub in published_db:
+            for uuid in all_uuids:
+                if pub.get("UUID") == uuid:
+                    pub_list.append(pub)
+                
+    # not latest
+    if published == "not_latest" and tag is None and task is None and version is None and name is None:
+        for pub in published_db:
+            for uuid in not_latest_uuids:
+                if pub.get('UUID') == uuid:
+                    pub_list.append(pub)
+                    
+    # latest, name
+    if published == "latest" and tag is None and task is None and version is None and name is not None:
+        for uuid in latest_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    if uuid_obj.name() == name:
+                        pub_list.append(pub)
+                        
+    # latest, version
+    if published == "latest" and tag is None and task is None and version is not None and name is None:
+        for uuid in latest_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    if uuid_obj.version() == version:
+                        pub_list.append(pub)
+                        
+    # latest, task
+    if published == "latest" and tag is None and task is not None and version is None and name is None:
+        for uuid in latest_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    if uuid_obj.task() == task:
+                        pub_list.append(pub)
+                        
+    # not latest, version, name
+    if published == "not_latest" and tag is None and task is None and version is not None and name is not None:
+        for uuid in not_latest_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    if uuid_obj.version() == version:
+                        if uuid_obj.name() == name:
+                            pub_list.append(pub)
+                            
+    # latest, version, name
+    if published == "latest" and tag is None and task is None and version is not None and name is not None:
+        for uuid in latest_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    if uuid_obj.version() == version:
+                        if uuid_obj.name() == name:
+                            pub_list.append(pub)
+                        
+    # not latest, name
+    if published == "not_latest" and tag is None and task is None and version is None and name is not None:
+        for uuid in not_latest_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    if uuid_obj.name() == name:
+                        pub_list.append(pub)
+                        
+    # not latest, task
+    if published == "not_latest" and tag is None and task is not None and version is None and name is None:
+        for uuid in not_latest_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    if uuid_obj.task() == task:
+                        pub_list.append(pub)
+                        
+                        
+    # not latest, version
+    if published == "not_latest" and tag is None and task is None and version is not None and name is None:
+        for uuid in not_latest_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    if uuid_obj.version() == version:
+                        pub_list.append(pub)
+                        
+    # latest, task, version, name
+    if published == "latest" and tag is None and task is not None and version is not None and name is not None:
+        for uuid in latest_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    if uuid_obj.version() == version:
+                        if uuid_obj.name() == name:
+                            if uuid_obj.task() == task:
+                                pub_list.append(pub)
+                                
+    # not latest, task, version, name                            
+    if published == "not_latest" and tag is None and task is not None and version is not None and name is not None:
+        for uuid in not_latest_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    if uuid_obj.version() == version:
+                        if uuid_obj.name() == name:
+                            if uuid_obj.task() == task:
+                                pub_list.append(pub)
+                                
+    # all, name
+    if published == "all" and tag is None and task is None and version is None and name is not None:
+        for uuid in all_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    if uuid_obj.name() == name:
+                        pub_list.append(pub)
+                        
+    # all, version
+    if published == "all" and tag is None and task is None and version is not None and name is None:
+        for uuid in all_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    if uuid_obj.version() == version:
+                        pub_list.append(pub)
+                        
+    # all, task
+    if published == "all" and tag is None and task is not None and version is None and name is None:
+        for uuid in all_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    if uuid_obj.task() == task:
+                        pub_list.append(pub)
+                        
+    # all, tag
+    if published == "all" and tag is not None and task is None and version is None and name is None:
+        for uuid in all_uuids:
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    for t in pub.get('tag'):
+                        if tag == t:
+                            pub_list.append(pub)
+                            
+    # all, tag, version
+    if published == "all" and tag is not None and task is None and version is not None and name is None:
+        for uuid in all_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    for t in pub.get('tag'):
+                        if tag == t:
+                            if uuid_obj.version() == version:
+                                pub_list.append(pub)
+                                
+    # all, tag, version
+    if published == "all" and tag is not None and task is None and version is not None and name is None:
+        for uuid in all_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    for t in pub.get('tag'):
+                        if tag == t:
+                            if uuid_obj.version() == version:
+                                pub_list.append(pub)
+                                
+    # all, tag, task
+    if published == "all" and tag is not None and task is not None and version is None and name is None:
+        for uuid in all_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    for t in pub.get('tag'):
+                        if tag == t:
+                            if uuid_obj.task() == task:
+                                pub_list.append(pub)
+                        
+    # all, task, version
+    if published == "all" and tag is None and task is not None and version is not None and name is None:
+        for uuid in all_uuids:
+            uuid_obj = utils.UUID(uuid, "shot")
+            for pub in published_db:
+                if pub.get('UUID') == uuid:
+                    if uuid_obj.task() == task:
+                        if uuid_obj.version() == version:
+                            pub_list.append(pub)
+                        
+                    
     if pub_list != []:
         return Response(json_util.dumps(pub_list, indent=4), mimetype='application/json')
     else:

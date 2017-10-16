@@ -250,10 +250,10 @@ class UUID():
         self.match_pattern = self.match()
 
     def compiled_uuid_asset(self):
-        return re.compile('^(?P<show_name>[A-Za-z0-9]+)_(?P<asset_name>[A-Za-z0-9_\-]+)_(?P<task_name>[A-Z]{3})_(?P<version>[Vv]\d+)_(?P<iso_date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{5})')
+        return re.compile('^(?P<show_name>[A-Za-z0-9]+)_(?P<asset_name>[A-Za-z0-9_\-]+)_(?P<task_name>[A-Z]{3})_[Vv](?P<version>\d+)_(?P<iso_date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{5})')
 
     def compiled_uuid_shot(self):
-        return re.compile('^(?P<show_name>[A-Z0-9]{3})_(?P<shot_name>[a-zA-Z]+_[0-9]{3})_(?P<description>[A-Za-z_0-9]+)_(?P<task_name>[A-Z]{3})_(?P<version>[vV]\d{2})_(?P<iso_date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{5})')
+        return re.compile('^(?P<show_name>[A-Z0-9]{3})_(?P<shot_name>[a-zA-Z]+_[0-9]{3})_(?P<description>[A-Za-z_0-9]+)_(?P<task_name>[A-Z]{3})_[vV](?P<version>\d{2})_(?P<iso_date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{5})')
 
     def match(self):
         if self.uuid_type == "asset":
@@ -280,19 +280,12 @@ class UUID():
             else:
                 return None
 
-    def description(self):
-        if self.check_uuid():
-            if self.uuid_type == 'shot':
-                return self.match_pattern.group('description')
-            else:
-                return None
-
-    def asset(self):
+    def name(self):
         if self.check_uuid():
             if self.uuid_type == 'asset':
                 return self.match_pattern.group('asset_name')
             else:
-                return None
+                return self.match_pattern.group('description')
 
     def task(self):
         if self.check_uuid():
@@ -309,8 +302,16 @@ class UUID():
 
 def get_uuids(kw, db_col):
     uid_list = []
-    for db in db_col:
-        for x in find(kw, db):
+    if isinstance(db_col, list):
+        for db in db_col:
+            for my_kw in find(kw, db):
+                if isinstance(my_kw, list):
+                    for y in my_kw:
+                        uid_list.append(y)
+                else:
+                    uid_list.append(my_kw)
+    else:
+        for x in find(kw, db_col):
             if isinstance(x, list):
                 for y in x:
                     uid_list.append(y)
