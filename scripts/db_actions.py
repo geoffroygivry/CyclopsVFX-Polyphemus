@@ -173,4 +173,3 @@ def link_asset_to_shot(asset_name, shot_name):
          {"assets": asset_name}
          }
     )
-
