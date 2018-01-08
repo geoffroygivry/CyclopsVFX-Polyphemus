@@ -34,13 +34,39 @@
 <div class="row" style="margin: 10px;">
 
 <div class="col-md-5 col-sm-5 col-xs-5">
-    <div class="well">
-                 <form class="form-horizontal" role="form">
+
+          <div class="panel panel-white post panel-shadow ">
+              <div class="post-footer">
+
+                      <ul class="comments-list">
+                          {% for comment in show_commments.comments %}
+                          {% set datetime_sub_date = utils.convert_isotime_to_datetime(comment.date) %}
+                          {% set pretty_comment_date = datetime_sub_date.strftime(format) %}
+                          <li class="comment">
+                              <a class="pull-left" href="{{url_for('user', user_name=comment.publisher.name)}}">
+                                  <img class="avatar" src="{{comment.publisher.email | gravatar}}" alt="avatar">
+                              </a>
+                              <div class="comment-body">
+                                  <div class="comment-heading">
+                                      <h4 class="comment-user-name"><a href="{{url_for('user', user_name=comment.publisher.name)}}">{{comment.publisher.name}}</a></h4>
+                                      <h5 class="time"><div class="date-sub"><a href=""><time class="pubdate" datetime="{{comment.date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_comment_date}}"></time></a></div></h5>
+                                  </div>
+                                  <p>{{comment.comment}}</p>
+                              </div>
+                          </li>
+                          {% endfor %}
+                      </ul>
+                    </div>
+
+
+                <div class="well">
+                    <form id="comment-show-form-{{show}}" class="form-horizontal" role="form" method="post" action="{{url_for('submit_comment_show', show_name=show)}}">
                    <div class="form-group" style="padding:14px;">
-                    <textarea class="form-control" placeholder="Put your comment here..."></textarea>
+                    <textarea id="for_mention" name="comment_pl" class="form-control" placeholder="Put your comment here..."></textarea>
                   </div>
-                  <button class="btn btn-primary pull-right" type="button">Post</button><ul class="list-inline"><li><a href=""><i class="glyphicon glyphicon-upload"></i></a></li><li><a href=""><i class="glyphicon glyphicon-camera"></i></a></li><li><a href=""><i class="glyphicon glyphicon-map-marker"></i></a></li></ul>
+                  <button type="submit" form="comment-show-form-{{show}}" value="Submit" class="btn btn-primary pull-right">Post</button><ul class="list-inline"><li><a href=""><i class="glyphicon glyphicon-upload"></i></a></li><li><a href=""><i class="glyphicon glyphicon-camera"></i></a></li><li><a href=""><i class="glyphicon glyphicon-map-marker"></i></a></li></ul>
                 </form>
+              </div>
               </div>
 
                 {% for sub in subs %}
@@ -82,12 +108,12 @@
                       <p>{{sub.comment}}</p>
                   </div>
                   <div class="post-footer">
-                      <div class="input-group">
-                          <input class="form-control" placeholder="Add a comment" type="text">
-                          <span class="input-group-addon">
-                              <a href="#"><i class="fa fa-edit"></i></a>
-                          </span>
-                      </div>
+                      <form id="comment-sub-form-{{sub.ptuid}}" class="form-horizontal" role="form" method="post" action="{{url_for('submit_comment', ptuid=sub.ptuid)}}">
+                   <div class="form-group" style="padding:14px;">
+                    <textarea id="for_mention" name="comment_pl" class="form-control" placeholder="Put your comment here..."></textarea>
+                  </div>
+                  <button type="submit" form="comment-sub-form-{{sub.ptuid}}" value="Submit" class="btn btn-primary pull-right">Post</button><ul class="list-inline"><li><a href=""><i class="glyphicon glyphicon-upload"></i></a></li><li><a href=""><i class="glyphicon glyphicon-camera"></i></a></li><li><a href=""><i class="glyphicon glyphicon-map-marker"></i></a></li></ul>
+                </form>
                       <ul class="comments-list">
                           {% for comment in sub.comments %}
                           {% set datetime_sub_date = utils.convert_isotime_to_datetime(comment.date) %}

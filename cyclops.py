@@ -1,5 +1,5 @@
-import os
-from flask import Flask, render_template, url_for, request, session, redirect, Response, flash
+import os, re
+from flask import Flask, render_template, url_for, request, session, redirect, Response, flash, jsonify
 from flask_pymongo import PyMongo
 from flask_gravatar import Gravatar
 from datetime import datetime
@@ -198,6 +198,7 @@ def shot(show, seq, shot_name):
             collaborators = [x for x in shot.get('tasks', [])]
             current_route = get_current_route()
             assets = [x for x in shot.get('assets', [])]
+            comments = [x for x in shot.get('comments', [])]
             if user_session['role'] == 'admin':
                 shows = [x for x in mongo.db.shows.find()]
             else:
@@ -223,7 +224,7 @@ def shot(show, seq, shot_name):
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                     generate_images.banner_and_thumb(filename, shot)
 
-            return render_template("shot.html", show=show, seq=seq, subs=subs, user_session=user_session, shows=shows, iso_time=iso_time, notifications=notifications, current_route=current_route, shot=shot, collaborators=collaborators, users=users, assets=assets)
+            return render_template("shot.html", comments=comments, show=show, seq=seq, subs=subs, user_session=user_session, shows=shows, iso_time=iso_time, notifications=notifications, current_route=current_route, shot=shot, collaborators=collaborators, users=users, assets=assets)
 
         else:
             warning_header = " Sorry this is a restricted area!".format(show)
@@ -274,6 +275,7 @@ def show(show):
             notifications = [x for x in mongo.db.notifications.find()]
             subs = [x for x in mongo.db.submissions.find()]
             shots = [x for x in mongo.db.shots.find()]
+            show_commments = mongo.db.shows.find_one({"name": show})
             assets = [x for x in mongo.db.assets.find() if x.get("show") == show]
             users = [x for x in mongo.db.users.find() if show in x.get("shows")]
             if user_session['role'] == 'admin':
@@ -285,7 +287,7 @@ def show(show):
                     new_show = mongo.db.shows.find_one({"name": n})
                     shows.append(new_show)
             print(shows)
-            return render_template("show.html", show=show, user_session=user_session, shows=shows, shots=shots, notifications=notifications, subs=subs, assets=assets, users=users)
+            return render_template("show.html", show_commments=show_commments, show=show, user_session=user_session, shows=shows, shots=shots, notifications=notifications, subs=subs, assets=assets, users=users)
         else:
             shows = [x for x in mongo.db.shows.find()]
             if show in [show.get('name') for show in shows]:
@@ -1028,6 +1030,127 @@ def fetch_shot_api(show_name, shot_name):
         return Response(json_util.dumps(pub_list, indent=4), mimetype='application/json')
     else:
         return Response(json_util.dumps("Couldn't get your request. Sorry.", indent=4), mimetype='application/json')
+
+
+@app.route('/polyphemus/submit-comment/<ptuid>', methods=['GET', 'POST'])
+def submit_comment(ptuid):
+    user_session = session['username']
+    user_email = mongo.db.users.find_one({"name": user_session})
+    sub_id = ptuid
+    sub = mongo.db.submissions.find_one({"ptuid": sub_id})
+    shot_name = sub.get('Shot')
+    comment_publisher = user_session
+    comment_payload = str(request.form['comment_pl'])
+    find_mentions = re.findall(r"(?<=@)\w+", comment_payload)
+    find_hashtag = re.findall(r"(?<=#)\w+", comment_payload)
+    comment_date = datetime.utcnow().isoformat()
+    mongo.db.submissions.update(
+            {"ptuid": sub_id},
+            {"$push":
+            {"comments": {
+            "publisher" : {
+                "name" : comment_publisher, 
+                "email" : user_email.get('email')
+            }, 
+            "comment" : comment_payload, 
+            "date" : comment_date
+            }}
+            }
+            )
+    mongo.db.shots.update(
+            {"name": shot_name},
+            {"$set":
+            {"latest_ptuid_comment": {
+            "publisher" : comment_publisher, 
+            "comment" : comment_payload, 
+            "ptuid" : sub_id
+            }}
+            }
+            )
+    return redirect(redirect_url())
+
+@app.route('/polyphemus/submit-comment-shot/<shot_name>', methods=['GET', 'POST'])
+def submit_comment_shot(shot_name):
+    user_session = session['username']
+    user_email = mongo.db.users.find_one({"name": user_session})
+    shot = mongo.db.submissions.find_one({"name": shot_name})
+    comment_publisher = user_session
+    comment_payload = str(request.form['comment_pl'])
+    find_mentions = re.findall(r"(?<=@)\w+", comment_payload)
+    find_hashtag = re.findall(r"(?<=#)\w+", comment_payload)
+    comment_date = datetime.utcnow().isoformat()
+    mongo.db.shots.update(
+            {"name": shot_name},
+            {"$push":
+            {"comments": {
+            "publisher" : {
+                "name" : comment_publisher, 
+                "email" : user_email.get('email')
+            }, 
+            "comment" : comment_payload, 
+            "date" : comment_date
+            }}
+            }
+            )
+    return redirect(redirect_url())
+
+@app.route('/polyphemus/submit-comment-show/<show_name>', methods=['GET', 'POST'])
+def submit_comment_show(show_name):
+    user_session = session['username']
+    user_email = mongo.db.users.find_one({"name": user_session})
+    show = mongo.db.submissions.find_one({"name": show_name})
+    comment_publisher = user_session
+    comment_payload = str(request.form['comment_pl'])
+    find_mentions = re.findall(r"(?<=@)\w+", comment_payload)
+    find_hashtag = re.findall(r"(?<=#)\w+", comment_payload)
+    comment_date = datetime.utcnow().isoformat()
+    mongo.db.shows.update(
+            {"name": show_name},
+            {"$push":
+            {"comments": {
+            "publisher" : {
+                "name" : comment_publisher, 
+                "email" : user_email.get('email')
+            }, 
+            "comment" : comment_payload, 
+            "date" : comment_date
+            }}
+            }
+            )
+    return redirect(redirect_url())
+
+@app.route('/polyphemus/mentions/get-mentions-names.json', methods=['GET', 'POST'])
+def mentions_get_names():
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        mentions_names = []
+        for name_for_mention in mongo.db.users.find({}, {'name':1, 'email':1, '_id':0}):
+            mentions_names.append(name_for_mention)      
+        return Response(json_util.dumps(mentions_names), mimetype='application/json')
+    else:
+        warning_header = "No rights.!"
+        warning_msg = "Please login to query data."
+        return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
+
+@app.route('/polyphemus/mentions/get-mentions-hashes.json', methods=['GET', 'POST'])
+def mentions_get_hashes():
+    if 'username' in session:
+        user_session = mongo.db.users.find_one({"name": session['username']})
+        mentions_hashes = []
+        for show in mongo.db.shows.find({}, {'name':1, '_id':0}):
+            mentions_hashes.append(show['name'])
+        
+        for sub in mongo.db.submissions.find({}, {'ptuid':1, '_id':0}):
+            mentions_hashes.append(sub['ptuid'])
+
+        for publish in mongo.db.publish.find({}, {'UUID':1, '_id':0}):
+            mentions_hashes.append(publish['UUID'])
+
+        return Response(json_util.dumps(mentions_hashes), mimetype='application/json')
+    else:
+        warning_header = "No rights.!"
+        warning_msg = "Please login to query data."
+        return render_template("oops.html", warning_msg=warning_msg, warning_header=warning_header)
 
 
 if __name__ == "__main__":
