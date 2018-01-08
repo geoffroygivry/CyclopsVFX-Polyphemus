@@ -672,21 +672,10 @@ def submit_comment(ptuid):
     sub_id = ptuid
     sub = mongo.db.submissions.find_one({"ptuid": sub_id})
     shot_name = sub.get('Shot')
-    print(shot_name)
-    print(sub_id)
-    #print(sub)
     comment_publisher = user_session
     comment_payload = str(request.form['comment_pl'])
     find_mentions = re.findall(r"(?<=@)\w+", comment_payload)
-    if find_mentions:
-        print('LOG: found mentions :',find_mentions)
-    else:
-        print('No mentions.')
     find_hashtag = re.findall(r"(?<=#)\w+", comment_payload)
-    if find_hashtag:
-        print('LOG: found hashtag: ',find_hashtag)
-    else:
-        print('No hashtags.')
     comment_date = datetime.utcnow().isoformat()
     mongo.db.submissions.update(
             {"ptuid": sub_id},
@@ -711,7 +700,6 @@ def submit_comment(ptuid):
             }}
             }
             )
-    print('Comment submited to db.')
     return redirect(redirect_url())
 
 @app.route('/polyphemus/submit-comment-shot/<shot_name>', methods=['GET', 'POST'])
@@ -719,20 +707,10 @@ def submit_comment_shot(shot_name):
     user_session = session['username']
     user_email = mongo.db.users.find_one({"name": user_session})
     shot = mongo.db.submissions.find_one({"name": shot_name})
-    print(shot_name)
-    #print(sub)
     comment_publisher = user_session
     comment_payload = str(request.form['comment_pl'])
     find_mentions = re.findall(r"(?<=@)\w+", comment_payload)
-    if find_mentions:
-        print('LOG: found mentions :',find_mentions)
-    else:
-        print('No mentions.')
     find_hashtag = re.findall(r"(?<=#)\w+", comment_payload)
-    if find_hashtag:
-        print('LOG: found hashtag: ',find_hashtag)
-    else:
-        print('No hashtags.')
     comment_date = datetime.utcnow().isoformat()
     mongo.db.shots.update(
             {"name": shot_name},
@@ -747,7 +725,6 @@ def submit_comment_shot(shot_name):
             }}
             }
             )
-    print('Comment submited to db.')
     return redirect(redirect_url())
 
 @app.route('/polyphemus/submit-comment-show/<show_name>', methods=['GET', 'POST'])
@@ -755,21 +732,10 @@ def submit_comment_show(show_name):
     user_session = session['username']
     user_email = mongo.db.users.find_one({"name": user_session})
     show = mongo.db.submissions.find_one({"name": show_name})
-    print(show_name)
-    #print(sub)
     comment_publisher = user_session
     comment_payload = str(request.form['comment_pl'])
     find_mentions = re.findall(r"(?<=@)\w+", comment_payload)
-    if find_mentions:
-        print('LOG: found mentions :',find_mentions)
-    else:
-        print('No mentions.')
     find_hashtag = re.findall(r"(?<=#)\w+", comment_payload)
-    if find_hashtag:
-        print('LOG: found hashtag: ',find_hashtag)
-    else:
-        print('No hashtags.')
-    
     comment_date = datetime.utcnow().isoformat()
     mongo.db.shows.update(
             {"name": show_name},
@@ -784,7 +750,6 @@ def submit_comment_show(show_name):
             }}
             }
             )
-    print('Comment  submited to db.')
     return redirect(redirect_url())
 
 @app.route('/polyphemus/mentions/get-mentions-names.json', methods=['GET', 'POST'])
