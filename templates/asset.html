@@ -10,6 +10,7 @@
 
   <div class="col-md-6">
     <div class="card-block">Asset preview:</div>
+    {{asset_to_show.tasks}}
     <div id="View" class="previewer {{ asset_details.type }} ">
       <iframe src="/{{ asset_details.type }}/{{ asset_details._id }}" class="preview-assets responsive" id="viewer" frameborder="0" scrolling="no" width="100%" height="500px">
 
@@ -34,20 +35,20 @@
               </tr>
               <tr class="field">
                   <td class="field">Asset name:</td>
-                  <td>{{asset_details.type}}</td>
+                  <td>{{asset_details.name}}</td>
               </tr>
               <tr class="field">
                   <td class="field">Asset UUID:</td>
-                  <td>{{asset_details.UUID}}</td>
+                  <td>{{find_asset_to_show.UUID}}</td>
               </tr>
               <tr class="field">
                   <td class="field">Assignee:</td>
-                  <td><a href="{{url_for('user', user_name=asset_details.username)}}">{{ asset_details.username}}</a>
+                  <td><a href="{{url_for('user', user_name=find_asset_to_show.publisher)}}">{{ find_asset_to_show.publisher}}</a>
                   </td>
               </tr>
               <tr class="field">
                   <td class="field">Parent show:</td>
-                  <td><a href="{{url_for('show', show=asset_details.tag.0)}}">{{asset_details.tag.0}}</a></td>
+                  <td><a href="{{url_for('show', show=find_asset_to_show.tag[0])}}">{{find_asset_to_show.tag[0]}}</a></td>
               </tr>
               {% if asset_details.hero %}
               <tr class="field">
@@ -58,29 +59,22 @@
              {% endif %}
               <tr class="field">
                   <td class="field">Asset type:</td>
-                  <td>{{asset_details.type}}</td>
+                  <td>{{find_asset_to_show.type}}</td>
               </tr>
               <tr class="divider">
               </tr>
               <tr class="field">
                   <td class="field">Asset status:</td>
-                  <td>    <span class="label {{asset_details.status}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{asset_details.task}} - {{asset_details.status}}">
-                  {{asset_details.task}} - {{asset_details.status}}</span>
+                  <td>    <span class="label {{a_status}} {{a_task}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{a_status}} {{a_task}}">
+                  {{a_status}} - {{a_task}}</span>
                 </br>
               </br> {{overall_progress}}</td>
               </tr>
               <tr class="field">
-                {% if asset_details.pub_date != None %}
-                {% set asset_target_date = utils.convert_isotime_to_datetime(asset_details.pub_date) %}
-                {% set pretty_target_date = asset_target_date.strftime(format) %}
-                {% else %}
-                {% set asset_target_date = None %}
-                {% endif %}
-                {% if asset_target_date != None %}
-                <td class="field">Target date:</td>
-                <td><time class="pubdate" datetime="{{asset_details.pub_date}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="{{pretty_target_date}}"></time>
+                
+                <td class="field">Published date:</td>
+                <td><time class="pubdate" datetime="2018-01-19T18:00:00.000000" data-toggle="tooltip" data-placement="top" title="" data-original-title="target date">"2018-01-19T18:00:00.000000"</time>
                 </td>
-                {% endif %}
               </tr>
               <tr class="field">
                   <td class="field">Path:</td>
@@ -96,9 +90,7 @@
                         <div class="col-md-2">
                             <select style="width: auto;" name="task-select" class="form-control" id="asset-task">
                                 <option>Choose...</option>
-                                {% for version in filevers  %}
-                                <option>{{version}}</option>
-                                {% endfor %}
+                                <option>{{current_filever}}</option>
                             </select>
                         </div>
                     </div>
@@ -125,7 +117,7 @@
                <tr class="highlight">
                   <td class="field">Tags:</td>
                   <td>
-                    {% for tag in tagz %}
+                    {% for tag in a_tag %}
                       {{ tag }}
                     {% endfor %}
                   </td>

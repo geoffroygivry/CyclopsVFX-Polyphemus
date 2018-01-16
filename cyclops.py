@@ -470,23 +470,37 @@ def process(current_route, username):
 def asset_view(asset_id):
     if 'username' in session:
         user_session = mongo.db.users.find_one({"name": session['username']})
-        asset_details = mongo.db.submissions.find_one({'_id': ObjectId(asset_id)})
-        asigns = []
-        colabs = ""
-        cols = colabs
+        #libraries load into sidebar
+        system_libs = mongo.db.libraries.find()
+        user_lib =  mongo.db.libraries.find()
+        shared_libs = mongo.db.libraries.find()
+        lib_list = [x for x in mongo.db.libraries.find()]
         side_lib = mongo.db.libraries.find()
-        libs = "general"
-        tages = ""
-        tagz = re.split("[, \-!?._:/*#$%&]+", str(tages))
-        filevers = [asset_details.get('version')]
-        current_filever  = ""
-        pathtofile = asset_details.get('path')
-        asset_bundle = "AB_asetbudle_name_created_by_function.zip"
-        #progress WIP asset_details.tasks.0.status
-        progstat = "Being worked on"
-        overall_progress = progstat
 
-    return render_template("asset.html", side_lib=side_lib, asset_bundle=asset_bundle, libs=libs, current_filever=current_filever, cols=cols, colabs=colabs,tagz=tagz, pathtofile=pathtofile, filevers=filevers, overall_progress=overall_progress, user_session=user_session, asset_details=asset_details, asset_view=asset_view)
+        # do asset stuff
+        asset_details = mongo.db.assets.find_one({'_id': ObjectId(asset_id)})
+
+        asset_to_show = asset_details.get('tasks')[0]['published']
+        a_id = asset_details.get('tasks')[0]['published']['latest']
+        a_status = asset_details.get('tasks')[0]['status']
+        a_task = asset_details.get('tasks')[0]['task']
+        find_asset_to_show = mongo.db.publish.find_one({"UUID": a_id})
+        a_tag = find_asset_to_show.get('tag')
+        libs = ['General']
+        current_filever  = str(float(find_asset_to_show.get('version')))
+        pathtofile = find_asset_to_show.get('path')
+        script = find_asset_to_show.get('script')
+        asset_bundle = "AB_asetbudle_name_created_by_function.zip" # do script to generate freelancers files
+        overall_progress = "Being worked on"
+
+    return render_template("asset.html", side_lib=side_lib,system_libs=system_libs,
+                            libs=libs, shared_libs=shared_libs, user_lib=user_lib, lib_list=lib_list,
+                            asset_bundle=asset_bundle, 
+                            current_filever=current_filever,
+                            a_tag=a_tag, pathtofile=pathtofile,
+                            overall_progress=overall_progress, user_session=user_session, 
+                            asset_details=asset_details, asset_to_show=asset_to_show,
+                            find_asset_to_show=find_asset_to_show, a_status=a_status, a_task= a_task)
 
 @app.route('/preview/<asset_id>')
 def preview(asset_id):
@@ -629,8 +643,8 @@ def asset_add_fav(asset_id):
 def model(model_id):
     texture_name = "/static/polyphemus/assets/img/cyc_placeholder.png"
     base_file_path = "/static/polyphemus/data/3D/poly/"
-    model_file = "poly.obj"
-    material_file = "poly.mtl"
+    model_file = "poly_scene.obj"
+    material_file = "poly_scene.mtl"
     return render_template('type-model.html', base_file_path=base_file_path, texture_name=texture_name, model_id=model_id, model_file=model_file, material_file=material_file)
 
 @app.route('/2D/<texture_id>')
@@ -644,12 +658,20 @@ def texture(texture_id):
     tagz = re.split("[, \-!?_:/.*#$%&]+", tages)
     return render_template('type-texture.html', details=details, tagz=tagz, tex_name=tex_name, texture_name=texture_name, base_file_path=base_file_path)
 
-@app.route('/video/<video_id>')
+@app.route('/MOV/<video_id>')
 def video(video_id):
     video_file = "/static/polyphemus/data/video/video.mp4"
     video_poster_frame = "/static/polyphemus/data/video/poster.jpg"
     video_name = "test_video_name"
     return render_template('type-video.html', video_file=video_file, video_poster_frame=video_poster_frame, video_name=video_name, video_id=video_id)
+
+@app.route('/CMP/<video_id>')
+def cmp(video_id):
+    video_file = "/static/polyphemus/data/video/video.mp4"
+    video_poster_frame = "/static/polyphemus/data/video/poster.jpg"
+    video_name = "test_video_name"
+    return render_template('type-video.html', video_file=video_file, video_poster_frame=video_poster_frame, video_name=video_name, video_id=video_id)
+
 
 @app.route('/sound/<sound_id>')
 def sound(sound_id):
@@ -657,12 +679,12 @@ def sound(sound_id):
     sound_name = "test sound name"
     return render_template('type-sound.html', sound_file=sound_file, sound_name=sound_name, sound_id=sound_id)
 
-
-@app.route('/camera/<model_id>')
+@app.route('/CAM/<model_id>')
 def camera(model_id):
     model_file = "sphere.obj"
     texture_name = "/TMP/Folder.jpg"
     return render_template('type-camera.html', texture_name=texture_name, model_id=model_id)
+
 
 @app.route('/texture/<texture_id>')
 def textures(texture_id):

@@ -48,7 +48,7 @@
 				document.body.appendChild( container );
 
 				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-				camera.position.z = 500;
+				camera.position.z = 750;
 
 				// scene
 
@@ -58,7 +58,7 @@
 				scene.add( ambient );
 
 				var directionalLight = new THREE.DirectionalLight( 0xffeedd );
-				directionalLight.position.set( 0, 0, 1 ).normalize();
+				directionalLight.position.set( 0, -1, 1 ).normalize();
 				scene.add( directionalLight );
 
 				// model
