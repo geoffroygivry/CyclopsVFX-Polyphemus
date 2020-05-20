@@ -15,7 +15,7 @@ Flask-PyMongo==0.4.1
 Flask-SocketIO==2.8.6
 Flask-WTF==0.14.2
 greenlet==0.4.12
-httplib2==0.10.3
+httplib2==0.18.0
 itsdangerous==0.24
 Jinja2==2.9.6
 jmespath==0.9.3
