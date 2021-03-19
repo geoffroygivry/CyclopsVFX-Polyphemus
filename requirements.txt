@@ -17,7 +17,7 @@ Flask-WTF==0.14.2
 greenlet==0.4.12
 httplib2==0.10.3
 itsdangerous==0.24
-Jinja2==2.9.6
+Jinja2==2.11.3
 jmespath==0.9.3
 jsonify==0.5
 kombu==4.0.2
